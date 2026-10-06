@@ -1,21 +1,22 @@
 # STATUS
 
-最終更新: 2026-10-06（S-0006、D-0006〜D-0008）
+最終更新: 2026-10-06（S-0007）
 
 ## 現在地
-- 学習ステップ2（HTML / CSS）の途中。2-1・2-2 完了、2-3（CSS の基本、`app/public/style.css`）の課題4から。配色は黒＋ティール（`docs/learning/reference/design.md`）
+- 学習ステップ2（HTML / CSS）を完了。次はステップ3（JavaScript）（S-0007）
 - 学習者は 2026-10-06 中にステップ8まで進める意向
-- ToDo には期限をつける。リマインドは余裕があれば後で（D-0006）
-- 暗記するだけの軽い知識は答えを教える（D-0007）。一覧はリスト、完了はチェックで残す（D-0008）
-- 作成物は `app/`（別リポジトリ、GitHub `Miyamura-rq/todo-app` に push 済み）。外側はローカルのみ（D-0004）。練習用ファイルは外側の `practice/`
-- 学習状況は `docs/learning/progress.md`、ステップごとのまとめは `docs/learning/notes/`、早見表は `docs/learning/reference/`
+- 作成物は `app/public/`（index.html、style.css）。`app/` は別リポジトリで GitHub `Miyamura-rq/todo-app` に push 済み。外側はローカルのみ（D-0004）。練習用ファイルは外側の `practice/`
+- 仕様：期限あり、リマインドは余裕があれば後で（D-0006）。一覧はリスト、完了はチェックで残す（D-0008）
+- 進め方：軽い知識は答えを教える（D-0007）。デザインの値は Claude が提案（`docs/learning/reference/design.md`）。要件を1つずつレクチャーしながら進める
+- 学習状況は `docs/learning/progress.md`、まとめは `docs/learning/notes/`、早見表は `docs/learning/reference/`
 
 ## 次にやること
-- 2-3 の課題4（削除ボタン）・課題5（開発者ツールの Styles）→ 2-4 レイアウト
+- ステップ3の学習内容を作って始める（DOM 操作で ToDo の追加・完了・削除。再読み込みで消える）
 
 ## 未解決・要確認
 - 「表示」と「返す（戻り値）」の違い（ステップ3で再確認）
+- `flex-basis: 100%` の役割（ステップ3以降で再確認）
 - REST のパスの決め方（ステップ5で再確認）
-- `app/README.md` の「リマインド」の記述と使用技術の未記入（次の README 更新時に直す）
+- `app/README.md` の「リマインド」の記述と使用技術の未記入（ステップ5で起動方法とまとめて直す）
 - 「web 上で動く」の意味と、公開先・DB の会社の決まり（ステップ7の前に確認）
 - 起動コマンド・テストコマンド（ステップ5で決める）
