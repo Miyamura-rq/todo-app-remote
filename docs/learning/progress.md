@@ -34,7 +34,7 @@
 | 2-1 HTML の基本（タグ・要素・属性・入れ子、head と body） | 説明できる | 2026-10-06。`practice/hello.html` を作成。`<p>` の中に `<ul>` を入れ、Elements タブで「ブラウザが `<p>` を閉じた」ことに自分で気づいた（入れられる要素が決まっている）。meta charset を消しても表示が変わらず「既定が UTF-8」と予想 → ブラウザの推測と、ヘッダー／meta の2つの伝え方を補足。`<hooter>` の誤字（HTML はエラーを出さない）。タグ・要素・属性を説明できた |
 | 2-2 ToDo 画面の骨組み（見出し・フォーム・リスト、意味に合ったタグを選ぶ） | 説明できる | 2026-10-06。`app/public/index.html` を作成。header / main / footer、form（label・placeholder・required・maxlength・name）、ul / li、checkbox、time。期限の入力欄を自分で追加（D-0006）。表かリストか・完了で消すか残すかを比べて決めた（D-0008）。`<form>` で囲む理由（Enter で送信、required が働く）と、ul を選ぶ理由（順番に意味がない）を説明できた。`lang="jp"`、`<header>` の位置、ラベルに `id` をつけて `id` が重なる間違い（`id` = 指される側、`for` = 指す側）でつまずき、ヒント3で解決 |
 | 2-3 CSS の基本（読み込み方、セレクタ、class、開発者ツールの Elements） | 説明できる | 2026-10-06。`app/public/style.css` を作成し `<link>` で読み込み。配色は黒＋ティールを2案から選んだ（design.md）。要素・子孫（`header h1`、`.done label`）・class・`:hover` を使用。class 名を状態で決める理由（`done`）と、Styles 欄の変更が再読み込みで戻る理由（ファイルは変わっておらず、読み直すと戻る）を説明できた。つづりの間違い（`font-coler`、`delete-bottun` → `buttun`）が続いた → CSS はエラーを出さないので、Styles 欄の ⚠ と VS Code の波線で確かめる |
-| 2-4 レイアウト（ボックスモデル、Flexbox） | 未着手 | |
+| 2-4 レイアウト（ボックスモデル、Flexbox） | 学習中 | 2026-10-06。Computed タブで箱を確認し、余白がブラウザの初期設定だと自分で答えた。`box-sizing`、`max-width` + `margin: 0 auto`、Flexbox（form の横並び、ul の縦並び、li のカード）、`font: inherit`、`color-scheme`、`accent-color`、メディアクエリでスマホ時に2行へ折り返し（配置は自分で考えた）。スマホでの問題（ToDo 入力欄が 57px）は自分では気づかず、指摘で理解。`#` の抜け（`8FA59F`）と保存忘れあり。CSS の階層構造（入れ子）について質問あり。理解度チェックはまだ |
 | 2-5 仕上げと push、技術の選択肢（CSS フレームワークなど） | 未着手 | |
 
 ## ステップ3〜8
