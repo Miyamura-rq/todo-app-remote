@@ -1,15 +1,17 @@
 # STATUS
 
-最終更新: 2026-10-06（S-0006）
+最終更新: 2026-10-06（S-0006、D-0006、D-0007）
 
 ## 現在地
-- 学習ステップ1（Web の仕組み）を完了。次はステップ2（HTML / CSS）（S-0006）
+- 学習ステップ2（HTML / CSS）の途中。2-1 完了、2-2（`app/public/index.html` の骨組み）を作成中
 - 学習者は 2026-10-06 中にステップ8まで進める意向
+- ToDo には期限をつける。リマインドは余裕があれば後で（D-0006）
+- 暗記するだけの軽い知識は答えを教える（D-0007）
 - 作成物は `app/`（別リポジトリ、GitHub `Miyamura-rq/todo-app` に push 済み）。外側はローカルのみ（D-0004）。練習用ファイルは外側の `practice/`
-- 学習状況は `docs/learning/progress.md`、ステップごとのまとめは `docs/learning/notes/`
+- 学習状況は `docs/learning/progress.md`、ステップごとのまとめは `docs/learning/notes/`、早見表は `docs/learning/reference/`
 
 ## 次にやること
-- ステップ2の学習内容を作って始める
+- 2-2 の要件3〜6（入力欄の label と placeholder、仮の ToDo 3件、完了チェック、残り件数）
 
 ## 未解決・要確認
 - 「表示」と「返す（戻り値）」の違い（ステップ3で再確認）
