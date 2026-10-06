@@ -38,7 +38,19 @@
 | 2-4 レイアウト（ボックスモデル、Flexbox） | 説明できる | 2026-10-06。Computed タブで箱を確認し、余白がブラウザの初期設定だと自分で答えた。`box-sizing`、`max-width` + `margin: 0 auto`、Flexbox（form の横並び、ul の縦並び、li のカード）、`font: inherit`、`color-scheme`、`accent-color`、メディアクエリでスマホ時に2行へ折り返し（配置は自分で考えた）。スマホでの問題（ToDo 入力欄が 57px）は自分では気づかず、指摘で理解。`#` の抜け（`8FA59F`）と保存忘れあり。CSS の階層構造（入れ子）について質問あり。理解度チェック：右寄せの仕組み（label の `flex: 1`）は説明できた（親の `display: flex` は補足）。スマホの折り返しは `@media` と `flex-wrap` まで（`flex-basis: 100%` は要復習） |
 | 2-5 仕上げと push、技術の選択肢（CSS フレームワークなど） | 学習中 | 2026-10-06。`app/` を push（コミットメッセージは「何ができるようになったか」を書くよう提案）。README の修正はステップ5でまとめてやると学習者が判断。Sass・Bootstrap・Tailwind・CSS Modules・テンプレートエンジン・React / Vue / Svelte と選ぶ基準を説明。React について質問あり（ステップ3・4のあとで再紹介） |
 
-## ステップ3〜8
+## ステップ3：JavaScript
+ゴール：画面で ToDo を追加・完了・削除できる（再読み込みで消える）
+
+| 項目 | 段階 | メモ |
+|---|---|---|
+| 3-1 JS の基本文法（変数、型、配列・オブジェクト、if、for、関数、戻り値） | 未着手 | 「表示」と「返す（戻り値）」の違いを再確認する |
+| 3-2 HTML と JS をつなぐ（`<script>` と `defer`、DOM、`querySelector`） | 未着手 | |
+| 3-3 イベント（`addEventListener`、`submit` と `preventDefault`、入力値の取り出し） | 未着手 | Enter で `?todo=` がついて再読み込みされる問題を止める |
+| 3-4 ToDo の追加（`createElement` / `textContent`、`innerHTML` の危険、データから画面を作る） | 未着手 | HTML の見本3件はここで消す |
+| 3-5 完了・削除・残り件数 | 未着手 | |
+| 3-6 仕上げと push、技術の選択肢（jQuery / React / Vue、WebAssembly） | 未着手 | |
+
+## ステップ4〜8
 各ステップの始めに項目を追加する。ステップを終えたら `notes/step<番号>.md` にまとめを作り、見出しの下にリンクを置く。
 
 ## 先取りで説明済みのこと
