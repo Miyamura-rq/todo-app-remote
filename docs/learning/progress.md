@@ -27,7 +27,7 @@
 
 ## ステップ2：HTML / CSS
 ゴール：ToDo の画面（見た目だけ）を作り、GitHub に push する
-早見表：[reference/html.md](reference/html.md)
+早見表：[reference/html.md](reference/html.md)、[reference/css.md](reference/css.md)、デザインの値：[reference/design.md](reference/design.md)
 
 | 項目 | 段階 | メモ |
 |---|---|---|

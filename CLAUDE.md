@@ -25,4 +25,4 @@ Web アプリ開発の流れと基礎知識を身につけるための学習プ�
 - 過去の経緯を知りたいとき: `docs/history/index.md`
 - 学習状況: `docs/learning/progress.md`
 - ステップごとの学習まとめ: `docs/learning/notes/step<番号>.md`（ステップを終えたら作る）
-- 早見表（HTML の要素など）: `docs/learning/reference/`
+- 早見表（HTML の要素など）: `docs/learning/reference/`。紹介したが使っていない知識も含めてここにまとめ、ステップのまとめ（notes）からリンクする
