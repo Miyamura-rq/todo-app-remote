@@ -40,10 +40,11 @@
 
 ## ステップ3：JavaScript
 ゴール：画面で ToDo を追加・完了・削除できる（再読み込みで消える）
+早見表：[reference/javascript.md](reference/javascript.md)
 
 | 項目 | 段階 | メモ |
 |---|---|---|
-| 3-1 JS の基本文法（変数、型、配列・オブジェクト、if、for、関数、戻り値） | 未着手 | 「表示」と「返す（戻り値）」の違いを再確認する |
+| 3-1 JS の基本文法（変数、型、配列・オブジェクト、if、for、関数、戻り値） | 学習中 | 2026-10-06。`practice/return.js`・`todo.js` を作成。「表示」と「返す」の違いを説明できた（return がないと undefined、print() も同じ）。`const r1 = a(3)` で a が実行される理由（右辺が先に評価される）は補足。期限を `2026-10-10` と書いて引き算になり、ヒント1で文字列に直した（Date ではなく文字列で持つ理由を説明）。done の値の写し間違い、todo1〜3 の変数を作る書き方（→ 配列に直接書く）を指摘で修正。`countRemaining` は手順のヒント1で自力で書けた。変数名 `a` は要改善 |
 | 3-2 HTML と JS をつなぐ（`<script>` と `defer`、DOM、`querySelector`） | 未着手 | |
 | 3-3 イベント（`addEventListener`、`submit` と `preventDefault`、入力値の取り出し） | 未着手 | Enter で `?todo=` がついて再読み込みされる問題を止める |
 | 3-4 ToDo の追加（`createElement` / `textContent`、`innerHTML` の危険、データから画面を作る） | 未着手 | HTML の見本3件はここで消す |
