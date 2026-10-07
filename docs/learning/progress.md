@@ -39,17 +39,18 @@
 | 2-5 仕上げと push、技術の選択肢（CSS フレームワークなど） | 学習中 | 2026-10-06。`app/` を push（コミットメッセージは「何ができるようになったか」を書くよう提案）。README の修正はステップ5でまとめてやると学習者が判断。Sass・Bootstrap・Tailwind・CSS Modules・テンプレートエンジン・React / Vue / Svelte と選ぶ基準を説明。React について質問あり（ステップ3・4のあとで再紹介） |
 
 ## ステップ3：JavaScript
+まとめ：[notes/step3.md](notes/step3.md)
 ゴール：画面で ToDo を追加・完了・削除できる（再読み込みで消える）
 早見表：[reference/javascript.md](reference/javascript.md)
 
 | 項目 | 段階 | メモ |
 |---|---|---|
-| 3-1 JS の基本文法（変数、型、配列・オブジェクト、if、for、関数、戻り値） | 学習中 | 2026-10-06。`practice/return.js`・`todo.js` を作成。「表示」と「返す」の違いを説明できた（return がないと undefined、print() も同じ）。`const r1 = a(3)` で a が実行される理由（右辺が先に評価される）は補足。期限を `2026-10-10` と書いて引き算になり、ヒント1で文字列に直した（Date ではなく文字列で持つ理由を説明）。done の値の写し間違い、todo1〜3 の変数を作る書き方（→ 配列に直接書く）を指摘で修正。`countRemaining` は手順のヒント1で自力で書けた。変数名 `a` は要改善 |
-| 3-2 HTML と JS をつなぐ（`<script>` と `defer`、DOM、`querySelector`） | 学習中 | 2026-10-07。`app/public/main.js` を作成し `defer` で読み込み。Console で `textContent` を書き換え、画面・Elements は変わるがファイルは変わらず再読み込みで戻ることを確認（2-1・2-3 の体験と DOM をつなげた）。id と class の違いを質問 → 「ページに1つか、いくつもあるか」で説明。チェックボックスに id を使う理由（label と1対1）は答えられた。`console.log` がどこに出るか質問（ブラウザと Node.js の違い）。`;` の抜けが続く |
-| 3-3 イベント（`addEventListener`、`submit` と `preventDefault`、入力値の取り出し） | 学習中 | 2026-10-07。`form` が勝手に探されると誤解 → `const form = document.querySelector("form")` を自分で思いついた。`form.querySelector` でフォーム内を探す書き方を自分で選んだ。`.value` の抜けはヒント1で修正。期限は `"2026-10-10"` の文字列。空の期限を「何も出ない」と答えた（実際は空文字 `""`）。`preventDefault` を消すと再読み込みされることを確認 |
-| 3-4 ToDo の追加（`createElement` / `textContent`、`innerHTML` の危険、データから画面を作る） | 学習中 | 2026-10-07。B（配列 `todos` から `render()` で作り直す）を選択、label で包む形にした（D-0009）。`createTodoElement(todo)` で `<li>` を作って返す。つまずき：`li.createElement`（document だけが持つ）、組み立て（append）忘れ、`time.datetime`・`button.class`（JS の属性名）、`classList.add = ...` と `todos.append = ...`（関数を `=` で上書き。2回）、配列に `append`（→ `push`）。`textContent` のあと `prepend` で入れる工夫は自分で考えた。`done` の処理は `toggle` と `checked = todo.done` の短い書き方を選んだ。Console のエラー文を読んで原因を探す練習をした。再読み込みで消える理由は「DOM にしか記録されていない」（todos 配列もページのメモリにある、は補足）。期限の `10/10` 表示は 3-6 に回した |
-| 3-5 完了・削除・残り件数 | 学習中 | 2026-10-07。チェックが画面だけ変わり `todos` が変わらないことに自分で気づいた。`querySelectorAll` で全チェックボックスを監視する方向で止まり → ヒント2で `createTodoElement` の中で登録（クロージャ、オブジェクトはコピーされず同じものを指す）。質問：イベントは勝手に実行されるのか（→ 関数が2つ、ブラウザが呼ぶ）、render のたびにイベントをリセットしないのか（→ 要素と一緒に捨てられる、消えない要素に登録すると重なる）、`event` はどこで使うか、`push` するなら `let` か（→ const は入れ直しの禁止で、中身の変更はできる）。削除は `filter` で入れ直す（D-0010 で Claude が決定）。`filter` の条件の仕組みを質問 |
-| 3-6 仕上げと push、技術の選択肢（jQuery / React / Vue、WebAssembly） | 未着手 | |
+| 3-1 JS の基本文法（変数、型、配列・オブジェクト、if、for、関数、戻り値） | 説明できる | 2026-10-06。`practice/return.js`・`todo.js` を作成。「表示」と「返す」の違いを説明できた（return がないと undefined、print() も同じ）。`const r1 = a(3)` で a が実行される理由（右辺が先に評価される）は補足。期限を `2026-10-10` と書いて引き算になり、ヒント1で文字列に直した（Date ではなく文字列で持つ理由を説明）。done の値の写し間違い、todo1〜3 の変数を作る書き方（→ 配列に直接書く）を指摘で修正。`countRemaining` は手順のヒント1で自力で書けた。変数名 `a` は要改善 |
+| 3-2 HTML と JS をつなぐ（`<script>` と `defer`、DOM、`querySelector`） | 説明できる | 2026-10-07。`app/public/main.js` を作成し `defer` で読み込み。Console で `textContent` を書き換え、画面・Elements は変わるがファイルは変わらず再読み込みで戻ることを確認（2-1・2-3 の体験と DOM をつなげた）。id と class の違いを質問 → 「ページに1つか、いくつもあるか」で説明。チェックボックスに id を使う理由（label と1対1）は答えられた。`console.log` がどこに出るか質問（ブラウザと Node.js の違い）。`;` の抜けが続く |
+| 3-3 イベント（`addEventListener`、`submit` と `preventDefault`、入力値の取り出し） | 説明できる | 2026-10-07。`form` が勝手に探されると誤解 → `const form = document.querySelector("form")` を自分で思いついた。`form.querySelector` でフォーム内を探す書き方を自分で選んだ。`.value` の抜けはヒント1で修正。期限は `"2026-10-10"` の文字列。空の期限を「何も出ない」と答えた（実際は空文字 `""`）。`preventDefault` を消すと再読み込みされることを確認 |
+| 3-4 ToDo の追加（`createElement` / `textContent`、`innerHTML` の危険、データから画面を作る） | 説明できる | 2026-10-07。B（配列 `todos` から `render()` で作り直す）を選択、label で包む形にした（D-0009）。`createTodoElement(todo)` で `<li>` を作って返す。つまずき：`li.createElement`（document だけが持つ）、組み立て（append）忘れ、`time.datetime`・`button.class`（JS の属性名）、`classList.add = ...` と `todos.append = ...`（関数を `=` で上書き。2回）、配列に `append`（→ `push`）。`textContent` のあと `prepend` で入れる工夫は自分で考えた。`done` の処理は `toggle` と `checked = todo.done` の短い書き方を選んだ。Console のエラー文を読んで原因を探す練習をした。再読み込みで消える理由は「DOM にしか記録されていない」（todos 配列もページのメモリにある、は補足）。期限の `10/10` 表示は 3-6 に回した |
+| 3-5 完了・削除・残り件数 | 説明できる | 2026-10-07。チェックが画面だけ変わり `todos` が変わらないことに自分で気づいた。`querySelectorAll` で全チェックボックスを監視する方向で止まり → ヒント2で `createTodoElement` の中で登録（クロージャ、オブジェクトはコピーされず同じものを指す）。質問：イベントは勝手に実行されるのか（→ 関数が2つ、ブラウザが呼ぶ）、render のたびにイベントをリセットしないのか（→ 要素と一緒に捨てられる、消えない要素に登録すると重なる）、`event` はどこで使うか、`push` するなら `let` か（→ const は入れ直しの禁止で、中身の変更はできる）。削除は `filter` で入れ直す（D-0010 で Claude が決定）。`filter` の条件の仕組みを質問 |
+| 3-6 仕上げと push、技術の選択肢（jQuery / React / Vue、WebAssembly） | 学習中 | 2026-10-07。`formatDeadline` で `10/10` 表示。`Number("ymd[1]")` で NaN、`const` 抜け、`if` を2つに分けて `time is not defined`（ブロックスコープ）。「作ったらすぐ入れる」順に直した。`app/` を push（メッセージは `js作成` → 次は「できるようになったこと」を書く）。README に JavaScript を追加。選択肢（TypeScript、WebAssembly、jQuery、React など）を説明。「React は JS の代わり？」と質問 |
 
 ## ステップ4〜8
 各ステップの始めに項目を追加する。ステップを終えたら `notes/step<番号>.md` にまとめを作り、見出しの下にリンクを置く。
@@ -72,3 +73,6 @@
 | 2026-10-06 | 2 | カードで期限と削除ボタンが右端に寄る理由 | label の `flex: 1` で説明できた（親 li の `display: flex` は補足） |
 | 2026-10-06 | 2 | スマホでフォームが2行になる仕組み | `@media` と `flex-wrap` は説明できた。`flex-basis: 100%` が抜けた（要復習） |
 | 2026-10-06 | 2 | `required` があるのにサーバーでもチェックする理由 | 「開発者ツールで操作できる」と説明できた（ブラウザを使わずに送れる点は補足） |
+| 2026-10-07 | 3 | チェックを押してから取り消し線がつくまでの流れ | イベント → `todo.done` → `render()` の順は説明できた。どの todo かが分かる仕組み（クロージャ）と、`done` の class と CSS で線がつく点は補足 |
+| 2026-10-07 | 3 | `push` は const でよいのに削除で let が必要な理由 | 説明できた（入れ直すと const ではエラー） |
+| 2026-10-07 | 3 | `innerHTML` ではなく `textContent` を使う理由 | 説明できた（入力が HTML として解釈される。JS が実行される点＝XSS は補足） |
