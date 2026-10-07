@@ -19,10 +19,10 @@ const todos = [
 ];
 
 function countRemaining(todos) {
-    let a = 0;
+    let count = 0;
     for (const todo of todos) {
         if (!todo.done) {
-            a = a + 1;
+            count = count + 1;
         }
     }
     return a;

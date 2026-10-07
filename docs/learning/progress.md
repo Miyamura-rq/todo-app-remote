@@ -45,8 +45,8 @@
 | 項目 | 段階 | メモ |
 |---|---|---|
 | 3-1 JS の基本文法（変数、型、配列・オブジェクト、if、for、関数、戻り値） | 学習中 | 2026-10-06。`practice/return.js`・`todo.js` を作成。「表示」と「返す」の違いを説明できた（return がないと undefined、print() も同じ）。`const r1 = a(3)` で a が実行される理由（右辺が先に評価される）は補足。期限を `2026-10-10` と書いて引き算になり、ヒント1で文字列に直した（Date ではなく文字列で持つ理由を説明）。done の値の写し間違い、todo1〜3 の変数を作る書き方（→ 配列に直接書く）を指摘で修正。`countRemaining` は手順のヒント1で自力で書けた。変数名 `a` は要改善 |
-| 3-2 HTML と JS をつなぐ（`<script>` と `defer`、DOM、`querySelector`） | 未着手 | |
-| 3-3 イベント（`addEventListener`、`submit` と `preventDefault`、入力値の取り出し） | 未着手 | Enter で `?todo=` がついて再読み込みされる問題を止める |
+| 3-2 HTML と JS をつなぐ（`<script>` と `defer`、DOM、`querySelector`） | 学習中 | 2026-10-07。`app/public/main.js` を作成し `defer` で読み込み。Console で `textContent` を書き換え、画面・Elements は変わるがファイルは変わらず再読み込みで戻ることを確認（2-1・2-3 の体験と DOM をつなげた）。id と class の違いを質問 → 「ページに1つか、いくつもあるか」で説明。チェックボックスに id を使う理由（label と1対1）は答えられた。`console.log` がどこに出るか質問（ブラウザと Node.js の違い）。`;` の抜けが続く |
+| 3-3 イベント（`addEventListener`、`submit` と `preventDefault`、入力値の取り出し） | 学習中 | 2026-10-07。`form` が勝手に探されると誤解 → `const form = document.querySelector("form")` を自分で思いついた。`form.querySelector` でフォーム内を探す書き方を自分で選んだ。`.value` の抜けはヒント1で修正。期限は `"2026-10-10"` の文字列。空の期限を「何も出ない」と答えた（実際は空文字 `""`）。`preventDefault` を消すと再読み込みされることを確認 |
 | 3-4 ToDo の追加（`createElement` / `textContent`、`innerHTML` の危険、データから画面を作る） | 未着手 | HTML の見本3件はここで消す |
 | 3-5 完了・削除・残り件数 | 未着手 | |
 | 3-6 仕上げと push、技術の選択肢（jQuery / React / Vue、WebAssembly） | 未着手 | |
