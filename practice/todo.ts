@@ -13,7 +13,7 @@ const todos: Todo[] = [
 
     {
         text: "大学に連絡",
-    /*    deadline: "2026-10-11",*/
+        // deadline: "2026-10-11",
         done: false
     },
 
