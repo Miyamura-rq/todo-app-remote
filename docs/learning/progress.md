@@ -57,9 +57,9 @@
 
 | 項目 | 段階 | メモ |
 |---|---|---|
-| 4-1 TypeScript の役割と準備（型チェックと変換、npm と package.json、`tsc`、Node.js で .ts を動かす） | 未着手 | |
-| 4-2 型の基本（型注釈と型推論、配列・オブジェクト、`type`、関数の引数と戻り値、`|` と `?`） | 未着手 | |
-| 4-3 tsconfig.json とフォルダ構成（`src/` から `public/` へ変換、`strict`、変換したファイルを git に入れるか） | 未着手 | |
+| 4-1 TypeScript の役割と準備（型チェックと変換、npm と package.json、`tsc`、Node.js で .ts を動かす） | 学習中 | 2026-10-09。`app/` で `npm init -y` と `npm install -D typescript`（7.0.2）。`typescript` が書かれた場所を `node_modules/typescript/` と答えた（→ `package.json` の `devDependencies`）。`node_modules/` を push しない理由を「開発用だから」と答えた → ヒント1で「`package.json` があれば `npm install` で同じものが入る」と説明できた。`package-lock.json` は補足。`.gitignore` の最後の改行が抜けた（ステップ0と同じ）。`bin`・JSON と JS の関係を質問。`practice/hello.ts` で `node` は「3行目でエラー」と予想 → `undefined` が出て終わる。JS は型を気にせず代入でき、ないプロパティは undefined になると自分で説明できた。`tsc` のエラー2つは予想どおり |
+| 4-2 型の基本（型注釈と型推論、配列・オブジェクト、`type`、関数の引数と戻り値、`|` と `?`） | 学習中 | 2026-10-09。`practice/todo.js` を `todo.ts` にコピーして `tsc` → ステップ3から残っていた `return a;`（変数名を変えた残り）を発見。`type Todo`、`Todo[]`、引数・戻り値の型を自力で書けた。`let count: number = 0` は推論で不要、`type` の後の `;` 抜けを指摘。`const x: Todo[]` を「要素が Todo」と読んで迷った → 「`Todo[]` 全体で1つの型」と説明。`?` の有無でエラーが変わることを自分で説明できた。外側のフォルダで `npx tsc` を実行し、npm から別物の `tsc` パッケージを `y` で取り寄せた → `Need to install` が出たら `n` で止め、今いるフォルダを確かめる（タイポスクワッティング） |
+| 4-3 tsconfig.json とフォルダ構成（`src/` から `public/` へ変換、`strict`、変換したファイルを git に入れるか） | 学習中 | 2026-10-09。A（`src/main.ts` → `public/main.js`、`public/main.js` は git に入れない）を Claude がおすすめ（D-0010）。`git mv` で移動、`tsconfig.json` を手で作成、`npm run build`。`package.json` の `,` 抜けで `invalid package` → ヒント1で修正（JSON の規則）。「エラーがあると main.js は作られない」と予想 → 19 errors でも作られた（チェックと変換は別。`noEmitOnError` は補足）。`tsconfig.json` の最後の改行抜け |
 | 4-4 `main.ts` への書き換え（`Todo` 型、DOM の型、`null` かもしれない値、型エラーを読んで直す） | 未着手 | |
 | 4-5 仕上げと push、技術の選択肢（JSDoc、esbuild / Vite、Deno / Bun、React の再紹介） | 未着手 | |
 
