@@ -70,7 +70,7 @@
 
 | 項目 | 段階 | メモ |
 |---|---|---|
-| 5-1 サーバーを立てる（Express の導入、`listen` とポート、サーバー用の TS をどこに置き・どう動かすか） | 学習中 | 2026-10-13。構成は A（client → public、server → dist、tsconfig を2つ）に決定（D-0015）。`git mv`・`git rm`・tsconfig 2つ・インストールまで完了。`-D` の有無の理由は説明できた（実行時に使うかどうか）。`@types/` とは何かを質問 |
+| 5-1 サーバーを立てる（Express の導入、`listen` とポート、サーバー用の TS をどこに置き・どう動かすか） | 学習中 | 2026-10-13。構成は A（client → public、server → dist、tsconfig を2つ）に決定（D-0015）。`git mv`・`git rm`・tsconfig 2つ・インストールまで自分で実施。`-D` の有無の理由は説明できた（実行時に使うかどうか）。`@types/` とは何かを質問（→ JS のライブラリにあとから型をつける `.d.ts`）。`@types/node` が v26 で入っていた → Node.js に合わせて `@24` に。`server.ts` は「全くわからない」→ 部品ごと（import / `express()` / `app.get` / `app.listen`）と、ステップ3の `addEventListener`・`createElement`・`filter` との対応で説明。質問：`express()` とは、`req` / `res` はどこから来るのか、ブラウザは何を渡せるのか、`.get` と `"/"`、`listen` の引数。`req: Request, res: Response` と書いて4エラー（`fetch` 用の別の型）→ ヒント2で型注釈を消して解決。起動してブラウザに表示、`console.log` はターミナルに出る、`req.query` で `{ sort: "date" }`、`/abc` は `Cannot GET /abc`（手順書にないので関数が呼ばれない）、止めると接続拒否、を確認 |
 | 5-2 画面を配信する（`express.static` で `public/` を配信、起動コマンド `npm start` を決める） | 未着手 | |
 | 5-3 API を作る（REST のパス設計、JSON、`id` をつける理由、GET / POST / PATCH / DELETE、ステータスコード、curl と開発者ツールで確かめる） | 未着手 | |
 | 5-4 画面から API を呼ぶ（`fetch`、非同期と `async` / `await`、データの持ち主がサーバーに移る） | 未着手 | |
