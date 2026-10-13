@@ -70,7 +70,7 @@
 
 | 項目 | 段階 | メモ |
 |---|---|---|
-| 5-1 サーバーを立てる（Express の導入、`listen` とポート、サーバー用の TS をどこに置き・どう動かすか） | 未着手 | |
+| 5-1 サーバーを立てる（Express の導入、`listen` とポート、サーバー用の TS をどこに置き・どう動かすか） | 学習中 | 2026-10-13。構成は A（client → public、server → dist、tsconfig を2つ）に決定（D-0015）。`git mv`・`git rm`・tsconfig 2つ・インストールまで完了。`-D` の有無の理由は説明できた（実行時に使うかどうか）。`@types/` とは何かを質問 |
 | 5-2 画面を配信する（`express.static` で `public/` を配信、起動コマンド `npm start` を決める） | 未着手 | |
 | 5-3 API を作る（REST のパス設計、JSON、`id` をつける理由、GET / POST / PATCH / DELETE、ステータスコード、curl と開発者ツールで確かめる） | 未着手 | |
 | 5-4 画面から API を呼ぶ（`fetch`、非同期と `async` / `await`、データの持ち主がサーバーに移る） | 未着手 | |
