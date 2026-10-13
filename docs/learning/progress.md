@@ -65,7 +65,18 @@
 | 4-4 `main.ts` への書き換え（`Todo` 型、DOM の型、`null` かもしれない値、型エラーを読んで直す） | 説明できる | 2026-10-09。エラー19個を4種類に分けて対応。①型の書き忘れは自力で直せた（`deadline?` の `?` と `: void` は3回目の指摘で直った。`: void` を「探すもの」と誤解）。「TS のメリットが分かりにくい」「どこに型を書くか分かりにくい」と率直な感想 → ステップ3のつまずき6つが TS なら書いた瞬間に分かると説明、型は `tsc` に言われた場所に書けばよいと説明。②`null` は案A（`if` + `throw`）を Claude がおすすめ（D-0010）。`!`・`?.` は却下。`form#todo` と書いて文法エラー、使った後に確かめる順番の間違い → ヒントで修正。③`querySelector<HTMLInputElement>` を使えた。④件数は `Number` の逆でヒント1から `String(...)`。「querySelector の修正がだるい」→ `getElement<T>`（ジェネリクス）にまとめ、要素はファイルの最初で1回探す形に。`querySelector` を2回呼ぶ・`T` を使わない（ヒント2）、`const` 抜け・`document.` 抜けはエラー文から修正。エラー0、ブラウザで動作確認、`#todos` にすると Console に「#todos が見つかりません」と出ることを確認。変数名に snake_case（`form_todo`）、`;` 抜けが続く |
 | 4-5 仕上げと push、技術の選択肢（JSDoc、esbuild / Vite、Deno / Bun、React の再紹介） | 学習中 | 2026-10-09。`app/` を push（`node_modules/` と `public/main.js` が入っていないことを確認、`git mv` で履歴がつながった）。README の使用技術を TypeScript に。`npm install` / `npm run build` は未記載（ステップ5で）。コミットメッセージは `TypeScript 利用`（`js作成` より改善。「何が変わったか」まではまだ）。選択肢（JSDoc、esbuild / SWC、Vite、Deno / Bun）と React の再紹介を説明 |
 
-## ステップ5〜8
+## ステップ5：サーバー（Node.js + Express）
+ゴール：Express のサーバーから画面を配信し、ToDo の追加・完了・削除を API 経由で行う（再読み込みしても消えない。サーバーを止めると消える）
+
+| 項目 | 段階 | メモ |
+|---|---|---|
+| 5-1 サーバーを立てる（Express の導入、`listen` とポート、サーバー用の TS をどこに置き・どう動かすか） | 未着手 | |
+| 5-2 画面を配信する（`express.static` で `public/` を配信、起動コマンド `npm start` を決める） | 未着手 | |
+| 5-3 API を作る（REST のパス設計、JSON、`id` をつける理由、GET / POST / PATCH / DELETE、ステータスコード、curl と開発者ツールで確かめる） | 未着手 | |
+| 5-4 画面から API を呼ぶ（`fetch`、非同期と `async` / `await`、データの持ち主がサーバーに移る） | 未着手 | |
+| 5-5 仕上げと push、README の起動方法、技術の選択肢（Fastify / Hono / NestJS、Python・Go・Ruby などの他言語、GraphQL / tRPC） | 未着手 | |
+
+## ステップ6〜8
 各ステップの始めに項目を追加する。ステップを終えたら `notes/step<番号>.md` にまとめを作り、見出しの下にリンクを置く。
 
 ## 先取りで説明済みのこと
