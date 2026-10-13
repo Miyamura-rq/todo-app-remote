@@ -9,8 +9,8 @@ Web アプリ開発の流れと基礎知識を身につけるための学習プ�
 - 技術スタック: フロントエンドは HTML / CSS / TypeScript、バックエンドは Node.js + Express（TypeScript）、DB は PostgreSQL。ホスティングはステップ7で決める（D-0003）
 
 ## コマンド
-- ビルド: `app/` で `npm run build`（`src/main.ts` → `public/main.js`。D-0011）
-- 起動: 【未定】（ステップ5で決める）
+- ビルド: `app/` で `npm run build`（`src/client` → `public/`、`src/server` → `dist/`。D-0011、D-0015）
+- 起動: `app/` で `npm run dev`（build してから起動）。変換済みを動かすだけなら `npm start`
 - テスト: 【未定】（ステップ8で決める）
 
 ## このプロジェクトのルール
