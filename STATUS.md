@@ -1,12 +1,12 @@
 # STATUS
 
-最終更新: 2026-10-13（S-0012）
+最終更新: 2026-10-13（D-0016）
 
 ## 現在地
 - 学習ステップ5（Node.js + Express）の途中。5-1〜5-3 完了（API：GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`）、次は 5-4。学習内容 5-1〜5-5 は `docs/learning/progress.md`（S-0012）
 - 作成物は `app/`（`src/main.ts` を `npm run build` で `public/main.js` に変換。`public/` に index.html、style.css）。`main.js` と `node_modules/` は git に入れない（D-0011）。5-1 で `src/client` → `public`、`src/server` → `dist` に分ける（D-0015）。`app/` は別リポジトリで GitHub `Miyamura-rq/todo-app` に push 済み。外側は GitHub `Miyamura-rq/todo-app-remote` に Claude が push し、自宅の Mac と引き継ぐ（D-0012、D-0013）。練習用ファイルは外側の `practice/`
 - 仕様：期限あり、リマインドは余裕があれば後で（D-0006）。一覧はリスト、完了はチェックで残す（D-0008）。画面は配列 `todos` から `render()` で作り直す（D-0009）
-- 進め方：軽い知識は答えを教える（D-0007）。書き方の選択肢は Claude がおすすめを決めて示す（D-0010）。デザインの値は Claude が提案（`docs/learning/reference/design.md`）。要件を1つずつレクチャーしながら進める。始めの3問はしない（D-0014）
+- 進め方：軽い知識は答えを教える（D-0007）。書き方の選択肢は Claude がおすすめを決めて示す（D-0010）。デザインの値は Claude が提案（`docs/learning/reference/design.md`）。要件を1つずつレクチャーしながら進める。始めの3問はしない（D-0014）。新しい書き方は Claude が型を先に示す（D-0016）
 - 学習状況は `docs/learning/progress.md`、まとめは `docs/learning/notes/`、早見表は `docs/learning/reference/`
 
 ## 次にやること
