@@ -78,7 +78,18 @@
 | 5-4 画面から API を呼ぶ（`fetch`、非同期と `async` / `await`、データの持ち主がサーバーに移る） | 説明できる | 2026-10-13。「API は配布したキーで変更を加えることだと思っていた」→ プログラムから使う窓口、API キーは外部の API で誰かを見分ける合言葉、と説明。画面の更新は A（操作のたびに GET で取り直す）を Claude がおすすめ（D-0010）。「新しいものは必要な情報をそちらで提供して」→ 書き方の型を先に示す（D-0016）。`loadTodos` は型どおりに書けた。`Todo` に `id` を足すと submit の `push` で型エラー（直す場所を `tsc` が教える）。API 呼び出しを `postTodo` / `changeDone` / `deleteTodo` に自分で分けた。つまずき：`chengeDone` のつづり、`todoInput` に `.value` 抜け（3-3 と同じ）、`res.ok` の確認なし、`loadTodos()` の `await` 抜け、不要な `render()`。サーバーを止めたまま curl して接続できず → 番号が返らない＝止まっている、curl は別のターミナルで、と説明。`await` なしの `fetch` の結果（`Promise {<pending>}`）は Claude が説明。完成し、画面から追加した ToDo がサーバーに届いていることを確認 |
 | 5-5 仕上げと push、README の起動方法、技術の選択肢（Fastify / Hono / NestJS、Python・Go・Ruby などの他言語、GraphQL / tRPC） | 学習中 | 2026-10-14。README に起動方法を書いた。1回目は `npm start` だけ（clone 直後は `dist/` がない）、`・` の箇条書き、末尾の改行なし → ヒント1で `npm run build` を足したが `mkdir ./dist &&` つき（2回目から失敗）→ 2行の `npm run build` → `npm start` に。push は学習者のターミナルからは成功（SSH の問題は Claude の実行環境だけ）。コミット `RAEDME変更` に main.ts も入っていた → 目的ごとに分ける。選択肢（Fastify・Hono・NestJS、他言語、GraphQL・tRPC、BaaS、Next.js）を説明。React + Next.js の実際の使われ方と TS が標準かを質問 |
 
-## ステップ6〜8
+## ステップ6：データベース（PostgreSQL）
+ゴール：ToDo を PostgreSQL に保存し、サーバーを止めても消えないようにする（API と画面は変えない）
+
+| 項目 | 段階 | メモ |
+|---|---|---|
+| 6-1 データベースの役割と導入（ファイルではなく DB に保存する理由、テーブル・行・列、PostgreSQL を入れる、`psql` でつなぐ） | 未着手 | |
+| 6-2 SQL の基本（`CREATE TABLE` と列の型、主キー、`INSERT` / `SELECT` / `UPDATE` / `DELETE`、`WHERE`、`ORDER BY`）を `psql` で手で打つ | 未着手 | |
+| 6-3 Node.js から DB につなぐ（`pg` ライブラリ、接続情報を環境変数に置いて git に入れない、`await` でクエリを送る） | 未着手 | |
+| 6-4 API を DB に置き換える（配列の操作 → SQL、`$1` のプレースホルダと SQL インジェクション、`RETURNING`、`rowCount` で 404） | 未着手 | |
+| 6-5 仕上げと push、テーブルを作る SQL をファイルに残す、技術の選択肢（MySQL / SQLite / MongoDB、ORM の Prisma / Drizzle、マネージド DB） | 未着手 | |
+
+## ステップ7〜8
 各ステップの始めに項目を追加する。ステップを終えたら `notes/step<番号>.md` にまとめを作り、見出しの下にリンクを置く。
 
 ## 先取りで説明済みのこと

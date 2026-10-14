@@ -1,9 +1,9 @@
 # STATUS
 
-最終更新: 2026-10-14（S-0013）
+最終更新: 2026-10-14（S-0014）
 
 ## 現在地
-- 学習ステップ5（Node.js + Express）を完了。次はステップ6（PostgreSQL）（S-0013）
+- 学習ステップ6（PostgreSQL）を開始。項目は 6-1〜6-5（`docs/learning/progress.md`）（S-0014）
 - 作成物は `app/`。`src/client/main.ts` → `public/main.js`、`src/server/server.ts` → `dist/server.js` を `npm run build` で変換し、`npm run dev` で起動（D-0015）。変換したものと `node_modules/` は git に入れない（D-0011）。API は GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`。ToDo はサーバーのメモリにあり、止めると消える
 - `app/` は別リポジトリで GitHub `Miyamura-rq/todo-app` に学習者が push。外側は `Miyamura-rq/todo-app-remote`（D-0012、D-0013）。SSH 鍵はパスフレーズつき。`ssh-add --apple-use-keychain` で登録すると Claude の実行環境からも push できる（Mac の再起動で外れる。`~/.ssh/config` は未設定）。練習用ファイルは外側の `practice/`
 - 仕様：期限あり、リマインドは余裕があれば後で（D-0006）。一覧はリスト、完了はチェックで残す（D-0008）。画面は `todos` から `render()` で作り直し、操作のたびに GET で取り直す（D-0009）
@@ -12,7 +12,7 @@
 
 ## 次にやること
 - （任意）`~/.ssh/config` に `AddKeysToAgent yes`・`UseKeychain yes` を書き、再起動後も鍵を自動で読み込む
-- ステップ6の学習内容を作って始める（PostgreSQL の導入、SQL、Node.js から DB につなぐ）
+- 6-1 PostgreSQL を入れて `psql` でつなぐ（Postgres.app をおすすめ。brew・Docker は未導入）
 - 自宅の Mac に外側と `app/` を clone し、`~/.claude/CLAUDE.md` と `~/.claude/skills/` をコピーする（D-0012）
 
 ## 未解決・要確認
