@@ -14,7 +14,6 @@
 
 ## 次にやること
 - 会社の PC では pull のあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（`schema.sql` は `app/` に push 済み）。`npm install` も行う（argon2 を入れたため）
-- `app/` の `package.json`・`package-lock.json`・`src/server/server.ts`（argon2 と登録の API）を学習者がコミットして push
 - 7-4 ログイン・ログアウト（`sessions` テーブルから）。確かめるときは、まずサーバーを起動し直してから、登録の curl で c を作る（7-3 の curl は省略したので、新しいコードでの登録はまだ1度もしていない）。ステップ7全体の目安は約6〜9時間。まとめ（`notes/step7.md`）には全体の流れの図 `docs/learning/reference/images/login-flow.svg` を入れる（学習者の依頼）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
