@@ -1,9 +1,9 @@
 # STATUS
 
-最終更新: 2026-10-27（S-0017）
+最終更新: 2026-10-27（S-0018）
 
 ## 現在地
-- ステップ6.5（学習プランの見直し）を完了。次はステップ7（ログイン）。公開は8、品質は9で、8以降を行うかは未定（D-0018）
+- ステップ7（ログイン）の 7-1 を学習中。作り方は自分で作る＋セッション（D-0020）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開は8、品質は9で、8以降を行うかは未定（D-0018）
 - 作成物は `app/`。`src/client/main.ts` → `public/main.js`、`src/server/server.ts` → `dist/server.js` を `npm run build` で変換し、`npm run dev` で起動（D-0015）。変換したものと `node_modules/`・`.env` は git に入れない（D-0011）。API は GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`
 - ToDo は PostgreSQL（Postgres.app、v18）の `todo_app` データベースの `todos` テーブルに保存。作り方は `app/db/schema.sql`、接続は `.env` の `DATABASE_URL`（見本は `.env.example`）。Postgres.app が止まっていると API は 500
 - `app/` は別リポジトリで GitHub `Miyamura-rq/todo-app` に学習者が push。外側は `Miyamura-rq/todo-app-remote`（D-0012、D-0013）。SSH 鍵はパスフレーズつき。`ssh-add --apple-use-keychain` で登録すると Claude の実行環境からも push できる（Mac の再起動で外れる。`~/.ssh/config` は未設定）。練習用ファイルは外側の `practice/`
@@ -13,9 +13,9 @@
 - 学習状況は `docs/learning/progress.md`、まとめは `docs/learning/notes/`、早見表は `docs/learning/reference/`
 
 ## 次にやること
-- ステップ7（ログイン）の学習内容を作って始める。作り方の選択肢（自前／外部サービス、セッション／JWT）を最初に決める（D-0018）。目安は約6〜9時間（7-1 仕組み、7-2 users と外部キー、7-3 登録、7-4 ログイン・ログアウト、7-5 自分の ToDo だけに、7-6 画面、7-7 仕上げ）
+- 7-1：練習用のルートで Cookie の流れを curl と開発者ツールで確かめる（練習用のルートはコミットしない）。そのあと、パスワードをそのまま保存しない理由。ステップ7全体の目安は約6〜9時間
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
-- 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）、`app/package-lock.json` の差分の確認（S-0017）
+- 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）、`app/package-lock.json` の差分の確認（7-3 でライブラリを入れる前に。S-0017）
 
 ## 未解決・要確認
 - `""` と `null` の違い、入力はサーバーで確かめる理由（S-0015）
