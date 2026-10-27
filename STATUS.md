@@ -3,7 +3,7 @@
 最終更新: 2026-10-27（S-0019）
 
 ## 現在地
-- ステップ7（ログイン）の 7-1 を終えた。次は 7-2。作り方は自分で作る＋セッション（D-0020）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開は8、品質は9で、8以降を行うかは未定（D-0018）
+- ステップ7（ログイン）の 7-1 を終えた。次は 7-2。作り方は自分で作る＋セッション（D-0020）、合言葉は DB にハッシュで保存（D-0022）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開は8、品質は9で、8以降を行うかは未定（D-0018）
 - 作成物は `app/`。`src/client/main.ts` → `public/main.js`、`src/server/server.ts` → `dist/server.js` を `npm run build` で変換し、`npm run dev` で起動（D-0015）。変換したものと `node_modules/`・`.env` は git に入れない（D-0011）。API は GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`
 - ToDo は PostgreSQL（Postgres.app、v18）の `todo_app` データベースの `todos` テーブルに保存。作り方は `app/db/schema.sql`、接続は `.env` の `DATABASE_URL`（見本は `.env.example`）。Postgres.app が止まっていると API は 500
 - `app/` は別リポジトリで GitHub `Miyamura-rq/todo-app` に学習者が push。外側は `Miyamura-rq/todo-app-remote`（D-0012、D-0013）。SSH 鍵はパスフレーズつき。`ssh-add --apple-use-keychain` で登録すると Claude の実行環境からも push できる（Mac の再起動で外れる。`~/.ssh/config` は未設定）。練習用ファイルは外側の `practice/`

@@ -26,7 +26,7 @@ rect{stroke-width:0.8}
 <rect class="pu" x="196" y="20" width="14" height="14" rx="3"/>
 <text class="s l" x="216" y="27">サーバー（DB）だけに保存</text>
 <rect class="co" x="391" y="20" width="14" height="14" rx="3"/>
-<text class="s l" x="411" y="27">ハッシュで確かめる</text>
+<text class="s l" x="411" y="27">ハッシュを使う</text>
 <rect class="g" x="547" y="20" width="14" height="14" rx="3"/>
 <text class="s l" x="567" y="27">そのほか</text>
 
@@ -52,15 +52,15 @@ rect{stroke-width:0.8}
 <line class="a" x1="340" y1="305" x2="340" y2="322" marker-end="url(#ag)"/>
 <g class="tl"><rect x="40" y="324" width="160" height="56" rx="8"/><text class="t" x="120" y="342">Cookie に保存</text><text class="s" x="120" y="361">合言葉だけ届く</text></g>
 <line class="at" x1="238" y1="352" x2="202" y2="352" marker-end="url(#at)"/>
-<g class="g"><rect x="240" y="324" width="200" height="56" rx="8"/><text class="t" x="340" y="342">合言葉を作る</text><text class="s" x="340" y="361">一致したときだけ</text></g>
+<g class="co"><rect x="240" y="324" width="200" height="56" rx="8"/><text class="t" x="340" y="342">一致したら合言葉を作る</text><text class="s" x="340" y="361">DB 用はハッシュにする</text></g>
 <line class="a" x1="442" y1="352" x2="478" y2="352" marker-end="url(#ag)"/>
-<g class="pu"><rect x="480" y="324" width="160" height="56" rx="8"/><text class="t" x="560" y="342">sessions に保存</text><text class="s" x="560" y="361">合言葉・誰・期限</text></g>
+<g class="pu"><rect x="480" y="324" width="160" height="56" rx="8"/><text class="t" x="560" y="342">sessions に保存</text><text class="s" x="560" y="361">ハッシュ・誰・期限</text></g>
 
 <rect class="band" x="24" y="408" width="632" height="180" rx="12"/>
 <text class="t l" x="40" y="425">ログイン後のリクエスト（毎回。7-5）</text>
 <g class="tl"><rect x="40" y="440" width="160" height="56" rx="8"/><text class="t" x="120" y="458">Cookie: 合言葉</text><text class="s" x="120" y="477">自動でつく</text></g>
 <line class="at" x1="202" y1="468" x2="238" y2="468" marker-end="url(#at)"/>
-<g class="g"><rect x="240" y="440" width="200" height="56" rx="8"/><text class="t" x="340" y="458">誰かを調べる</text><text class="s" x="340" y="477">パスワードは使わない</text></g>
+<g class="co"><rect x="240" y="440" width="200" height="56" rx="8"/><text class="t" x="340" y="458">ハッシュして引く</text><text class="s" x="340" y="477">パスワードは使わない</text></g>
 <line class="a" x1="442" y1="468" x2="478" y2="468" marker-start="url(#ag)" marker-end="url(#ag)"/>
 <g class="pu"><rect x="480" y="440" width="160" height="56" rx="8"/><text class="t" x="560" y="458">sessions を引く</text><text class="s" x="560" y="477">user_id が分かる</text></g>
 <line class="a" x1="340" y1="497" x2="340" y2="514" marker-end="url(#ag)"/>
@@ -72,7 +72,7 @@ rect{stroke-width:0.8}
 <text class="t l" x="40" y="617">ログアウト（7-4）</text>
 <g class="tl"><rect x="40" y="632" width="160" height="56" rx="8"/><text class="t" x="120" y="650">ログアウト</text><text class="s" x="120" y="669">Cookie: 合言葉</text></g>
 <line class="at" x1="202" y1="660" x2="238" y2="660" marker-end="url(#at)"/>
-<g class="g"><rect x="240" y="632" width="200" height="56" rx="8"/><text class="t" x="340" y="650">記録を消す</text><text class="s" x="340" y="669">Cookie も消させる</text></g>
+<g class="co"><rect x="240" y="632" width="200" height="56" rx="8"/><text class="t" x="340" y="650">ハッシュで探して消す</text><text class="s" x="340" y="669">Cookie も消させる</text></g>
 <line class="a" x1="442" y1="660" x2="478" y2="660" marker-end="url(#ag)"/>
 <g class="pu"><rect x="480" y="632" width="160" height="56" rx="8"/><text class="t" x="560" y="650">行を消す</text><text class="s" x="560" y="669">合言葉が使えなくなる</text></g>
 </svg>
