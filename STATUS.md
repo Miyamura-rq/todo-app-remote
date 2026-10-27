@@ -1,11 +1,11 @@
 # STATUS
 
-最終更新: 2026-10-27（S-0019）
+最終更新: 2026-10-27（S-0020）
 
 ## 現在地
-- ステップ7（ログイン）の 7-1 を終えた。次は 7-2。作り方は自分で作る＋セッション（D-0020）、合言葉は DB にハッシュで保存（D-0022）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開は8、品質は9で、8以降を行うかは未定（D-0018）
+- ステップ7（ログイン）の 7-2 まで終えた。次は 7-3（登録）。作り方は自分で作る＋セッション（D-0020）、合言葉は DB にハッシュで保存（D-0022）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開は8、品質は9で、8以降を行うかは未定（D-0018）
 - 作成物は `app/`。`src/client/main.ts` → `public/main.js`、`src/server/server.ts` → `dist/server.js` を `npm run build` で変換し、`npm run dev` で起動（D-0015）。変換したものと `node_modules/`・`.env` は git に入れない（D-0011）。API は GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`
-- ToDo は PostgreSQL（Postgres.app、v18）の `todo_app` データベースの `todos` テーブルに保存。作り方は `app/db/schema.sql`、接続は `.env` の `DATABASE_URL`（見本は `.env.example`）。Postgres.app が止まっていると API は 500
+- ToDo は PostgreSQL（Postgres.app、v18）の `todo_app` データベースの `todos` テーブルに保存。`users` と `todos.user_id`（外部キー、`ON DELETE CASCADE`）を追加済み（7-2）で、7-5 までは画面からの追加が 500。作り方は `app/db/schema.sql`、接続は `.env` の `DATABASE_URL`（見本は `.env.example`）。Postgres.app が止まっていると API は 500
 - `app/` は別リポジトリで GitHub `Miyamura-rq/todo-app` に学習者が push。外側は `Miyamura-rq/todo-app-remote`（D-0012、D-0013）。SSH 鍵はパスフレーズつき。`ssh-add --apple-use-keychain` で登録すると Claude の実行環境からも push できる（Mac の再起動で外れる。`~/.ssh/config` は未設定）。練習用ファイルは外側の `practice/`
 - PC の切り替え：学習者は `app/` を途中でも push、Claude は「ここまで」と言われたら途中の位置まで記録して push（D-0019）。自宅の Mac は `~/RECERQA/todo-app` で、DB の作成と起動まで準備済み（S-0017）。サーバーは学習者のターミナルで起動する（Claude の `!` からだと止まる）
 - 仕様：期限あり、リマインドは余裕があれば後で（D-0006）。一覧はリスト、完了はチェックで残す（D-0008）。画面は `todos` から `render()` で作り直し、操作のたびに GET で取り直す（D-0009）
@@ -13,8 +13,8 @@
 - 学習状況は `docs/learning/progress.md`、まとめは `docs/learning/notes/`、早見表は `docs/learning/reference/`
 
 ## 次にやること
-- 7-1 の練習用のルートを `app/` で `git restore src/server/server.ts` で消す（コミットしない）
-- 7-2 users テーブルと外部キー。ステップ7全体の目安は約6〜9時間。まとめ（`notes/step7.md`）には全体の流れの図 `docs/learning/reference/images/login-flow.svg` を入れる（学習者の依頼）
+- `app/` の `db/schema.sql` を学習者がコミットして push（`package-lock.json` とは分ける）。会社の PC では pull のあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す
+- 7-3 登録（ハッシュのライブラリを選ぶところから）。ステップ7全体の目安は約6〜9時間。まとめ（`notes/step7.md`）には全体の流れの図 `docs/learning/reference/images/login-flow.svg` を入れる（学習者の依頼）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）、`app/package-lock.json` の差分の確認（7-3 でライブラリを入れる前に。S-0017）
 

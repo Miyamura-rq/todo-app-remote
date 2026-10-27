@@ -63,6 +63,23 @@ DROP TABLE todos;      -- 中身ごと消える。元に戻せない
 - 列は `列名 型 制約` の順
 - 最後の列のあとに `,` は書かない。文の終わりに `;`
 
+2つの表をつなぐ（7-2）：
+```sql
+CREATE TABLE IF NOT EXISTS users (          -- 指される側を先に作る
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE TABLE IF NOT EXISTS todos (
+    ...
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
+);
+```
+- たとえ：`users` は会員名簿、`user_id` は会員番号の欄、`REFERENCES` は「名簿にある番号しか書けない」ルール
+- 指す側の列は、相手の列と同じ型にする。`GENERATED` はつけない（番号を作るのは相手の側）
+- `REFERENCES users` のように `(列)` を省くと、相手の主キーを指す
+
 | 型 | 入るもの | 使った |
 |---|---|---|
 | `INTEGER` | 整数 | ✅ |
@@ -79,8 +96,11 @@ DROP TABLE todos;      -- 中身ごと消える。元に戻せない
 | `DEFAULT 値` | 指定しなかったときの値 | ✅ |
 | `PRIMARY KEY` | 主キー（NOT NULL を含む） | ✅ |
 | `GENERATED ALWAYS AS IDENTITY` | 番号を自動でつける（古い書き方は `SERIAL`）。消した番号は使い回さない | ✅ |
-| `UNIQUE` | 重複禁止 | |
-| `REFERENCES 別テーブル(列)` | 別のテーブルの行を指す（外部キー） | |
+| `UNIQUE` | 重複禁止 | ✅（`users.email`） |
+| `REFERENCES 別テーブル(列)` | 別のテーブルの行を指す（外部キー）。相手にない値は入れられない | ✅（`todos.user_id`） |
+| `ON DELETE CASCADE` | 指している相手が消えたら、こちらの行も消える | ✅ |
+| `ON DELETE RESTRICT` | こちらの行が残っていたら、相手を消せない（何も書かないときもほぼ同じ） | |
+| `ON DELETE SET NULL` | 相手が消えたら、こちらの列を NULL にする（NOT NULL の列には使えない） | |
 
 ### 追加・取得・変更・削除
 | 操作 | 書き方 | API | 使った |
@@ -90,6 +110,11 @@ DROP TABLE todos;      -- 中身ごと消える。元に戻せない
 | 変更 | `UPDATE todos SET done = true WHERE id = 2;` | PATCH | ✅ |
 | 削除 | `DELETE FROM todos WHERE id = 2;` | DELETE | ✅ |
 | 件数 | `SELECT COUNT(*) FROM todos;` | | |
+| 何行も追加 | `INSERT INTO users (email, password_hash) VALUES ('a@example.com', 'x'), ('b@example.com', 'y');` | | psql で試した |
+| つないで取得 | `SELECT todos.text, users.email FROM todos JOIN users ON todos.user_id = users.id;` | | psql で試した |
+
+- `JOIN 表B ON 条件` は、条件が合う行同士を横に並べる。列は `表名.列名` で区別する
+- **失敗した `INSERT` でも番号は進む**（7-2 で、UNIQUE 違反・外部キー違反・NOT NULL 違反のたびに番号が1つ飛んだ）。id はすき間があって当たり前
 
 - 文字列・日付は `'`（`"` は列名用）。`NULL` はクォートなし
 - 比較は `=`、等しくないは `!=` / `<>`。NULL かどうかは `IS NULL` / `IS NOT NULL`
@@ -156,6 +181,10 @@ const result = await pool.query<Todo>(
 | `invalid input syntax for type date: ""` | 列の型に合わない値（`""` は日付ではない → `null` にする） |
 | `connection to server on socket ... No such file or directory` | psql から：PostgreSQL が止まっている |
 | `ECONNREFUSED` | Node.js から：PostgreSQL が止まっている（ネットワーク経由） |
+| `duplicate key value violates unique constraint "users_email_key"` | `UNIQUE` の列に、もうある値を入れようとした |
+| `violates foreign key constraint "todos_user_id_fkey"` | 外部キーの列に、相手の表にない値を入れようとした |
+| `null value in column "user_id" ... violates not-null constraint` | `NOT NULL` の列に値を入れていない（7-2 のあと、画面からの追加が 500 になった原因） |
+| `database "todo_app" is being accessed by other users` | `dropdb` のとき、サーバーなどがつないだまま。止めてから消す |
 
 ## 7. 技術の選択肢（紹介だけ）
 
