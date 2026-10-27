@@ -14,7 +14,7 @@
 
 ## 次にやること
 - 7-1 の練習用のルートを `app/` で `git restore src/server/server.ts` で消す（コミットしない）
-- 7-2 users テーブルと外部キー。ステップ7全体の目安は約6〜9時間
+- 7-2 users テーブルと外部キー。ステップ7全体の目安は約6〜9時間。まとめ（`notes/step7.md`）には全体の流れの図 `docs/learning/reference/images/login-flow.svg` を入れる（学習者の依頼）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）、`app/package-lock.json` の差分の確認（7-3 でライブラリを入れる前に。S-0017）
 
