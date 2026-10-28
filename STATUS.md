@@ -1,6 +1,6 @@
 # STATUS
 
-最終更新: 2026-10-28（S-0024、D-0024）
+最終更新: 2026-10-28（S-0024、D-0025）
 
 ## 現在地
 - ステップ7（ログイン）を終えた。7-6 まで作り、7-7（仕上げ）も終え、まとめ `notes/step7.md` と理解度チェックまで済んだ（ステップ7は終了。要復習は notes の最後）。画面は1つの HTML の2つの `section`（`#login-view`・`#todo-view`）を `hidden` で切り替え、開いたときに `GET /api/me` で判断する。サーバー側は、登録・ログイン（Cookie `session` は HttpOnly・SameSite=Lax・7日）・ログアウト・入口の係 `requireLogin`（`app.use("/api/todos", ...)`、`res.locals.userId`）・自分の ToDo だけの SQL まで確かめた。登録は `POST /api/users`（argon2 0.45.1）。作り方は自分で作る＋セッション（D-0020）、合言葉は DB にハッシュで保存（D-0022）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開と品質は番号のない最終ステップで、行わない可能性もある。機能のステップは、実装を終えるたびに足すかを決める（D-0024）
@@ -14,7 +14,7 @@
 
 ## 次にやること
 - 会社の PC では pull のあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2 で `todos` が変わったため）。`npm install` も行う（argon2・cookie-parser を入れたため）
-- ステップ8（新しい機能）を何にするか相談中（候補は Claude が提案）。最終ステップ（品質・公開）の中身は練らず、始めるときに決める（学習者の判断。D-0024）。自宅の Mac の DB は c（id 1）、d（id 3）、学習者のアカウント（id 4）
+- ステップ8〜10 はメンターの Issue #1〜#3（タグと絞り込み → リストの共有とリアルタイム → 画像から ToDo）。本文の写しは `docs/learning/issues/`。ブランチを切って PR を出す（D-0025）。次はステップ8 の項目を作って始める。最終ステップ（品質・公開）の中身は、始めるときに決める（D-0024）。自宅の Mac の DB は c（id 1）、d（id 3）、学習者のアカウント（id 4）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 
@@ -26,4 +26,4 @@
 - 目的の違う変更はコミットを分ける（`git add ファイル名`）（S-0013、S-0015）
 - `flex-basis: 100%` の役割（ステップ2から持ち越し）
 - 公開先・DB についての会社の決まり（最終ステップの公開の前に確認）
-- テストコマンド（最終ステップの品質で決める）
+- テストコマンド（ステップ9 で決める。D-0025）
