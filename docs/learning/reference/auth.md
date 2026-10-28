@@ -40,7 +40,7 @@
 
 | 選択肢 | 例 | 使った |
 |---|---|---|
-| 自分で作る＋セッション | — | D-0020 で採用 |
+| 自分で作る＋セッション | — | ✅（D-0020） |
 | 自分で作る＋JWT | `jsonwebtoken`、`jose` | |
 | ライブラリに任せる | `express-session`、Passport.js、Better Auth | |
 | 外部サービス | Auth0、Clerk、Firebase Authentication、Supabase Auth | |
@@ -53,6 +53,27 @@
 5. 仕組みを学ぶのが目的か、早く作るのが目的か
 
 自分で作る認証は学習用。実務で大事な情報を扱うときは、実績のあるライブラリや外部サービスを使うことが多い。
+
+### 作り方ごとの、任せられる範囲（7-7）
+| 選択肢 | 任せられること | 自分で書くこと | 向いている場面 |
+|---|---|---|---|
+| 自分で作る＋セッション（今回） | なし | 全部（ハッシュ、合言葉、Cookie、入口の係） | 仕組みを学ぶ。小さなアプリ |
+| `express-session` | 合言葉づくり、Cookie、セッションの保存（DB などの保存先は部品で選ぶ） | 登録、パスワードの照合 | Express で、セッションの部分だけ任せたい |
+| Passport.js | 「どうやって本人か確かめるか」を部品（strategy）で差し替える。パスワード、Google、GitHub など 500 以上 | 登録、ユーザーの保存。セッションは `express-session` と組み合わせる | Express で、ログインの方法を複数用意したい |
+| Better Auth | 登録・ログイン・セッション・「Google でログイン」・2段階認証・パスキーをまとめて用意する TypeScript のライブラリ。表も作ってくれる | 画面、設定 | TypeScript で、ユーザーは自分の DB に持ちたいが、全部は書きたくない |
+| 外部サービス | ユーザーの保存、ログイン画面、パスワードの管理、メールの送信まで | 画面への組み込み | 早く作りたい。パスワードを預かる責任を負いたくない（費用と、ユーザー情報を外に置く決まりの確認が要る） |
+| 自分で作る＋JWT | なし | 全部。署名の秘密の鍵を `.env` に置いて守る | ログインのサーバーと API のサーバーが別 |
+
+今回のセッションは秘密の鍵が要らない（合言葉は乱数で、確かめるのは DB）。だから `.env` に足すものがない。JWT にすると、署名の鍵（例：`JWT_SECRET`）を `.env` に置き、漏れないように守る必要がある。
+
+### ログインの方法（パスワード以外）
+| 方法 | 仕組み（ひとこと） | 今回のコードとの関係 |
+|---|---|---|
+| パスワード | 覚えている文字列を、保存したハッシュと照合する | 今回 |
+| 「Google でログイン」（OAuth 2.0 / OpenID Connect） | Google の画面で本人確認してもらい、「この人は誰か」の証明（ID トークン）を受け取る。アプリはパスワードを預からない | ID トークンを確かめたあと、セッションを作って Cookie を渡すところは今回と同じ |
+| パスキー（WebAuthn） | 端末の中の秘密の鍵で署名し、サーバーは公開鍵で確かめる。指紋や顔で解除する。偽のサイトでは使えないので、だまされて入力することがない | パスワードの照合の代わり。そのあとのセッションは同じ |
+| 2段階認証（TOTP など） | パスワードに加えて、アプリが30秒ごとに出す6桁の数字など「持っているもの」でも確かめる | パスワードの照合のあとに1段足す |
+| メールのリンク（マジックリンク） | メールに届いた1回きりのリンクを開くとログインできる | リンクの目印は、合言葉と同じく乱数で作り、DB にはハッシュで保存する |
 
 ## 4. Cookie の流れ
 
@@ -72,13 +93,14 @@
 
 ## 5. Cookie を扱う書き方（Express / Node.js）
 
-「使った」欄の「練習」= 7-1 の練習用のルートで使った（ToDo アプリには残していない）
+「使った」欄の「練習」= 7-1 の練習用のルートで使った（ToDo アプリには残していない）、✅ = ToDo アプリで使った
 
 | 書き方 | 意味 | 使った |
 |---|---|---|
 | `res.cookie(名前, 値)` | 返事に `Set-Cookie: 名前=値; Path=/` を足す。名前・値は string。`res.json()` などで返事を送ったときに一緒に届く。戻り値は `res` 自身 | 練習 |
-| `res.cookie(名前, 値, { httpOnly: true, maxAge: ミリ秒 })` | 設定つきで渡す（7-4） | |
-| `res.clearCookie(名前)` | Cookie を消す | |
+| `res.cookie(名前, 値, { httpOnly: true, sameSite: "lax", maxAge: ミリ秒 })` | 設定つきで渡す。`maxAge` はミリ秒で、ヘッダには秒（`Max-Age=604800`）で出る。ほかに `secure: true`（HTTPS のときだけ送る。公開するとき）、`path` | ✅（7-4） |
+| `res.clearCookie(名前)` | Cookie を消させる（`Set-Cookie: 名前=; Expires=Thu, 01 Jan 1970 ...` と、期限を過去にする） | ✅（7-5） |
+| `app.use(cookieParser())` → `req.cookies.名前` | `cookie-parser`（`npm install cookie-parser` と `npm install -D @types/cookie-parser`）で、Cookie を名前ごとに読む。ないときは `undefined`。`app.use` を忘れると `req.cookies` が `undefined` で 500 | ✅（7-5） |
 | `req.headers.cookie` | 届いた `Cookie` ヘッダ。型は `string \| undefined`。複数あると `"userId=3; theme=dark"` のような1つの文字列 | 練習 |
 
 - `res.json({ cookie: undefined })` は `{}` になる（JSON には undefined がないので、キーごと消える）。
@@ -87,12 +109,14 @@
 
 | 方法 | 意味 | 使った |
 |---|---|---|
-| `curl -i URL` | 返事のヘッダも表示する（`Set-Cookie:` を見る） | 練習 |
-| `curl -c /tmp/cookies.txt URL` | 受け取った Cookie をファイルに保存する（ブラウザの役） | 練習 |
-| `curl -b /tmp/cookies.txt URL` | 保存した Cookie をつけて送る | 練習 |
-| `curl -b "名前=値" URL` | Cookie を手で決めて送る | 練習 |
-| 開発者ツール → Network → リクエストを選ぶ | Request Headers の `Cookie:`、Response Headers の `Set-Cookie:` | 練習 |
-| 開発者ツール → Application → Cookies（Chrome） | Cookie の一覧。値の書き換え・削除もできる | 練習 |
+| `curl -i URL` | 返事のヘッダも表示する（`Set-Cookie:` を見る） | ✅ |
+| `curl -c /tmp/cookies.txt URL` | 受け取った Cookie をファイルに保存する（ブラウザの役）。`HttpOnly` の Cookie は行の頭に `#HttpOnly_` がつく | ✅ |
+| `curl -b /tmp/cookies.txt URL` | 保存した Cookie をつけて送る。`-b` と `-c` に同じファイルを渡すと、返事の Cookie で上書きされる（ログアウトで消える） | ✅ |
+| `curl -b "名前=値" URL` | Cookie を手で決めて送る | ✅ |
+| 開発者ツール → Network → リクエストを選ぶ | Request Headers の `Cookie:`、Response Headers の `Set-Cookie:` | ✅ |
+| 開発者ツール → Application → Cookies（Chrome） | Cookie の一覧。`HttpOnly`・`SameSite` の欄も見られる。値の書き換え・削除もできる | ✅ |
+| Console で `document.cookie` | JS から読める Cookie だけが出る。`HttpOnly` の Cookie は出ない | ✅ |
+| シークレットウィンドウ | Cookie が普通のウィンドウと別になる。1台で2人を同時にログインさせて確かめられる | |
 
 ## 7. パスワードの保存
 
@@ -127,3 +151,18 @@
 ```bash
 node -e 'console.log(require("node:crypto").createHash("sha256").update("password123").digest("hex"))'
 ```
+
+## 8. 今回作らなかったもの（実務で足すもの）
+
+学習用のアプリでは作らなかったが、実際に公開するときに要るもの。ライブラリや外部サービスは、これらの多くを最初から持っている。
+
+| もの | なぜ要るか | どう作るか（ひとこと） |
+|---|---|---|
+| HTTPS と `secure: true` | 通信を盗み見られると、Cookie の合言葉を盗まれる | 公開するとき（ステップ8）に、HTTPS の上で `secure: true` を足す |
+| ログインの回数の制限 | パスワードの総当たりを防ぐ | 同じ IP・同じメールアドレスの失敗を数えて、しばらく断る（`express-rate-limit` など） |
+| パスワードの再設定 | 忘れた人が戻れるようにする | メールに1回きりのリンクを送る。リンクの目印は乱数で作り、DB にはハッシュで保存し、短い期限をつける |
+| メールアドレスの確認 | 他人のメールアドレスで登録させない | 登録のときに確認のリンクを送り、開くまで使えないようにする |
+| 期限切れのセッションの片づけ | 行がたまり続ける | `DELETE FROM sessions WHERE expires_at < NOW()` を定期的に実行する |
+| 見つからないときも同じ時間をかける | 返事の速さの違いから、登録されているメールアドレスかが分かる | 見つからないときも、ダミーのハッシュで `verify` する |
+| CSRF の対策を重ねる | `SameSite=Lax` で大部分は防げるが、それだけに頼らない | 合言葉とは別の CSRF 用の目印をフォームにつける、`Origin` ヘッダを確かめる |
+| パスワードを変えたら、ほかの端末のセッションを消す | 盗まれたセッションを使えなくする | `DELETE FROM sessions WHERE user_id = ...` |
