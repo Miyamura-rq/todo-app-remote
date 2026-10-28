@@ -1,9 +1,9 @@
 # STATUS
 
-最終更新: 2026-10-28（S-0026、D-0026）
+最終更新: 2026-10-28（S-0027）
 
 ## 現在地
-- ステップ8（タグと絞り込み・検索、Issue #1）。項目 8-1〜8-7 は `docs/learning/progress.md`。`app/` はブランチ `feature/1-tags-search` で作業中。8-1 で表の設計を決め（`tags`・`todo_tag`、2つの列の外部キー、タグを消すと外れるだけ。D-0026）、`db/schema.sql` を書き終えた（未コミット）。8-2 の確かめ方（DB の作り直し、`JOIN`、制約の予想）を出したところ。「決めてほしいこと」は学習者が決めて PR に書く（①② は 8-1 で決定、③ は 8-5。D-0025）
+- ステップ8（タグと絞り込み・検索、Issue #1）。項目 8-1〜8-7 は `docs/learning/progress.md`。`app/` はブランチ `feature/1-tags-search` で作業中。8-1 で表の設計を決め（`tags`・`todo_tag`、2つの列の外部キー、タグを消すと外れるだけ。D-0026）、`db/schema.sql` をコミットしてブランチを push した（8-2 終了。`JOIN` の SQL は 8-4 で書く）。8-3 タグの API の課題を出したところ。「決めてほしいこと」は学習者が決めて PR に書く（①② は 8-1 で決定、③ は 8-5。D-0025）
 - ステップ7（ログイン）は終了（要復習は `notes/step7.md` の最後）。画面は1つの HTML の2つの `section`（`#login-view`・`#todo-view`）を `hidden` で切り替え、開いたときに `GET /api/me` で判断する。サーバー側は、登録・ログイン（Cookie `session` は HttpOnly・SameSite=Lax・7日）・ログアウト・入口の係 `requireLogin`（`app.use("/api/todos", ...)`、`res.locals.userId`）・自分の ToDo だけの SQL まで確かめた。登録は `POST /api/users`（argon2 0.45.1）。作り方は自分で作る＋セッション（D-0020）、合言葉は DB にハッシュで保存（D-0022）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開と品質は番号のない最終ステップで、行わない可能性もある。機能のステップは、実装を終えるたびに足すかを決める（D-0024）
 - 作成物は `app/`。`src/client/main.ts` → `public/main.js`、`src/server/server.ts` → `dist/server.js` を `npm run build` で変換し、`npm run dev` で起動（D-0015）。変換したものと `node_modules/`・`.env` は git に入れない（D-0011）。API は GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`、POST `/api/users`（登録。201 `{id, email}`・400・409）、POST `/api/login`（200 `{id, email}`・400・401）、POST `/api/logout`（いつでも 204）、GET `/api/me`（200 `{id, email}`・401）。ToDo の4つは Cookie がない・無効・期限切れなら 401 `{error: "ログインしてください"}`、他人の id は 404
 - ToDo は PostgreSQL（Postgres.app、v18）の `todo_app` データベースの `todos` テーブルに保存。`users` と `todos.user_id`（外部キー、`ON DELETE CASCADE`）と `sessions` を追加済み。作り方は `app/db/schema.sql`、接続は `.env` の `DATABASE_URL`（見本は `.env.example`）。Postgres.app が止まっていると API は 500
@@ -15,7 +15,7 @@
 
 ## 次にやること
 - 会社の PC では `app/` で `git fetch` → `git switch feature/1-tags-search`。そのあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2・8-1 で `todos` が変わったため）。`npm install` も行う（argon2・cookie-parser を入れたため）
-- ステップ8〜10 はメンターの Issue #1〜#3（タグと絞り込み → リストの共有とリアルタイム → 画像から ToDo）。本文の写しは `docs/learning/issues/`。ブランチを切って PR を出す（D-0025）。次は 8-2 の確かめ方の答え合わせ → 8-3 タグの API。最終ステップ（品質・公開）の中身は、始めるときに決める（D-0024）。自宅の Mac の DB は 8-2 で作り直し、c・d を登録し直す（前のアカウントは消える）。PR に書く理由のメモは 8-7 までに学習者が書く
+- ステップ8〜10 はメンターの Issue #1〜#3（タグと絞り込み → リストの共有とリアルタイム → 画像から ToDo）。本文の写しは `docs/learning/issues/`。ブランチを切って PR を出す（D-0025）。次は 8-3 のレビュー → curl で確かめる → コミット。最終ステップ（品質・公開）の中身は、始めるときに決める（D-0024）。自宅の Mac の DB は 8-2 で作り直した：c（id 1）、d（id 3）、タグ「家」（id 4、c）だけ。PR に書く理由のメモは 8-7 までに学習者が書く
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 
