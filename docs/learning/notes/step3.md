@@ -72,7 +72,7 @@ render()                           開いたときに1回
 ## 3-4 ToDo の追加
 
 - **作る**のは `document.createElement(...)`、**入れる**のは `親.append(...)`。別の作業
-- ユーザーの入力は **`textContent`** で入れる。`innerHTML` だと入力が HTML として解釈され、JS が実行されてしまう（XSS。ステップ8）
+- ユーザーの入力は **`textContent`** で入れる。`innerHTML` だと入力が HTML として解釈され、JS が実行されてしまう（XSS。最終ステップ（品質））
 - JS での属性名は HTML と違うことがある：`dateTime`、`classList.add(...)` / `className`、`htmlFor`
 - **関数は `( )` で呼ぶ**。`classList.add = "..."`、`todos.append = {...}` のように `=` で書くと、関数を上書きするだけで何も起きない
 - 配列に足すのは `push`、DOM に入れるのは `append`。種類が違うと持っている関数が違う（`TypeError: ... is not a function`）

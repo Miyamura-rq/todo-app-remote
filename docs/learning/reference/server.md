@@ -77,7 +77,7 @@
 | 204 | No Content | 成功したが返すデータがない | ✅ |
 | 301 / 302 | Moved | 別の URL に移動した（永久 / 一時） | |
 | 304 | Not Modified | キャッシュから変わっていない | （見ただけ） |
-| 400 | Bad Request | 送られたデータがおかしい（ステップ8） | |
+| 400 | Bad Request | 送られたデータがおかしい（7-3 で使った。入力チェックをそろえるのは最終ステップ（品質）） | |
 | 401 | Unauthorized | ログインしていない | |
 | 403 | Forbidden | ログインしているが権限がない | |
 | 404 | Not Found | ない | ✅ |
@@ -124,7 +124,7 @@ button.addEventListener("click", async () => {
 | `JSON.stringify(オブジェクト)` | オブジェクト → JSON の文字 | ✅ |
 | `JSON.parse(文字)` | JSON の文字 → オブジェクト | |
 | `promise.then((値) => { ... })` | `await` を使わない、古い書き方 | |
-| `try { ... } catch (e) { ... }` | `throw` されたエラーを受け止める（ステップ8） | |
+| `try { ... } catch (e) { ... }` | `throw` されたエラーを受け止める（最終ステップ（品質）） | |
 
 - `await` を忘れると `Promise {<pending>}`（まだ待っている引換券）が入る
 - `fetch` は 404 や 500 でもエラーにならない。`res.ok` を自分で確かめる
