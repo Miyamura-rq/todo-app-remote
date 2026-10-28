@@ -14,7 +14,7 @@
 
 ## 次にやること
 - 会社の PC では pull のあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2 で `todos` が変わったため）。`npm install` も行う（argon2・cookie-parser を入れたため）
-- 最終ステップ（品質・公開）の中身と順番を決める（Claude が提案済み）。新しい機能のステップを足すか、最終ステップに進むかを決める（D-0024）。自宅の Mac の DB は c（id 1）、d（id 3）、学習者のアカウント（id 4）
+- ステップ8（新しい機能）を何にするか相談中（候補は Claude が提案）。最終ステップ（品質・公開）の中身は練らず、始めるときに決める（学習者の判断。D-0024）。自宅の Mac の DB は c（id 1）、d（id 3）、学習者のアカウント（id 4）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 
