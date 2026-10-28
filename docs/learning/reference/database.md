@@ -101,6 +101,13 @@ CREATE TABLE IF NOT EXISTS todos (
 | `ON DELETE CASCADE` | 指している相手が消えたら、こちらの行も消える | ✅ |
 | `ON DELETE RESTRICT` | こちらの行が残っていたら、相手を消せない（何も書かないときもほぼ同じ） | |
 | `ON DELETE SET NULL` | 相手が消えたら、こちらの列を NULL にする（NOT NULL の列には使えない） | |
+| `CREATE INDEX 名前 ON テーブル (列)` | 索引を作る。主キーと `UNIQUE` の列には自動で作られるが、外部キー（`REFERENCES`）の列には作られない。`WHERE user_id = $1` のようにその列で探すことが多いなら、自分で作る。`IF NOT EXISTS` もつけられる | |
+
+**みんなの行を1つの表に入れる（7-5）**
+- `todos` には全員の ToDo が入り、`user_id` の列で誰のものかを分ける。ユーザーごとに表や DB を作るより、表の形を1か所で直せて、ユーザーが増えても表が増えないので、こちらが普通
+- そのかわり、すべての SQL に `WHERE user_id = ...` をつける責任がアプリにある。1つでも忘れると、他人の ToDo が見える・変えられる（7-5 の「入口の係」と、PATCH・DELETE の `AND user_id = ...` はそのため）
+- 行が多くなったら、`todos (user_id)` に索引を作る（今は作っていない。数百行なら全部の行を見ても一瞬で終わる）
+- もう一段守るなら、PostgreSQL の「行単位のセキュリティ」（Row Level Security、RLS）で、DB 自身に「自分の行しか見せない」決まりを持たせる方法もある（Supabase などが使う）
 
 ### 追加・取得・変更・削除
 | 操作 | 書き方 | API | 使った |

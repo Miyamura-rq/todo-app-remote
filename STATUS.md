@@ -14,7 +14,6 @@
 
 ## 次にやること
 - 会社の PC では pull のあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2 で `todos` が変わったため）。`npm install` も行う（argon2・cookie-parser を入れたため）
-- `app/` の `README.md`（7-7。学習者の依頼で今回だけ Claude が書いた）を学習者がコミットして push
 - 7-7 の残り：普通のウィンドウとシークレットウィンドウで c・d を同時にログインさせる通しの確認。そのあとステップ7のまとめ `notes/step7.md` と理解度チェック。自宅の Mac の DB は c（id 1）、d（id 3）、学習者のアカウント（id 4）。ステップ7全体の目安は約6〜9時間。まとめ（`notes/step7.md`）には全体の流れの図 `docs/learning/reference/images/login-flow.svg` を入れる（学習者の依頼）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
