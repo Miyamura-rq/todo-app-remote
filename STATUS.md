@@ -1,11 +1,11 @@
 # STATUS
 
-最終更新: 2026-10-28（S-0022）
+最終更新: 2026-10-28（S-0023）
 
 ## 現在地
-- ステップ7（ログイン）の 7-5 まで終えた。次は 7-6（画面）。サーバー側は、登録・ログイン（Cookie `session` は HttpOnly・SameSite=Lax・7日）・ログアウト・入口の係 `requireLogin`（`app.use("/api/todos", ...)`、`res.locals.userId`）・自分の ToDo だけの SQL まで確かめた。登録は `POST /api/users`（argon2 0.45.1）。作り方は自分で作る＋セッション（D-0020）、合言葉は DB にハッシュで保存（D-0022）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開は8、品質は9で、8以降を行うかは未定（D-0018）
-- 作成物は `app/`。`src/client/main.ts` → `public/main.js`、`src/server/server.ts` → `dist/server.js` を `npm run build` で変換し、`npm run dev` で起動（D-0015）。変換したものと `node_modules/`・`.env` は git に入れない（D-0011）。API は GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`、POST `/api/users`（登録。201 `{id, email}`・400・409）、POST `/api/login`（200 `{id, email}`・400・401）、POST `/api/logout`（いつでも 204）。ToDo の4つは Cookie がない・無効・期限切れなら 401 `{error: "ログインしてください"}`、他人の id は 404
-- ToDo は PostgreSQL（Postgres.app、v18）の `todo_app` データベースの `todos` テーブルに保存。`users` と `todos.user_id`（外部キー、`ON DELETE CASCADE`）と `sessions` を追加済み。7-6 までは画面の一覧・追加がすべて 401（画面にログインがないため）。作り方は `app/db/schema.sql`、接続は `.env` の `DATABASE_URL`（見本は `.env.example`）。Postgres.app が止まっていると API は 500
+- ステップ7（ログイン）の 7-6 まで終えた。次は 7-7（仕上げ）。画面は1つの HTML の2つの `section`（`#login-view`・`#todo-view`）を `hidden` で切り替え、開いたときに `GET /api/me` で判断する。サーバー側は、登録・ログイン（Cookie `session` は HttpOnly・SameSite=Lax・7日）・ログアウト・入口の係 `requireLogin`（`app.use("/api/todos", ...)`、`res.locals.userId`）・自分の ToDo だけの SQL まで確かめた。登録は `POST /api/users`（argon2 0.45.1）。作り方は自分で作る＋セッション（D-0020）、合言葉は DB にハッシュで保存（D-0022）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開は8、品質は9で、8以降を行うかは未定（D-0018）
+- 作成物は `app/`。`src/client/main.ts` → `public/main.js`、`src/server/server.ts` → `dist/server.js` を `npm run build` で変換し、`npm run dev` で起動（D-0015）。変換したものと `node_modules/`・`.env` は git に入れない（D-0011）。API は GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`、POST `/api/users`（登録。201 `{id, email}`・400・409）、POST `/api/login`（200 `{id, email}`・400・401）、POST `/api/logout`（いつでも 204）、GET `/api/me`（200 `{id, email}`・401）。ToDo の4つは Cookie がない・無効・期限切れなら 401 `{error: "ログインしてください"}`、他人の id は 404
+- ToDo は PostgreSQL（Postgres.app、v18）の `todo_app` データベースの `todos` テーブルに保存。`users` と `todos.user_id`（外部キー、`ON DELETE CASCADE`）と `sessions` を追加済み。作り方は `app/db/schema.sql`、接続は `.env` の `DATABASE_URL`（見本は `.env.example`）。Postgres.app が止まっていると API は 500
 - `app/` は別リポジトリで GitHub `Miyamura-rq/todo-app` に学習者が push。外側は `Miyamura-rq/todo-app-remote`（D-0012、D-0013）。SSH 鍵はパスフレーズつき。`ssh-add --apple-use-keychain` で登録すると Claude の実行環境からも push できる（Mac の再起動で外れる。`~/.ssh/config` は未設定）。練習用ファイルは外側の `practice/`
 - PC の切り替え：学習者は `app/` を途中でも push、Claude は「ここまで」と言われたら途中の位置まで記録して push（D-0019）。自宅の Mac は `~/RECERQA/todo-app` で、DB の作成と起動まで準備済み（S-0017）。サーバーは学習者のターミナルで起動する（Claude の `!` からだと止まる）
 - 仕様：期限あり、リマインドは余裕があれば後で（D-0006）。一覧はリスト、完了はチェックで残す（D-0008）。画面は `todos` から `render()` で作り直し、操作のたびに GET で取り直す（D-0009）
@@ -14,8 +14,8 @@
 
 ## 次にやること
 - 会社の PC では pull のあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2 で `todos` が変わったため）。`npm install` も行う（argon2・cookie-parser を入れたため）
-- `app/` の `package.json`・`package-lock.json`・`src/server/server.ts`（cookie-parser・ログアウト・7-5）を学習者がコミットして push
-- 7-6 画面（登録・ログインのフォーム、ログインしているかで表示を切り替える、401 を受けたらログイン画面へ、ログアウトボタン）。自宅の Mac の DB は c（id 1）と d（id 3）。ステップ7全体の目安は約6〜9時間。まとめ（`notes/step7.md`）には全体の流れの図 `docs/learning/reference/images/login-flow.svg` を入れる（学習者の依頼）
+- `app/` の `public/index.html`・`public/style.css`・`src/client/main.ts`・`src/server/server.ts`（7-6）を学習者がコミットして push
+- 7-7 仕上げ（README・`schema.sql`・`.env.example`、2人のユーザーで通しの確認、技術の選択肢）。そのあとステップ7のまとめ `notes/step7.md` と理解度チェック。自宅の Mac の DB は c（id 1）、d（id 3）、学習者のアカウント（id 4）。ステップ7全体の目安は約6〜9時間。まとめ（`notes/step7.md`）には全体の流れの図 `docs/learning/reference/images/login-flow.svg` を入れる（学習者の依頼）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 
