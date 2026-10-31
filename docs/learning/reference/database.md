@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS todos (
 | `UNIQUE` | 重複禁止。`UNIQUE (列, 列)` で組にもかけられる。`NULL` 同士は別物として扱うので、`NOT NULL` と一緒に使う | ✅（`users.email`、`tags (user_id, name)`） |
 | `PRIMARY KEY (列, 列)` | 2つの列の組を主キーにする。組の重複も、どちらかが空なのもだめ | ✅（`todo_tag`） |
 | `REFERENCES 別テーブル(列)` | 別のテーブルの行を指す（外部キー）。相手にない値は入れられない | ✅（`todos.user_id`） |
-| `FOREIGN KEY (列, 列) REFERENCES 表 (列, 列)` | 2つの列の組で別の表の行を指す。指される側の組には `UNIQUE` か主キーが要る（ないと `there is no unique constraint matching given keys`） | ✅（`todo_tag`） |
+| `FOREIGN KEY (列, 列) REFERENCES 表 (列, 列)` | 2つの列の組で別の表の行を指す。指される側の組には `UNIQUE` か主キーが要る（ないと `there is no unique constraint matching given keys`）。`id` だけで重複しなくても、PostgreSQL は組が重複しないとは考えないので、組の形で宣言する（データは何も変わらない「受け口」。索引が1つ増える） | ✅（`todo_tag`） |
 | `ON DELETE CASCADE` | 指している相手が消えたら、こちらの行も消える | ✅ |
 | `ON DELETE RESTRICT` | こちらの行が残っていたら、相手を消せない（何も書かないときもほぼ同じ） | |
 | `ON DELETE SET NULL` | 相手が消えたら、こちらの列を NULL にする（NOT NULL の列には使えない） | |
