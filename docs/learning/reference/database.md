@@ -142,6 +142,21 @@ CREATE TABLE IF NOT EXISTS todos (
 | つないで取得 | `SELECT todos.text, users.email FROM todos JOIN users ON todos.user_id = users.id;` | | psql で試した |
 
 - `JOIN 表B ON 条件` は、条件が合う行同士を横に並べる。列は `表名.列名` で区別する
+
+**多対多をたどって、ToDo ごとにタグをまとめる（8-4）**
+
+![JOIN から json_agg まで](images/join-steps.svg)
+
+| 書き方 | すること | 使った |
+|---|---|---|
+| `JOIN 表 ON 条件` | 条件が合う組だけ残す（相手がいない行は消える） | ✅（psql） |
+| `LEFT JOIN 表 ON 条件` | 左（`FROM` の表）の行は全部残す。相手がいなければ相手の列は `NULL` | ✅（8-4） |
+| `GROUP BY 列` | 同じ値の行を1行にまとめる。主キーを書くと、その表のほかの列もそのまま `SELECT` に書ける | ✅（8-4） |
+| `json_build_object('キー', 値, ...)` | JSON のオブジェクトを1つ作る | ✅（8-4） |
+| `json_agg(値 ORDER BY 列)` | まとめた行の値を JSON の配列にする。pg は JavaScript の配列にして渡す | ✅（8-4） |
+| `集める関数(...) FILTER (WHERE 条件)` | 条件に合う行だけを集める。1つもなければ `NULL` | ✅（8-4） |
+| `COALESCE(値, 代わりの値)` | 値が `NULL` なら代わりの値にする | ✅（8-4） |
+| `COUNT(*)` | まとめた行の数 | |
 - **失敗した `INSERT` でも番号は進む**（7-2 で、UNIQUE 違反・外部キー違反・NOT NULL 違反のたびに番号が1つ飛んだ）。id はすき間があって当たり前
 
 - 文字列・日付は `'`（`"` は列名用）。`NULL` はクォートなし

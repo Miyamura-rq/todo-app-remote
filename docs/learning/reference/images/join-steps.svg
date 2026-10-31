@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="912" viewBox="0 0 760 912" role="img">
+<title>JOIN から json_agg まで</title>
+<desc>c の ToDo とタグを、JOIN を2回、LEFT JOIN、GROUP BY と json_agg、FILTER と COALESCE の順に形を変えて、ToDo ごとにタグの配列を持つ形にするまでの図。各段階の結果の行を示す。</desc>
+<style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;dominant-baseline:central}
+.t{font-size:15px;font-weight:600;fill:#2C2C2A}
+.h{font-size:13px;font-weight:600;fill:#2C2C2A}
+.s{font-size:12px;fill:#5F5E5A}
+.xs{font-size:10px;fill:#888780}
+.c{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:12px;fill:#2C2C2A}
+.cd{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:11px;fill:#3C3489}
+.ty{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10px;fill:#888780}
+rect.tb{fill:#FFFFFF;stroke:#888780;stroke-width:1}
+rect.hd{fill:#F1EFE8;stroke:#888780;stroke-width:1}
+rect.ngb{fill:#FAECE7;stroke:none}
+rect.okb{fill:#E1F5EE;stroke:none}
+line.sep{stroke:#D3D1C7;stroke-width:0.8}
+.band{fill:none;stroke:#B4B2A9;stroke-dasharray:4 4}
+.cn{stroke:#888780;stroke-width:1;fill:none}
+.ar{stroke:#5F5E5A;stroke-width:1.6;fill:none}
+.ng{fill:#993C1D}.ok{fill:#0F6E56}
+.gone{fill:#B4B2A9}
+.strike{stroke:#B4B2A9;stroke-width:1}
+</style>
+<defs>
+<marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<rect x="0" y="0" width="760" height="912" fill="#FFFFFF" stroke="none"/>
+
+<text class="t" x="20" y="22">一覧の ToDo にタグを入れる：JOIN → LEFT JOIN → まとめる（c のデータ）</text>
+
+<!-- もとの表 -->
+<rect class="band" x="10" y="40" width="740" height="160" rx="12"/>
+<text class="h" x="24" y="58">もとの3つの表（c の分）</text>
+<rect class="tb" x="20" y="72" width="210" height="110"/><rect class="hd" x="20" y="72" width="210" height="24"/>
+<text class="h" x="30" y="84">todos</text>
+<text class="ty" x="30" y="106">id</text><text class="ty" x="66" y="106">text</text>
+<line class="sep" x1="20" y1="116" x2="230" y2="116"/><line class="sep" x1="20" y1="138" x2="230" y2="138"/><line class="sep" x1="20" y1="160" x2="230" y2="160"/>
+<text class="c" x="30" y="127">5</text><text class="s" x="66" y="127">牛乳を買う</text>
+<text class="c" x="30" y="149">11</text><text class="s" x="66" y="149">部屋の掃除</text>
+<text class="c" x="30" y="171">12</text><text class="s" x="66" y="171">本を返す</text><text class="xs" x="140" y="171">タグなし</text>
+
+<rect class="tb" x="275" y="72" width="210" height="110"/><rect class="hd" x="275" y="72" width="210" height="24"/>
+<text class="h" x="285" y="84">todo_tag</text>
+<text class="ty" x="285" y="106">todo_id</text><text class="ty" x="375" y="106">tag_id</text>
+<line class="sep" x1="275" y1="116" x2="485" y2="116"/><line class="sep" x1="275" y1="138" x2="485" y2="138"/><line class="sep" x1="275" y1="160" x2="485" y2="160"/>
+<text class="c" x="295" y="127">5</text><text class="c" x="385" y="127">6</text>
+<text class="c" x="295" y="149">5</text><text class="c" x="385" y="149">13</text>
+<text class="c" x="295" y="171">11</text><text class="c" x="385" y="171">13</text>
+
+<rect class="tb" x="530" y="72" width="210" height="88"/><rect class="hd" x="530" y="72" width="210" height="24"/>
+<text class="h" x="540" y="84">tags</text>
+<text class="ty" x="540" y="106">id</text><text class="ty" x="576" y="106">name</text>
+<line class="sep" x1="530" y1="116" x2="740" y2="116"/><line class="sep" x1="530" y1="138" x2="740" y2="138"/>
+<text class="c" x="540" y="127">6</text><text class="c" x="576" y="127">work</text>
+<text class="c" x="540" y="149">13</text><text class="s" x="576" y="149">家</text>
+
+<path class="cn" d="M275 127 H230"/><path class="cn" d="M275 149 L230 127"/><path class="cn" d="M275 171 L230 149"/>
+<path class="cn" d="M485 127 H530"/><path class="cn" d="M485 149 H530"/><path class="cn" d="M485 171 L530 149"/>
+
+<!-- ① JOIN -->
+<rect class="band" x="10" y="214" width="740" height="184" rx="12"/>
+<text class="h" x="24" y="232">① JOIN を2回：todos → todo_tag → tags（つなぐ相手がいる組だけ残る）</text>
+<text class="cd" x="24" y="252">FROM todos JOIN todo_tag ON todo_tag.todo_id = todos.id JOIN tags ON tags.id = todo_tag.tag_id</text>
+<rect class="tb" x="20" y="266" width="400" height="112"/><rect class="hd" x="20" y="266" width="400" height="24"/>
+<text class="ty" x="30" y="278">todos.id</text><text class="ty" x="100" y="278">todos.text</text><text class="ty" x="230" y="278">tags.name</text>
+<line class="sep" x1="20" y1="312" x2="420" y2="312"/><line class="sep" x1="20" y1="334" x2="420" y2="334"/><line class="sep" x1="20" y1="356" x2="420" y2="356"/>
+<text class="c" x="30" y="301">5</text><text class="s" x="100" y="301">牛乳を買う</text><text class="c" x="230" y="301">work</text>
+<text class="c" x="30" y="323">5</text><text class="s" x="100" y="323">牛乳を買う</text><text class="s" x="230" y="323">家</text>
+<text class="c" x="30" y="345">11</text><text class="s" x="100" y="345">部屋の掃除</text><text class="s" x="230" y="345">家</text>
+<text class="c gone" x="30" y="367">12</text><text class="s gone" x="100" y="367">本を返す</text><text class="xs" x="230" y="367">（つなぐ相手がない）</text>
+<line class="strike" x1="26" y1="367" x2="166" y2="367"/>
+<text class="s" x="440" y="290">・「本を返す」は todo_tag に行がないので</text>
+<text class="s" x="440" y="308">　消える</text>
+<text class="s" x="440" y="330">・「牛乳を買う」はタグの数だけ2行になる</text>
+<text class="s" x="440" y="352">・3行</text>
+
+<!-- ② LEFT JOIN -->
+<rect class="band" x="10" y="412" width="740" height="184" rx="12"/>
+<text class="h" x="24" y="430">② LEFT JOIN にする（左＝FROM の todos の行は全部残る）</text>
+<text class="cd" x="24" y="450">FROM todos LEFT JOIN todo_tag ON …  LEFT JOIN tags ON …（ON の中は ① と同じ）</text>
+<rect class="tb" x="20" y="464" width="400" height="112"/><rect class="hd" x="20" y="464" width="400" height="24"/>
+<text class="ty" x="30" y="476">todos.id</text><text class="ty" x="100" y="476">todos.text</text><text class="ty" x="230" y="476">tags.name</text>
+<rect class="ngb" x="21" y="555" width="398" height="20"/>
+<line class="sep" x1="20" y1="510" x2="420" y2="510"/><line class="sep" x1="20" y1="532" x2="420" y2="532"/><line class="sep" x1="20" y1="554" x2="420" y2="554"/>
+<text class="c" x="30" y="499">5</text><text class="s" x="100" y="499">牛乳を買う</text><text class="c" x="230" y="499">work</text>
+<text class="c" x="30" y="521">5</text><text class="s" x="100" y="521">牛乳を買う</text><text class="s" x="230" y="521">家</text>
+<text class="c" x="30" y="543">11</text><text class="s" x="100" y="543">部屋の掃除</text><text class="s" x="230" y="543">家</text>
+<text class="c" x="30" y="565">12</text><text class="s" x="100" y="565">本を返す</text><text class="c ng" x="230" y="565">NULL</text><text class="xs" x="270" y="565">（psql では空欄に見える）</text>
+<text class="s" x="440" y="488">・つなぐ相手がない行も残り、相手の列は</text>
+<text class="s" x="440" y="506">　NULL になる</text>
+<text class="s" x="440" y="528">・4行。まだ「ToDo 1つ＝1行」ではない</text>
+<text class="s" x="440" y="546">　（牛乳を買う が2行）</text>
+
+<!-- ③ まとめる -->
+<rect class="band" x="10" y="610" width="740" height="292" rx="12"/>
+<text class="h" x="24" y="628">③ GROUP BY todos.id で ToDo ごとに1行にし、json_agg でタグを配列にまとめる</text>
+<text class="cd" x="24" y="648">json_agg(json_build_object('id', tags.id, 'name', tags.name) ORDER BY tags.id) AS tags</text>
+<text class="s" x="24" y="667">json_build_object('id', 6, 'name', 'work') → {"id": 6, "name": "work"}。json_agg は、まとめた行の値を [ ] の配列にする</text>
+<rect class="tb" x="20" y="682" width="720" height="90"/><rect class="hd" x="20" y="682" width="720" height="24"/>
+<text class="ty" x="30" y="694">todos.id</text><text class="ty" x="100" y="694">todos.text</text><text class="ty" x="230" y="694">tags</text>
+<rect class="ngb" x="21" y="751" width="718" height="20"/>
+<line class="sep" x1="20" y1="728" x2="740" y2="728"/><line class="sep" x1="20" y1="750" x2="740" y2="750"/>
+<text class="c" x="30" y="717">5</text><text class="s" x="100" y="717">牛乳を買う</text><text class="c" x="230" y="717">[{"id": 6, "name": "work"}, {"id": 13, "name": "家"}]</text>
+<text class="c" x="30" y="739">11</text><text class="s" x="100" y="739">部屋の掃除</text><text class="c" x="230" y="739">[{"id": 13, "name": "家"}]</text>
+<text class="c" x="30" y="761">12</text><text class="s" x="100" y="761">本を返す</text><text class="c ng" x="230" y="761">[{"id": null, "name": null}]</text><text class="xs" x="460" y="761">← ② の NULL の行まで集めてしまう</text>
+
+<path class="ar" d="M380 776 V790" marker-end="url(#ag)"/>
+<text class="cd" x="24" y="806">COALESCE( json_agg(…) FILTER (WHERE tags.id IS NOT NULL), '[]' ) AS tags</text>
+<text class="s" x="24" y="826">FILTER：tags.id が NULL の行は集めない → 集めるものが1つもなければ、結果は NULL</text>
+<text class="s" x="24" y="844">COALESCE：その NULL を '[]'（空の配列）に置きかえる</text>
+<rect class="okb" x="20" y="858" width="720" height="30" rx="6"/>
+<text class="s" x="32" y="873">これで「本を返す」の tags は</text><text class="c ok" x="206" y="873">[]</text><text class="s" x="230" y="873">（空の配列）になる。ほかの2つは ③ と同じ</text>
+</svg>
