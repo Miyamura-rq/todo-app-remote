@@ -4,7 +4,7 @@
 
 ## 現在地
 - ステップ8（タグと絞り込み・検索、Issue #1）。`app/` はブランチ `feature/1-tags-search`。8-1〜8-3 は終了（表の設計 D-0026、`db/schema.sql`、タグの API `GET`・`POST /api/tags`・`DELETE /api/tags/:id`）。「決めてほしいこと」①② は 8-1 で決定、③ は 8-5（PR に学習者が書く）
-- 8-4 は A（一覧の ToDo にタグを入れる）→ B（付け外し `POST`・`DELETE /api/todos/:id/tags/:tagId`）→ C（`POST /api/todos` で `tagIds` も受け取る＝トランザクション）。A は終了（コミット・push 済み）。B（確認の SELECT → `INSERT … ON CONFLICT DO NOTHING`、外すのは `DELETE … AND user_id`）の課題を出した。経過は `docs/learning/progress.md`
+- 8-4 は A（一覧の ToDo にタグを入れる）→ B（付け外し `POST`・`DELETE /api/todos/:id/tags/:tagId`）→ C（`POST /api/todos` で `tagIds` も受け取る＝トランザクション）。A は終了（コミット・push 済み）。B（確認の SELECT → `INSERT … ON CONFLICT DO NOTHING`、外すのは `DELETE … AND user_id`）の課題を出し、1回目をレビューした（直すところ6つ）。経過は `docs/learning/progress.md`
 - ステップ7（ログイン）までは終了。認証は自分で作る＋セッション（D-0020）、合言葉はハッシュで保存（D-0022）
 
 ## 次にやること
