@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1204" viewBox="0 0 760 1204" role="img">
+<title>todo_app の表とつながり</title>
+<desc>users・sessions・todos・tags・todo_tag の5つの表の列と、外部キーがどの表のどの列を指しているかを示す図。下の半分は、todo_tag の1行が何を表すかと、2つの列の外部キーが他人のタグを止める例。</desc>
+<style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;dominant-baseline:central}
+.m{text-anchor:middle}.e{text-anchor:end}
+.t{font-size:15px;font-weight:600;fill:#2C2C2A}
+.h{font-size:13px;font-weight:600;fill:#2C2C2A}
+.s{font-size:12px;fill:#5F5E5A}
+.c{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:12px;fill:#2C2C2A}
+.ty{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10px;fill:#888780}
+.lb{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:11px;fill:#0F6E56}
+.lbs{font-size:11px;fill:#0F6E56}
+.bt{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10px;font-weight:600;text-anchor:middle}
+rect.tb{fill:#FFFFFF;stroke:#888780;stroke-width:1}
+rect.hd{fill:#F1EFE8;stroke:#888780;stroke-width:1}
+line.sep{stroke:#D3D1C7;stroke-width:0.8}
+rect.pk{fill:#FAEEDA;stroke:#BA7517;stroke-width:0.8}.pk{fill:#854F0B}
+rect.fk{fill:#E1F5EE;stroke:#0F6E56;stroke-width:0.8}.fk{fill:#085041}
+rect.uq{fill:#EEEDFE;stroke:#534AB7;stroke-width:0.8}.uq{fill:#3C3489}
+.cu{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:11px;fill:#3C3489}
+.cp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:11px;fill:#854F0B}
+.cf{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:11px;fill:#085041}
+.ar{stroke:#1D9E75;stroke-width:1.6;fill:none}
+.cn{stroke:#888780;stroke-width:1;fill:none}
+.band{fill:none;stroke:#B4B2A9;stroke-dasharray:4 4}
+.ng{fill:#993C1D}.ok{fill:#0F6E56}
+rect.ngb{fill:#FAECE7;stroke:none}
+</style>
+<defs>
+<marker id="at" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#1D9E75" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<rect x="0" y="0" width="760" height="1204" fill="#FFFFFF" stroke="none"/>
+
+<!-- タイトルと凡例 -->
+<text class="t" x="20" y="22">todo_app の表とつながり（ステップ8・8-2 の時点）</text>
+<rect class="pk" x="20" y="42" width="24" height="16" rx="3"/><text class="bt pk" x="32" y="50">PK</text>
+<text class="s" x="50" y="50">主キー（その行を指す名前。重複も空もだめ）</text>
+<rect class="fk" x="330" y="42" width="24" height="16" rx="3"/><text class="bt fk" x="342" y="50">FK</text>
+<text class="s" x="360" y="50">外部キー（ほかの表の行を指す）</text>
+<rect class="uq" x="556" y="42" width="24" height="16" rx="3"/><text class="bt uq" x="568" y="50">UQ</text>
+<text class="s" x="586" y="50">UNIQUE（重複はだめ）</text>
+<line class="ar" x1="20" y1="74" x2="50" y2="74" marker-end="url(#at)"/>
+<text class="s" x="60" y="74">矢印の先が「指される側」。CASCADE ＝ 指している先の行が消えたら、この行も消える</text>
+
+<!-- users -->
+<rect class="tb" x="270" y="100" width="220" height="126"/>
+<rect class="hd" x="270" y="100" width="220" height="30"/>
+<text class="h" x="280" y="115">users</text><text class="s" x="326" y="115">ユーザー</text>
+<line class="sep" x1="270" y1="154" x2="490" y2="154"/><line class="sep" x1="270" y1="178" x2="490" y2="178"/><line class="sep" x1="270" y1="202" x2="490" y2="202"/>
+<text class="c" x="280" y="142">id</text><text class="ty" x="380" y="142">INTEGER</text><rect class="pk" x="456" y="134" width="24" height="16" rx="3"/><text class="bt pk" x="468" y="142">PK</text>
+<text class="c" x="280" y="166">email</text><text class="ty" x="380" y="166">TEXT</text><rect class="uq" x="456" y="158" width="24" height="16" rx="3"/><text class="bt uq" x="468" y="166">UQ</text>
+<text class="c" x="280" y="190">password_hash</text><text class="ty" x="380" y="190">TEXT</text>
+<text class="c" x="280" y="214">created_at</text><text class="ty" x="380" y="214">TIMESTAMPTZ</text>
+
+<!-- sessions -->
+<rect class="tb" x="20" y="300" width="220" height="126"/>
+<rect class="hd" x="20" y="300" width="220" height="30"/>
+<text class="h" x="30" y="315">sessions</text><text class="s" x="100" y="315">ログイン中の記録</text>
+<line class="sep" x1="20" y1="354" x2="240" y2="354"/><line class="sep" x1="20" y1="378" x2="240" y2="378"/><line class="sep" x1="20" y1="402" x2="240" y2="402"/>
+<text class="c" x="30" y="342">token_hash</text><text class="ty" x="130" y="342">TEXT</text><rect class="pk" x="206" y="334" width="24" height="16" rx="3"/><text class="bt pk" x="218" y="342">PK</text>
+<text class="c" x="30" y="366">user_id</text><text class="ty" x="130" y="366">INTEGER</text><rect class="fk" x="206" y="358" width="24" height="16" rx="3"/><text class="bt fk" x="218" y="366">FK</text>
+<text class="c" x="30" y="390">expires_at</text><text class="ty" x="130" y="390">TIMESTAMPTZ</text>
+<text class="c" x="30" y="414">created_at</text><text class="ty" x="130" y="414">TIMESTAMPTZ</text>
+
+<!-- todos -->
+<rect class="tb" x="270" y="300" width="220" height="174"/>
+<rect class="hd" x="270" y="300" width="220" height="30"/>
+<text class="h" x="280" y="315">todos</text><text class="s" x="326" y="315">ToDo</text>
+<line class="sep" x1="270" y1="354" x2="490" y2="354"/><line class="sep" x1="270" y1="378" x2="490" y2="378"/><line class="sep" x1="270" y1="402" x2="490" y2="402"/><line class="sep" x1="270" y1="426" x2="490" y2="426"/><line class="sep" x1="270" y1="450" x2="490" y2="450"/>
+<text class="c" x="280" y="342">id</text><text class="ty" x="380" y="342">INTEGER</text><rect class="pk" x="456" y="334" width="24" height="16" rx="3"/><text class="bt pk" x="468" y="342">PK</text>
+<text class="c" x="280" y="366">text</text><text class="ty" x="380" y="366">TEXT</text>
+<text class="c" x="280" y="390">deadline</text><text class="ty" x="380" y="390">DATE</text>
+<text class="c" x="280" y="414">done</text><text class="ty" x="380" y="414">BOOLEAN</text>
+<text class="c" x="280" y="438">user_id</text><text class="ty" x="380" y="438">INTEGER</text><rect class="fk" x="456" y="430" width="24" height="16" rx="3"/><text class="bt fk" x="468" y="438">FK</text>
+<rect class="uq" x="280" y="454" width="24" height="16" rx="3"/><text class="bt uq" x="292" y="462">UQ</text><text class="cu" x="312" y="462">(id, user_id) ← ①</text>
+
+<!-- tags -->
+<rect class="tb" x="520" y="300" width="220" height="150"/>
+<rect class="hd" x="520" y="300" width="220" height="30"/>
+<text class="h" x="530" y="315">tags</text><text class="s" x="570" y="315">タグ</text>
+<line class="sep" x1="520" y1="354" x2="740" y2="354"/><line class="sep" x1="520" y1="378" x2="740" y2="378"/><line class="sep" x1="520" y1="402" x2="740" y2="402"/><line class="sep" x1="520" y1="426" x2="740" y2="426"/>
+<text class="c" x="530" y="342">id</text><text class="ty" x="630" y="342">INTEGER</text><rect class="pk" x="706" y="334" width="24" height="16" rx="3"/><text class="bt pk" x="718" y="342">PK</text>
+<text class="c" x="530" y="366">name</text><text class="ty" x="630" y="366">TEXT</text>
+<text class="c" x="530" y="390">user_id</text><text class="ty" x="630" y="390">INTEGER</text><rect class="fk" x="706" y="382" width="24" height="16" rx="3"/><text class="bt fk" x="718" y="390">FK</text>
+<rect class="uq" x="530" y="406" width="24" height="16" rx="3"/><text class="bt uq" x="542" y="414">UQ</text><text class="cu" x="562" y="414">(user_id, name)</text>
+<rect class="uq" x="530" y="430" width="24" height="16" rx="3"/><text class="bt uq" x="542" y="438">UQ</text><text class="cu" x="562" y="438">(id, user_id) ← ②</text>
+
+<!-- todo_tag -->
+<rect class="tb" x="395" y="560" width="220" height="174"/>
+<rect class="hd" x="395" y="560" width="220" height="30"/>
+<text class="h" x="405" y="575">todo_tag</text><text class="s" x="475" y="575">ToDo とタグの組</text>
+<line class="sep" x1="395" y1="614" x2="615" y2="614"/><line class="sep" x1="395" y1="638" x2="615" y2="638"/><line class="sep" x1="395" y1="662" x2="615" y2="662"/><line class="sep" x1="395" y1="686" x2="615" y2="686"/><line class="sep" x1="395" y1="710" x2="615" y2="710"/>
+<text class="c" x="405" y="602">user_id</text><text class="ty" x="480" y="602">INTEGER</text><rect class="fk" x="581" y="594" width="24" height="16" rx="3"/><text class="bt fk" x="593" y="602">FK</text>
+<text class="c" x="405" y="626">todo_id</text><text class="ty" x="480" y="626">INTEGER</text><rect class="pk" x="553" y="618" width="24" height="16" rx="3"/><text class="bt pk" x="565" y="626">PK</text><rect class="fk" x="581" y="618" width="24" height="16" rx="3"/><text class="bt fk" x="593" y="626">FK</text>
+<text class="c" x="405" y="650">tag_id</text><text class="ty" x="480" y="650">INTEGER</text><rect class="pk" x="553" y="642" width="24" height="16" rx="3"/><text class="bt pk" x="565" y="650">PK</text><rect class="fk" x="581" y="642" width="24" height="16" rx="3"/><text class="bt fk" x="593" y="650">FK</text>
+<rect class="pk" x="405" y="666" width="24" height="16" rx="3"/><text class="bt pk" x="417" y="674">PK</text><text class="cp" x="437" y="674">(todo_id, tag_id)</text>
+<rect class="fk" x="405" y="690" width="24" height="16" rx="3"/><text class="bt fk" x="417" y="698">FK</text><text class="cf" x="437" y="698">① (todo_id, user_id)</text>
+<rect class="fk" x="405" y="714" width="24" height="16" rx="3"/><text class="bt fk" x="417" y="722">FK</text><text class="cf" x="437" y="722">② (tag_id, user_id)</text>
+
+<!-- 矢印：外部キー → 指される側 -->
+<path class="ar" d="M130 298 V142 H266" marker-end="url(#at)"/>
+<text class="lb m" x="198" y="128">user_id → users.id</text>
+<text class="lbs m" x="198" y="156">CASCADE</text>
+
+<path class="ar" d="M380 298 V230" marker-end="url(#at)"/>
+<text class="lb" x="388" y="256">user_id → users.id</text>
+<text class="lbs" x="388" y="272">CASCADE</text>
+
+<path class="ar" d="M630 298 V142 H494" marker-end="url(#at)"/>
+<text class="lb m" x="562" y="128">user_id → users.id</text>
+<text class="lbs m" x="562" y="156">CASCADE</text>
+
+<path class="ar" d="M393 698 H340 V478" marker-end="url(#at)"/>
+<text class="lb e" x="332" y="520">① (todo_id, user_id)</text>
+<text class="lb e" x="332" y="536">→ todos (id, user_id)</text>
+<text class="lbs e" x="332" y="552">CASCADE</text>
+
+<path class="ar" d="M617 722 H690 V454" marker-end="url(#at)"/>
+<text class="lb e" x="682" y="484">② (tag_id, user_id)</text>
+<text class="lb e" x="682" y="500">→ tags (id, user_id)</text>
+<text class="lbs e" x="682" y="516">CASCADE</text>
+
+<!-- 中身の例 -->
+<rect class="band" x="10" y="770" width="740" height="420" rx="12"/>
+<text class="h" x="24" y="792">中身の例：todo_tag の1行 ＝「この ToDo に、このタグが付いている」1組（値は説明用）</text>
+
+<rect class="tb" x="20" y="812" width="200" height="100"/>
+<rect class="hd" x="20" y="812" width="200" height="28"/>
+<text class="h" x="30" y="826">todos</text>
+<line class="sep" x1="20" y1="864" x2="220" y2="864"/><line class="sep" x1="20" y1="888" x2="220" y2="888"/>
+<text class="ty" x="30" y="852">id</text><text class="ty" x="62" y="852">text</text><text class="ty" x="160" y="852">user_id</text>
+<text class="c" x="30" y="876">5</text><text class="s" x="62" y="876">牛乳を買う</text><text class="c" x="160" y="876">1</text>
+<text class="c" x="30" y="900">8</text><text class="s" x="62" y="900">部屋の掃除</text><text class="c" x="160" y="900">1</text>
+
+<rect class="tb" x="280" y="812" width="200" height="124"/>
+<rect class="hd" x="280" y="812" width="200" height="28"/>
+<text class="h" x="290" y="826">todo_tag</text>
+<line class="sep" x1="280" y1="864" x2="480" y2="864"/><line class="sep" x1="280" y1="888" x2="480" y2="888"/><line class="sep" x1="280" y1="912" x2="480" y2="912"/>
+<text class="ty" x="290" y="852">user_id</text><text class="ty" x="356" y="852">todo_id</text><text class="ty" x="420" y="852">tag_id</text>
+<text class="c" x="300" y="876">1</text><text class="c" x="366" y="876">5</text><text class="c" x="430" y="876">6</text>
+<text class="c" x="300" y="900">1</text><text class="c" x="366" y="900">5</text><text class="c" x="430" y="900">10</text>
+<text class="c" x="300" y="924">1</text><text class="c" x="366" y="924">8</text><text class="c" x="430" y="924">10</text>
+
+<rect class="tb" x="540" y="812" width="200" height="124"/>
+<rect class="hd" x="540" y="812" width="200" height="28"/>
+<text class="h" x="550" y="826">tags</text>
+<rect class="ngb" x="541" y="913" width="198" height="22"/>
+<line class="sep" x1="540" y1="864" x2="740" y2="864"/><line class="sep" x1="540" y1="888" x2="740" y2="888"/><line class="sep" x1="540" y1="912" x2="740" y2="912"/>
+<text class="ty" x="550" y="852">id</text><text class="ty" x="582" y="852">name</text><text class="ty" x="680" y="852">user_id</text>
+<text class="c" x="550" y="876">6</text><text class="c" x="582" y="876">work</text><text class="c" x="680" y="876">1</text>
+<text class="c" x="550" y="900">10</text><text class="s" x="582" y="900">家</text><text class="c" x="680" y="900">1</text>
+<text class="c" x="550" y="924">9</text><text class="s" x="582" y="924">家</text><text class="c" x="680" y="924">3</text><text class="s ng" x="700" y="924">d の</text>
+
+<path class="cn" d="M280 876 H220"/><path class="cn" d="M280 900 L220 876"/><path class="cn" d="M280 924 L220 900"/>
+<path class="cn" d="M480 876 H540"/><path class="cn" d="M480 900 H540"/><path class="cn" d="M480 924 L540 900"/>
+<circle cx="220" cy="876" r="2.5" fill="#888780"/><circle cx="220" cy="900" r="2.5" fill="#888780"/>
+<circle cx="540" cy="876" r="2.5" fill="#888780"/><circle cx="540" cy="900" r="2.5" fill="#888780"/>
+
+<text class="s" x="24" y="956">・ToDo 5 にはタグが2つ → todo_tag に2行。タグ 10（家）は ToDo 2つに付いている → これも2行</text>
+<text class="s" x="24" y="974">・todos にも tags にも「相手」の列はない。どの組が付いているかは todo_tag だけが持つ（多対多）</text>
+
+<text class="h" x="24" y="1006">入れようとする行を、2つの列の外部キーが確かめる（c ＝ 1、d ＝ 3）</text>
+<rect class="tb" x="20" y="1022" width="720" height="130"/>
+<rect class="hd" x="20" y="1022" width="720" height="40"/>
+<line class="sep" x1="300" y1="1022" x2="300" y2="1152"/><line class="sep" x1="470" y1="1022" x2="470" y2="1152"/><line class="sep" x1="640" y1="1022" x2="640" y2="1152"/>
+<line class="sep" x1="20" y1="1092" x2="740" y2="1092"/><line class="sep" x1="20" y1="1122" x2="740" y2="1122"/>
+<text class="s" x="30" y="1034">入れようとする行</text><text class="ty" x="30" y="1050">(user_id, todo_id, tag_id)</text>
+<text class="s" x="310" y="1034">① todos に</text><text class="ty" x="310" y="1050">(todo_id, user_id) はある？</text>
+<text class="s" x="480" y="1034">② tags に</text><text class="ty" x="480" y="1050">(tag_id, user_id) はある？</text>
+<text class="s" x="650" y="1042">結果</text>
+
+<text class="c" x="30" y="1077">(1, 5, 6)</text><text class="s" x="110" y="1077">c の ToDo に c のタグ</text>
+<text class="c" x="310" y="1077">(5, 1)</text><text class="s ok" x="370" y="1077">ある ○</text>
+<text class="c" x="480" y="1077">(6, 1)</text><text class="s ok" x="540" y="1077">ある ○</text>
+<text class="h ok" x="650" y="1077">入る</text>
+
+<rect class="ngb" x="471" y="1093" width="168" height="28"/>
+<text class="c" x="30" y="1107">(1, 5, 9)</text><text class="s" x="110" y="1107">c の ToDo に d のタグ</text>
+<text class="c" x="310" y="1107">(5, 1)</text><text class="s ok" x="370" y="1107">ある ○</text>
+<text class="c" x="480" y="1107">(9, 1)</text><text class="s ng" x="540" y="1107">ない ×</text>
+<text class="h ng" x="650" y="1107">止まる</text>
+
+<rect class="ngb" x="301" y="1123" width="168" height="28"/>
+<text class="c" x="30" y="1137">(3, 5, 9)</text><text class="s" x="110" y="1137">user_id を d と偽る</text>
+<text class="c" x="310" y="1137">(5, 3)</text><text class="s ng" x="370" y="1137">ない ×</text>
+<text class="c" x="480" y="1137">(9, 3)</text><text class="s ok" x="540" y="1137">ある ○</text>
+<text class="h ng" x="650" y="1137">止まる</text>
+
+<text class="s" x="24" y="1172">ToDo の持ち主とタグの持ち主が、同じ user_id でそろわないと入らない。どちらを偽っても、①か②のどちらかで止まる</text>
+</svg>

@@ -96,8 +96,10 @@ CREATE TABLE IF NOT EXISTS todos (
 | `DEFAULT 値` | 指定しなかったときの値 | ✅ |
 | `PRIMARY KEY` | 主キー（NOT NULL を含む） | ✅ |
 | `GENERATED ALWAYS AS IDENTITY` | 番号を自動でつける（古い書き方は `SERIAL`）。消した番号は使い回さない | ✅ |
-| `UNIQUE` | 重複禁止 | ✅（`users.email`） |
+| `UNIQUE` | 重複禁止。`UNIQUE (列, 列)` で組にもかけられる。`NULL` 同士は別物として扱うので、`NOT NULL` と一緒に使う | ✅（`users.email`、`tags (user_id, name)`） |
+| `PRIMARY KEY (列, 列)` | 2つの列の組を主キーにする。組の重複も、どちらかが空なのもだめ | ✅（`todo_tag`） |
 | `REFERENCES 別テーブル(列)` | 別のテーブルの行を指す（外部キー）。相手にない値は入れられない | ✅（`todos.user_id`） |
+| `FOREIGN KEY (列, 列) REFERENCES 表 (列, 列)` | 2つの列の組で別の表の行を指す。指される側の組には `UNIQUE` か主キーが要る（ないと `there is no unique constraint matching given keys`） | ✅（`todo_tag`） |
 | `ON DELETE CASCADE` | 指している相手が消えたら、こちらの行も消える | ✅ |
 | `ON DELETE RESTRICT` | こちらの行が残っていたら、相手を消せない（何も書かないときもほぼ同じ） | |
 | `ON DELETE SET NULL` | 相手が消えたら、こちらの列を NULL にする（NOT NULL の列には使えない） | |
@@ -108,6 +110,25 @@ CREATE TABLE IF NOT EXISTS todos (
 - そのかわり、すべての SQL に `WHERE user_id = ...` をつける責任がアプリにある。1つでも忘れると、他人の ToDo が見える・変えられる（7-5 の「入口の係」と、PATCH・DELETE の `AND user_id = ...` はそのため）
 - 行が多くなったら、`todos (user_id)` に索引を作る（今は作っていない。数百行なら全部の行を見ても一瞬で終わる）
 - もう一段守るなら、PostgreSQL の「行単位のセキュリティ」（Row Level Security、RLS）で、DB 自身に「自分の行しか見せない」決まりを持たせる方法もある（Supabase などが使う）
+
+**表とつながりの図（8-2 の時点）**
+
+![todo_app の表とつながり](images/tables.svg)
+
+- 1対多（ユーザーと ToDo）は、「多」の側に `user_id` の列を1つ置けば済む。多対多（ToDo とタグ）は、どちらの側にも1つの列では置けないので、組を1行ずつ持つ中間の表 `todo_tag` を作る（生徒と部活なら、入部届の束）
+- `todo_tag` の1行は「この ToDo に、このタグが付いている」1組。タグを2つ付けた ToDo は2行になる
+- `todo_tag` の外部キーは2つの列の組。①`(todo_id, user_id)` が `todos` に、②`(tag_id, user_id)` が `tags` にあるかを確かめるので、ToDo の持ち主とタグの持ち主がそろわないと入らない（`user_id` を偽っても、どちらかで止まる）
+
+消したときに起きること（このアプリの外部キーはすべて `ON DELETE CASCADE`）：
+
+| 消すもの | 一緒に消えるもの | 残るもの |
+|---|---|---|
+| タグ | そのタグの `todo_tag` の行（ToDo から外れる） | ToDo |
+| ToDo | その ToDo の `todo_tag` の行 | タグ |
+| ユーザー | その人の `sessions`・`todos`・`tags`。そこから、その人の `todo_tag` | ほかの人の行 |
+
+- 消えるのは「指している側」だけ。`todos` も `tags` も `todo_tag` を指していないので、`todo_tag` の行が消えても ToDo やタグは残る
+- `ON DELETE` を書かないと `NO ACTION`（指されている行は消させない）になり、`violates foreign key constraint ... is still referenced from table "todo_tag"` で削除そのものが止まる（8-1 で出たエラー）
 
 ### 追加・取得・変更・削除
 | 操作 | 書き方 | API | 使った |
