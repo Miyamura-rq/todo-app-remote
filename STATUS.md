@@ -15,7 +15,7 @@
 
 ## 次にやること
 - 会社の PC では `app/` で `git fetch` → `git switch feature/1-tags-search`。そのあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2・8-1 で `todos` が変わったため）。`npm install` も行う（argon2・cookie-parser を入れたため）
-- ステップ8〜10 はメンターの Issue #1〜#3（タグと絞り込み → リストの共有とリアルタイム → 画像から ToDo）。本文の写しは `docs/learning/issues/`。ブランチを切って PR を出す（D-0025）。次は 8-4 付け外しと一覧のタグ（`JOIN` の SQL も）。始めに S-0029 の要復習を、表の図（`reference/images/tables.svg`。S-0030）を見ながら確かめ直す。最終ステップ（品質・公開）の中身は、始めるときに決める（D-0024）。自宅の Mac の DB：c（id 1）のタグ work（6）と ToDo 牛乳を買う（5）、d（id 3）のタグ 家（9）。PR に書く理由のメモは 8-7 までに学習者が書く
+- ステップ8〜10 はメンターの Issue #1〜#3（タグと絞り込み → リストの共有とリアルタイム → 画像から ToDo）。本文の写しは `docs/learning/issues/`。ブランチを切って PR を出す（D-0025）。8-4 を始めた（A 一覧のタグ → B 付け外し → C 作るときにタグも）。A の課題と、S-0029 の要復習の確かめ直し2問を出したところ。最終ステップ（品質・公開）の中身は、始めるときに決める（D-0024）。自宅の Mac の DB：c（id 1）のタグ work（6）と ToDo 牛乳を買う（5）、d（id 3）のタグ 家（9）。PR に書く理由のメモは 8-7 までに学習者が書く
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 
