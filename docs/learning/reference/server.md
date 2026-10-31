@@ -206,3 +206,17 @@ curl -i -X DELETE http://localhost:3000/api/todos/1
 | `\| 列 \| 列 \|` | 表 |
 
 - 改行だけの行は、つながって1つの段落になる。段落を分けるには空行を入れる
+
+## 10. このアプリのサーバーの流れと API（図。8-3 の時点）
+
+![server.ts の流れ](images/server-flow.svg)
+
+- 起動したときに1回だけ：`import` → DB への窓口（`new Pool`）→ `app.use` とルートを**登録するだけ** → `app.listen(3000)`
+- リクエストが来るたびに：登録した順に上から調べ、パスとメソッドが合うものだけが動く。返事（`res.json`・`res.status(...).end()`）をしたらそこで終わり。`next()` を呼んだときだけ下へ進む
+- `app.use(関数)` は全部のリクエストに、`app.use("/api/todos", 関数)` は `/api/todos` で始まるパス（`/api/todos/5` も）にだけ効く。`app.get("/api/me", requireLogin, 関数)` のように、ルートの引数に並べると、そのルートだけに効く
+- 入口の係 `requireLogin` は、Cookie → SHA-256 → `sessions` で調べて、名札 `res.locals.userId` をつけて `next()`。だめなら 401 で終わり
+
+![画面の関数と API](images/api-map.svg)
+
+- 画面の関数は、ボタンやフォームのイベントで呼ばれ、`fetch` で API を呼ぶ。追加・完了・削除のあとは、いつも `loadTodos()` で一覧を取り直す（D-0009）
+- タグの API（8-3）は、まだ画面から呼んでいない（8-6 で使う）

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="964" viewBox="0 0 760 964" role="img">
+<title>画面の関数と API の対応</title>
+<desc>main.ts の関数が、いつ呼ばれ、どの API を呼ぶかと、それぞれの API が何をして、どの表を使うかを示す図。下には、サーバーと話さず画面だけを作る関数の一覧。</desc>
+<style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;dominant-baseline:central}
+.m{text-anchor:middle}
+.t{font-size:15px;font-weight:600;fill:#2C2C2A}
+.h{font-size:13px;font-weight:600;fill:#2C2C2A}
+.s{font-size:12px;fill:#5F5E5A}
+.xs{font-size:10px;fill:#5F5E5A}
+.c{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:12px;font-weight:600;fill:#2C2C2A}
+.cn{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:11px;fill:#2C2C2A}
+.ct{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10px;font-weight:600}
+rect{stroke-width:0.9}
+.gy rect,rect.gy{fill:#F1EFE8;stroke:#888780}
+.pu rect,rect.pu{fill:#EEEDFE;stroke:#534AB7}.pu .c{fill:#3C3489}
+rect.gr{fill:#E1F5EE;stroke:#0F6E56}.gt{fill:#085041}
+rect.wh{fill:#FFFFFF;stroke:#888780}
+.dash rect{fill:#FFFFFF;stroke:#888780;stroke-dasharray:5 4}
+.band{fill:none;stroke:#B4B2A9;stroke-dasharray:4 4}
+.ln{stroke:#534AB7;stroke-width:1.4;fill:none}
+.lnd{stroke:#888780;stroke-width:1.2;stroke-dasharray:4 3;fill:none}
+.call{stroke:#5F5E5A;stroke-width:1.2;fill:none}
+line.sep{stroke:#D3D1C7;stroke-width:0.8}
+</style>
+<defs>
+<marker id="ap" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<rect x="0" y="0" width="760" height="964" fill="#FFFFFF" stroke="none"/>
+
+<text class="t" x="20" y="22">画面（main.ts）の関数と、呼ぶ API（8-3 の時点）</text>
+<rect class="gy" x="20" y="42" width="14" height="14" rx="3"/><text class="s" x="40" y="49">main.ts の関数（いつ呼ばれるか）</text>
+<rect class="pu" x="264" y="42" width="14" height="14" rx="3"/><text class="s" x="284" y="49">API（何をするか・使う表）</text>
+<rect class="gr" x="450" y="42" width="24" height="16" rx="3"/><text class="ct gt m" x="462" y="50">係</text><text class="s" x="480" y="49">requireLogin を通る（だめなら 401）</text>
+
+<text class="xs" x="20" y="76">ブラウザ（main.ts）</text>
+<text class="xs" x="340" y="76">サーバー（server.ts）</text>
+
+<!-- 1 start -->
+<g class="gy"><rect x="20" y="86" width="270" height="44" rx="8"/><text class="c" x="32" y="100">start()</text><text class="s" x="32" y="118">ページを開いたとき</text></g>
+<g class="pu"><rect x="340" y="86" width="400" height="44" rx="8"/><text class="c" x="352" y="100">GET /api/me</text><text class="s" x="352" y="118">ログイン中のユーザー {id, email}・表 users。401 → ログイン画面</text></g>
+<rect class="gr" x="706" y="92" width="24" height="16" rx="3"/><text class="ct gt m" x="718" y="100">係</text>
+<line class="ln" x1="291" y1="108" x2="338" y2="108" marker-end="url(#ap)"/>
+
+<!-- 2 register -->
+<g class="gy"><rect x="20" y="140" width="270" height="44" rx="8"/><text class="c" x="32" y="154">register()</text><text class="s" x="32" y="172">「登録する」ボタン</text></g>
+<g class="pu"><rect x="340" y="140" width="400" height="44" rx="8"/><text class="c" x="352" y="154">POST /api/users</text><text class="s" x="352" y="172">argon2 でハッシュ → users に足す（201・400・409）</text></g>
+<line class="ln" x1="291" y1="162" x2="338" y2="162" marker-end="url(#ap)"/>
+
+<!-- 3 login -->
+<g class="gy"><rect x="20" y="194" width="270" height="44" rx="8"/><text class="c" x="32" y="208">login()</text><text class="s" x="32" y="226">ログインフォームの送信</text></g>
+<g class="pu"><rect x="340" y="194" width="400" height="44" rx="8"/><text class="c" x="352" y="208">POST /api/login</text><text class="s" x="352" y="226">users で照合 → 合言葉を sessions に保存 → Cookie</text></g>
+<line class="ln" x1="291" y1="216" x2="338" y2="216" marker-end="url(#ap)"/>
+<path class="call" d="M20 168 H12 V212 H18" marker-end="url(#ag)"/>
+<text class="xs" x="196" y="154">成功したら login()</text>
+
+<!-- 4 logout -->
+<g class="gy"><rect x="20" y="248" width="270" height="44" rx="8"/><text class="c" x="32" y="262">logout()</text><text class="s" x="32" y="280">「ログアウト」ボタン</text></g>
+<g class="pu"><rect x="340" y="248" width="400" height="44" rx="8"/><text class="c" x="352" y="262">POST /api/logout</text><text class="s" x="352" y="280">sessions の行を消し、Cookie も消す（いつでも 204）</text></g>
+<line class="ln" x1="291" y1="270" x2="338" y2="270" marker-end="url(#ap)"/>
+
+<!-- 5 loadTodos -->
+<g class="gy"><rect x="20" y="302" width="270" height="44" rx="8"/><text class="c" x="32" y="316">loadTodos()</text><text class="s" x="32" y="334">ToDo 画面にしたとき・操作のあと</text></g>
+<g class="pu"><rect x="340" y="302" width="400" height="44" rx="8"/><text class="c" x="352" y="316">GET /api/todos</text><text class="s" x="352" y="334">自分の ToDo を id 順に・表 todos → render()</text></g>
+<rect class="gr" x="706" y="308" width="24" height="16" rx="3"/><text class="ct gt m" x="718" y="316">係</text>
+<line class="ln" x1="291" y1="324" x2="338" y2="324" marker-end="url(#ap)"/>
+
+<!-- 6 postTodo -->
+<g class="gy"><rect x="20" y="356" width="270" height="44" rx="8"/><text class="c" x="32" y="370">postTodo()</text><text class="s" x="32" y="388">ToDo フォームの送信</text></g>
+<g class="pu"><rect x="340" y="356" width="400" height="44" rx="8"/><text class="c" x="352" y="370">POST /api/todos</text><text class="s" x="352" y="388">todos に1行足す（201）→ loadTodos()</text></g>
+<rect class="gr" x="706" y="362" width="24" height="16" rx="3"/><text class="ct gt m" x="718" y="370">係</text>
+<line class="ln" x1="291" y1="378" x2="338" y2="378" marker-end="url(#ap)"/>
+
+<!-- 7 changeDone -->
+<g class="gy"><rect x="20" y="410" width="270" height="44" rx="8"/><text class="c" x="32" y="424">changeDone(todo)</text><text class="s" x="32" y="442">チェックボックスを変えたとき</text></g>
+<g class="pu"><rect x="340" y="410" width="400" height="44" rx="8"/><text class="c" x="352" y="424">PATCH /api/todos/:id</text><text class="s" x="352" y="442">done を切り替える。他人の id は 404 → loadTodos()</text></g>
+<rect class="gr" x="706" y="416" width="24" height="16" rx="3"/><text class="ct gt m" x="718" y="424">係</text>
+<line class="ln" x1="291" y1="432" x2="338" y2="432" marker-end="url(#ap)"/>
+
+<!-- 8 deleteTodo -->
+<g class="gy"><rect x="20" y="464" width="270" height="44" rx="8"/><text class="c" x="32" y="478">deleteTodo(todo)</text><text class="s" x="32" y="496">「削除」ボタン</text></g>
+<g class="pu"><rect x="340" y="464" width="400" height="44" rx="8"/><text class="c" x="352" y="478">DELETE /api/todos/:id</text><text class="s" x="352" y="496">自分の ToDo を消す（todo_tag の行も）→ loadTodos()</text></g>
+<rect class="gr" x="706" y="470" width="24" height="16" rx="3"/><text class="ct gt m" x="718" y="478">係</text>
+<line class="ln" x1="291" y1="486" x2="338" y2="486" marker-end="url(#ap)"/>
+
+<!-- 9-11 tags -->
+<g class="dash"><rect x="20" y="518" width="270" height="152" rx="8"/></g>
+<text class="h" x="32" y="540">（まだない）</text>
+<text class="s" x="32" y="564">タグの API は、画面からは</text>
+<text class="s" x="32" y="582">まだ呼んでいない。</text>
+<text class="s" x="32" y="604">8-6 で、タグを選ぶ・作る・</text>
+<text class="s" x="32" y="622">消す画面から呼ぶ。</text>
+<text class="s" x="32" y="646">今は curl で確かめた（8-3）。</text>
+<g class="pu"><rect x="340" y="518" width="400" height="44" rx="8"/><text class="c" x="352" y="532">GET /api/tags</text><text class="s" x="352" y="550">自分のタグを id 順に [{id, name}]・表 tags</text></g>
+<rect class="gr" x="706" y="524" width="24" height="16" rx="3"/><text class="ct gt m" x="718" y="532">係</text>
+<g class="pu"><rect x="340" y="572" width="400" height="44" rx="8"/><text class="c" x="352" y="586">POST /api/tags</text><text class="s" x="352" y="604">空白を取り小文字に → tags に足す（201・400・409）</text></g>
+<rect class="gr" x="706" y="578" width="24" height="16" rx="3"/><text class="ct gt m" x="718" y="586">係</text>
+<g class="pu"><rect x="340" y="626" width="400" height="44" rx="8"/><text class="c" x="352" y="640">DELETE /api/tags/:id</text><text class="s" x="352" y="658">自分のタグを消す（todo_tag の行も）（204・404）</text></g>
+<rect class="gr" x="706" y="632" width="24" height="16" rx="3"/><text class="ct gt m" x="718" y="640">係</text>
+<line class="lnd" x1="291" y1="540" x2="338" y2="540"/>
+<line class="lnd" x1="291" y1="594" x2="338" y2="594"/>
+<line class="lnd" x1="291" y1="648" x2="338" y2="648"/>
+
+<!-- 画面だけの関数 -->
+<rect class="band" x="10" y="690" width="740" height="264" rx="12"/>
+<text class="h" x="24" y="710">サーバーと話さない関数（画面を切り替える・作る）</text>
+<rect class="wh" x="20" y="724" width="720" height="214"/>
+<rect class="gy" x="20" y="724" width="720" height="28"/>
+<line class="sep" x1="200" y1="724" x2="200" y2="938"/><line class="sep" x1="580" y1="724" x2="580" y2="938"/>
+<line class="sep" x1="20" y1="783" x2="740" y2="783"/><line class="sep" x1="20" y1="814" x2="740" y2="814"/><line class="sep" x1="20" y1="845" x2="740" y2="845"/><line class="sep" x1="20" y1="876" x2="740" y2="876"/><line class="sep" x1="20" y1="907" x2="740" y2="907"/>
+<text class="s" x="30" y="738">関数</text><text class="s" x="210" y="738">すること</text><text class="s" x="590" y="738">呼ぶところ</text>
+<text class="cn" x="30" y="768">showLogin(message)</text><text class="s" x="210" y="768">ログイン画面を出し、ToDo 画面を隠す。文を出す</text><text class="s" x="590" y="768">start・login・401 など</text>
+<text class="cn" x="30" y="799">showTodos(email)</text><text class="s" x="210" y="799">ToDo 画面を出し、メールを表示 → loadTodos()</text><text class="s" x="590" y="799">start・login</text>
+<text class="cn" x="30" y="830">render()</text><text class="s" x="210" y="830">todos の配列から一覧を作り直し、残りの件数を出す</text><text class="s" x="590" y="830">loadTodos・logout</text>
+<text class="cn" x="30" y="861">createTodoElement(todo)</text><text class="s" x="210" y="861">1件の li を作り、チェックと削除のイベントをつける</text><text class="s" x="590" y="861">render</text>
+<text class="cn" x="30" y="892">formatDeadline(deadline)</text><text class="s" x="210" y="892">"2026-10-10" を "10/10" にする</text><text class="cn" x="590" y="892">createTodoElement</text>
+<text class="cn" x="30" y="923">getElement(selector)</text><text class="s" x="210" y="923">要素を探す。なければエラーで止める</text><text class="s" x="590" y="923">読み込んだとき</text>
+</svg>

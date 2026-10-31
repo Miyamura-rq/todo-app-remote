@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1232" viewBox="0 0 760 1232" role="img">
+<title>server.ts の流れ</title>
+<desc>server.ts が起動したときに1回だけすることと、リクエストが来るたびに app.use とルートを書いた順に上から通る道、入口の係 requireLogin の中身、5つのリクエストの例がどこを通るかを示す図。</desc>
+<style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;dominant-baseline:central}
+.m{text-anchor:middle}
+.t{font-size:15px;font-weight:600;fill:#2C2C2A}
+.h{font-size:13px;font-weight:600;fill:#2C2C2A}
+.s{font-size:12px;fill:#5F5E5A}
+.xs{font-size:10px;fill:#5F5E5A}
+.c{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:11px;fill:#2C2C2A}
+.cs{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10px;fill:#5F5E5A}
+rect{stroke-width:0.9}
+.gy rect,rect.gy{fill:#F1EFE8;stroke:#888780}
+.gr rect,rect.gr{fill:#E1F5EE;stroke:#0F6E56}.gr .h{fill:#085041}
+.pu rect,rect.pu{fill:#EEEDFE;stroke:#534AB7}.pu .h{fill:#3C3489}
+.or rect,rect.or{fill:#FAEEDA;stroke:#BA7517}.or .h{fill:#854F0B}
+rect.wh{fill:#FFFFFF;stroke:#888780}
+rect.na{fill:#ECEBE6;stroke:none}
+.band{fill:none;stroke:#B4B2A9;stroke-dasharray:4 4}
+.road{stroke:#5F5E5A;stroke-width:2;fill:none}
+.ln{stroke:#5F5E5A;stroke-width:1.4;fill:none}
+.dg{stroke:#0F6E56;stroke-width:1.2;stroke-dasharray:4 3;fill:none}
+.ng{fill:#993C1D}.ok{fill:#0F6E56}.pt{fill:#3C3489}.ot{fill:#854F0B}
+line.sep{stroke:#D3D1C7;stroke-width:0.8}
+</style>
+<defs>
+<marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<rect x="0" y="0" width="760" height="1232" fill="#FFFFFF" stroke="none"/>
+
+<text class="t" x="20" y="22">server.ts：起動したときと、リクエストが来るたびに通る道（8-3 の時点）</text>
+<rect class="gy" x="20" y="42" width="14" height="14" rx="3"/><text class="s" x="40" y="49">全部のリクエストが通る</text>
+<rect class="gr" x="196" y="42" width="14" height="14" rx="3"/><text class="s" x="216" y="49">入口の係（requireLogin）</text>
+<rect class="pu" x="396" y="42" width="14" height="14" rx="3"/><text class="s" x="416" y="49">ルート（API）</text>
+<rect class="or" x="526" y="42" width="14" height="14" rx="3"/><text class="s" x="546" y="49">最後の受け皿</text>
+
+<!-- 起動したとき -->
+<rect class="band" x="10" y="70" width="740" height="152" rx="12"/>
+<text class="h" x="24" y="90">起動したとき（npm run dev のあと、1回だけ）</text>
+<g class="gy"><rect x="22" y="106" width="106" height="52" rx="8"/><text class="c m" x="75" y="124">import</text><text class="xs m" x="75" y="142">express・pg など</text></g>
+<line class="ln" x1="129" y1="132" x2="137" y2="132" marker-end="url(#ag)"/>
+<g class="gy"><rect x="140" y="106" width="106" height="52" rx="8"/><text class="s m" x="193" y="124">DATE を文字列に</text><text class="cs m" x="193" y="142">setTypeParser</text></g>
+<line class="ln" x1="247" y1="132" x2="255" y2="132" marker-end="url(#ag)"/>
+<g class="gy"><rect x="258" y="106" width="106" height="52" rx="8"/><text class="c m" x="311" y="124">DATABASE_URL</text><text class="xs m" x="311" y="142">なければ止める</text></g>
+<line class="ln" x1="365" y1="132" x2="373" y2="132" marker-end="url(#ag)"/>
+<g class="gy"><rect x="376" y="106" width="106" height="52" rx="8"/><text class="c m" x="429" y="124">new Pool</text><text class="xs m" x="429" y="142">DB への窓口</text></g>
+<line class="ln" x1="483" y1="132" x2="491" y2="132" marker-end="url(#ag)"/>
+<g class="gy"><rect x="494" y="106" width="106" height="52" rx="8"/><text class="s m" x="547" y="124">app.use・ルート</text><text class="xs m" x="547" y="142">を登録するだけ</text></g>
+<line class="ln" x1="601" y1="132" x2="609" y2="132" marker-end="url(#ag)"/>
+<g class="gy"><rect x="612" y="106" width="126" height="52" rx="8"/><text class="c m" x="675" y="124">app.listen(3000)</text><text class="xs m" x="675" y="142">待ち受け開始</text></g>
+<text class="s" x="24" y="180">登録した app.use とルートは、この時点ではまだ動かない。</text>
+<text class="s" x="24" y="200">リクエストが来るたびに、書いた順に上から調べられる（下の道）。</text>
+
+<!-- リクエストが来るたびに -->
+<rect class="band" x="10" y="236" width="740" height="728" rx="12"/>
+<text class="h" x="24" y="256">リクエストが来るたびに（書いた順に上から。パスとメソッドが合うものだけ動き、返事をしたらそこで終わり）</text>
+<path class="road" d="M34 278 V944" marker-end="url(#ag)"/>
+<text class="xs m" x="34" y="270">届く</text>
+
+<g class="gy"><rect x="50" y="276" width="430" height="48" rx="8"/>
+<text class="c" x="62" y="292">app.use(express.json())</text>
+<text class="s" x="62" y="311">全部：送られた JSON を読んで req.body に入れる</text></g>
+
+<g class="gy"><rect x="50" y="334" width="430" height="48" rx="8"/>
+<text class="c" x="62" y="350">app.use(cookieParser())</text>
+<text class="s" x="62" y="369">全部：Cookie を読んで req.cookies に入れる</text></g>
+
+<g class="pu"><rect x="50" y="392" width="430" height="88" rx="8"/>
+<text class="h" x="62" y="407">ログイン前でも使うルート（係なし）</text>
+<text class="c" x="62" y="428">POST   /api/users</text><text class="s" x="230" y="428">登録</text>
+<text class="c" x="62" y="448">POST   /api/login</text><text class="s" x="230" y="448">ログイン（Cookie を渡す）</text>
+<text class="c" x="62" y="468">POST   /api/logout</text><text class="s" x="230" y="468">ログアウト（Cookie を消す）</text></g>
+
+<g class="pu"><rect x="50" y="490" width="430" height="48" rx="8"/>
+<text class="c" x="62" y="506">app.get("/api/me", requireLogin, …)</text>
+<text class="s" x="62" y="525">このルートだけ係を通す → ログイン中のユーザーを返す</text></g>
+
+<g class="gr"><rect x="50" y="548" width="430" height="48" rx="8"/>
+<text class="c" x="62" y="564">app.use("/api/todos", requireLogin)</text>
+<text class="s" x="62" y="583">/api/todos で始まるパスだけ：係が名札をつける</text></g>
+
+<g class="pu"><rect x="50" y="606" width="430" height="110" rx="8"/>
+<text class="h" x="62" y="621">ToDo のルート</text>
+<text class="c" x="62" y="642">GET    /api/todos</text><text class="s" x="230" y="642">自分の ToDo の一覧</text>
+<text class="c" x="62" y="662">POST   /api/todos</text><text class="s" x="230" y="662">ToDo を足す</text>
+<text class="c" x="62" y="682">PATCH  /api/todos/:id</text><text class="s" x="230" y="682">完了を切り替える</text>
+<text class="c" x="62" y="702">DELETE /api/todos/:id</text><text class="s" x="230" y="702">ToDo を消す</text></g>
+
+<g class="gr"><rect x="50" y="726" width="430" height="48" rx="8"/>
+<text class="c" x="62" y="742">app.use("/api/tags", requireLogin)</text>
+<text class="s" x="62" y="761">/api/tags で始まるパスだけ：係が名札をつける</text></g>
+
+<g class="pu"><rect x="50" y="784" width="430" height="90" rx="8"/>
+<text class="h" x="62" y="799">タグのルート（8-3）</text>
+<text class="c" x="62" y="820">GET    /api/tags</text><text class="s" x="230" y="820">自分のタグの一覧</text>
+<text class="c" x="62" y="840">POST   /api/tags</text><text class="s" x="230" y="840">タグを作る</text>
+<text class="c" x="62" y="860">DELETE /api/tags/:id</text><text class="s" x="230" y="860">タグを消す</text></g>
+
+<g class="or"><rect x="50" y="884" width="430" height="66" rx="8"/>
+<text class="c" x="62" y="900">app.use(express.static("public"))</text>
+<text class="s" x="62" y="919">上のどれにも当たらなかったもの：public/ のファイルを返す</text>
+<text class="s" x="62" y="937">（/ → index.html、/main.js、/style.css）。それもなければ 404</text></g>
+
+<!-- 右：きまり -->
+<g class="gy"><rect x="500" y="276" width="240" height="160" rx="8"/>
+<text class="h" x="512" y="294">通り方のきまり</text>
+<text class="s" x="512" y="318">・上から順に、パスとメソッドが</text>
+<text class="s" x="512" y="336">　合うものだけ動く</text>
+<text class="s" x="512" y="358">・返事（res.json など）をしたら</text>
+<text class="s" x="512" y="376">　そこで終わり。next() で次へ</text>
+<text class="s" x="512" y="398">・app.use("/api/todos") は</text>
+<text class="s" x="512" y="416">　/api/todos/5 にも効く（前から一致）</text></g>
+
+<!-- 右：requireLogin -->
+<g class="gr"><rect x="500" y="472" width="240" height="228" rx="8"/>
+<text class="h" x="512" y="490">requireLogin（入口の係）</text>
+<text class="s" x="512" y="514">① Cookie の session がない</text>
+<text class="s ng" x="512" y="532">　→ 401 で終わり</text>
+<text class="s" x="512" y="554">② 合言葉を SHA-256 にする</text>
+<text class="s" x="512" y="576">③ sessions から、同じハッシュで</text>
+<text class="s" x="512" y="594">　期限内の行を探す</text>
+<text class="s ng" x="512" y="612">　→ なければ 401 で終わり</text>
+<text class="s" x="512" y="634">④ res.locals.userId に</text>
+<text class="s" x="512" y="652">　user_id を入れる（名札）</text>
+<text class="s ok" x="512" y="676">⑤ next() → 次のルートへ</text></g>
+<path class="dg" d="M481 514 H500"/>
+<path class="dg" d="M481 572 H500"/>
+<path class="dg" d="M481 750 H490 V690 H500"/>
+
+<!-- 右：ルートの中 -->
+<g class="pu"><rect x="500" y="716" width="240" height="166" rx="8"/>
+<text class="h" x="512" y="734">ルートの中（どれも同じ形）</text>
+<text class="s" x="512" y="758">① 名札 res.locals.userId と</text>
+<text class="s" x="512" y="776">　入力（req.body・req.params）</text>
+<text class="s" x="512" y="798">② 入力を確かめる → だめなら 400</text>
+<text class="s" x="512" y="820">③ SQL（user_id = $n をつけ、</text>
+<text class="s" x="512" y="838">　値はプレースホルダーで渡す）</text>
+<text class="s" x="512" y="860">④ 結果で 200・201・204・404・409</text></g>
+
+<!-- 例 -->
+<rect class="band" x="10" y="978" width="740" height="244" rx="12"/>
+<text class="h" x="24" y="998">例：5つのリクエストが、どこを通るか</text>
+<rect class="wh" x="20" y="1014" width="720" height="176"/>
+<rect class="gy" x="20" y="1014" width="720" height="36"/>
+<line class="sep" x1="250" y1="1014" x2="250" y2="1190"/>
+<line class="sep" x1="304" y1="1014" x2="304" y2="1190"/><line class="sep" x1="358" y1="1014" x2="358" y2="1190"/><line class="sep" x1="412" y1="1014" x2="412" y2="1190"/><line class="sep" x1="466" y1="1014" x2="466" y2="1190"/><line class="sep" x1="520" y1="1014" x2="520" y2="1190"/><line class="sep" x1="574" y1="1014" x2="574" y2="1190"/><line class="sep" x1="628" y1="1014" x2="628" y2="1190"/><line class="sep" x1="682" y1="1014" x2="682" y2="1190"/>
+<line class="sep" x1="20" y1="1078" x2="740" y2="1078"/><line class="sep" x1="20" y1="1106" x2="740" y2="1106"/><line class="sep" x1="20" y1="1134" x2="740" y2="1134"/><line class="sep" x1="20" y1="1162" x2="740" y2="1162"/>
+<text class="s" x="30" y="1032">リクエスト</text>
+<text class="cs m" x="277" y="1032">json</text>
+<text class="cs m" x="331" y="1032">cookie</text>
+<text class="xs m" x="385" y="1024">登録・</text><text class="xs m" x="385" y="1040">ログイン</text>
+<text class="cs m" x="439" y="1032">/me</text>
+<text class="xs m" x="493" y="1024">係</text><text class="cs m" x="493" y="1040">todos</text>
+<text class="xs m" x="547" y="1024">ToDo の</text><text class="xs m" x="547" y="1040">ルート</text>
+<text class="xs m" x="601" y="1024">係</text><text class="cs m" x="601" y="1040">tags</text>
+<text class="xs m" x="655" y="1024">タグの</text><text class="xs m" x="655" y="1040">ルート</text>
+<text class="cs m" x="711" y="1032">static</text>
+
+<!-- 1 GET /main.js -->
+<text class="c" x="30" y="1064">GET /main.js</text><text class="xs" x="128" y="1064">（ページを開く）</text>
+<text class="s m" x="277" y="1064">●</text><text class="s m" x="331" y="1064">●</text>
+<text class="s ot m" x="711" y="1064">◆ 200</text>
+<!-- 2 POST /api/login -->
+<rect class="na" x="413" y="1079" width="327" height="26"/>
+<text class="c" x="30" y="1092">POST /api/login</text>
+<text class="s m" x="277" y="1092">●</text><text class="s m" x="331" y="1092">●</text>
+<text class="s pt m" x="385" y="1092">◆ 200</text>
+<!-- 3 GET /api/todos Cookie あり -->
+<rect class="na" x="575" y="1107" width="165" height="26"/>
+<text class="c" x="30" y="1120">GET /api/todos</text><text class="xs" x="134" y="1120">（Cookie あり）</text>
+<text class="s m" x="277" y="1120">●</text><text class="s m" x="331" y="1120">●</text>
+<text class="s ok m" x="493" y="1120">● 名札</text>
+<text class="s pt m" x="547" y="1120">◆ 200</text>
+<!-- 4 GET /api/todos Cookie なし -->
+<rect class="na" x="521" y="1135" width="219" height="26"/>
+<text class="c" x="30" y="1148">GET /api/todos</text><text class="xs" x="134" y="1148">（Cookie なし）</text>
+<text class="s m" x="277" y="1148">●</text><text class="s m" x="331" y="1148">●</text>
+<text class="s ng m" x="493" y="1148">◆ 401</text>
+<!-- 5 DELETE /api/tags/4 d -->
+<rect class="na" x="683" y="1163" width="57" height="26"/>
+<text class="c" x="30" y="1176">DELETE /api/tags/4</text><text class="xs" x="160" y="1176">（d の Cookie）</text>
+<text class="s m" x="277" y="1176">●</text><text class="s m" x="331" y="1176">●</text>
+<text class="s ok m" x="601" y="1176">● 名札</text>
+<text class="s pt m" x="655" y="1176">◆ 404</text>
+
+<text class="xs" x="24" y="1200">● 通る　◆ ここで返事して終わり　空欄：パスが合わないので素通り　灰色：前で返事をしたので、もう届かない</text>
+<text class="xs" x="24" y="1214">5 は、d が c のタグ（4）を消そうとした例。係は通る（d は正しくログインしている）が、SQL に合う行がなく 404</text>
+</svg>
