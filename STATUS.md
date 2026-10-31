@@ -1,27 +1,23 @@
 # STATUS
 
-最終更新: 2026-10-31（S-0031、D-0028）
+最終更新: 2026-10-31（S-0032、D-0029）
 
 ## 現在地
-- ステップ8（タグと絞り込み・検索、Issue #1）。項目 8-1〜8-7 は `docs/learning/progress.md`。`app/` はブランチ `feature/1-tags-search` で作業中。8-1 で表の設計を決め（`tags`・`todo_tag`、2つの列の外部キー、タグを消すと外れるだけ。D-0026）、`db/schema.sql` をコミットしてブランチを push した（8-2 終了。`JOIN` の SQL は 8-4 で書く）。8-3 タグの API（`GET`・`POST /api/tags`、`DELETE /api/tags/:id`）を作ってコミット・push した（8-3 終了）。8-4 を A〜C に分けて始めた（`progress.md`）。「決めてほしいこと」は学習者が決めて PR に書く（①② は 8-1 で決定、③ は 8-5。D-0025）
-- ステップ7（ログイン）は終了（要復習は `notes/step7.md` の最後）。画面は1つの HTML の2つの `section`（`#login-view`・`#todo-view`）を `hidden` で切り替え、開いたときに `GET /api/me` で判断する。サーバー側は、登録・ログイン（Cookie `session` は HttpOnly・SameSite=Lax・7日）・ログアウト・入口の係 `requireLogin`（`app.use("/api/todos", ...)`、`res.locals.userId`）・自分の ToDo だけの SQL まで確かめた。登録は `POST /api/users`（argon2 0.45.1）。作り方は自分で作る＋セッション（D-0020）、合言葉は DB にハッシュで保存（D-0022）。項目は `docs/learning/progress.md`、早見表は `docs/learning/reference/auth.md`。公開と品質は番号のない最終ステップで、行わない可能性もある。機能のステップは、実装を終えるたびに足すかを決める（D-0024）
-- 作成物は `app/`。`src/client/main.ts` → `public/main.js`、`src/server/server.ts` → `dist/server.js` を `npm run build` で変換し、`npm run dev` で起動（D-0015）。変換したものと `node_modules/`・`.env` は git に入れない（D-0011）。API は GET・POST `/api/todos`、PATCH・DELETE `/api/todos/:id`、POST `/api/users`（登録。201 `{id, email}`・400・409）、POST `/api/login`（200 `{id, email}`・400・401）、POST `/api/logout`（いつでも 204）、GET `/api/me`（200 `{id, email}`・401）。ToDo の4つは Cookie がない・無効・期限切れなら 401 `{error: "ログインしてください"}`、他人の id は 404
-- ToDo は PostgreSQL（Postgres.app、v18）の `todo_app` データベースの `todos` テーブルに保存。`users` と `todos.user_id`（外部キー、`ON DELETE CASCADE`）と `sessions` を追加済み。作り方は `app/db/schema.sql`、接続は `.env` の `DATABASE_URL`（見本は `.env.example`）。Postgres.app が止まっていると API は 500
-- `app/` は別リポジトリで GitHub `Miyamura-rq/todo-app` に学習者が push。外側は `Miyamura-rq/todo-app-remote`（D-0012、D-0013）。SSH 鍵はパスフレーズつき。`ssh-add --apple-use-keychain` で登録すると Claude の実行環境からも push できる（Mac の再起動で外れる。`~/.ssh/config` は未設定）。練習用ファイルは外側の `practice/`
-- PC の切り替え：学習者は `app/` を途中でも push、Claude は「ここまで」と言われたら途中の位置まで記録して push（D-0019）。自宅の Mac は `~/RECERQA/todo-app` で、DB の作成と起動まで準備済み（S-0017）。サーバーは学習者のターミナルで起動する（Claude の `!` からだと止まる）
-- 仕様：期限あり、リマインドは余裕があれば後で（D-0006）。一覧はリスト、完了はチェックで残す（D-0008）。画面は `todos` から `render()` で作り直し、操作のたびに GET で取り直す（D-0009）
-- 進め方：軽い知識は答えを教える（D-0007）。選択肢は Claude がおすすめを決める（D-0010）。始めの3問はしない（D-0014）。新しい書き方は Claude が型（戻り値の形も）を先に示す（D-0016）。課題は目的・手順・骨組みまで最初に示す（D-0021）。書いたら先にレビューし、確かめ方は直すところがなくなってから学習者が実行する（D-0023）。予想のクイズは出さず、説明（必要なら図）→ 実装。確かめ方には期待する結果も添える（D-0027）。課題は top-down（完成形の設計 → 必要な要素 → 今やること）、図はチャットの中に表示（D-0028）。確認のコマンドは毎回書く（D-0017）。デザインの値は Claude が提案（`docs/learning/reference/design.md`）
-- 学習状況は `docs/learning/progress.md`、まとめは `docs/learning/notes/`、早見表は `docs/learning/reference/`
+- ステップ8（タグと絞り込み・検索、Issue #1）。`app/` はブランチ `feature/1-tags-search`。8-1〜8-3 は終了（表の設計 D-0026、`db/schema.sql`、タグの API `GET`・`POST /api/tags`・`DELETE /api/tags/:id`）。「決めてほしいこと」①② は 8-1 で決定、③ は 8-5（PR に学習者が書く）
+- 8-4 は A（一覧の ToDo にタグを入れる）→ B（付け外し `POST`・`DELETE /api/todos/:id/tags/:tagId`）→ C（`POST /api/todos` で `tagIds` も受け取る＝トランザクション）。A-4（`GET /api/todos` の SQL と `Todo` の型）の1回目をレビューし、直すところ2つ（`json_build_objet` のつづり、`WHERE user_id` があいまい）を返した。経過は `docs/learning/progress.md`
+- ステップ7（ログイン）までは終了。認証は自分で作る＋セッション（D-0020）、合言葉はハッシュで保存（D-0022）
+- `app/db/schema.sql` に空白だけの未コミットの変更（`UNIQUE (` など）がある。A-4 とは別のコミットにする
 
 ## 次にやること
-- 会社の PC では `app/` で `git fetch` → `git switch feature/1-tags-search`。そのあと `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2・8-1 で `todos` が変わったため）。`npm install` も行う（argon2・cookie-parser を入れたため）
-- ステップ8〜10 はメンターの Issue #1〜#3（タグと絞り込み → リストの共有とリアルタイム → 画像から ToDo）。本文の写しは `docs/learning/issues/`。ブランチを切って PR を出す（D-0025）。8-4（A 一覧のタグ → B 付け外し → C 作るときにタグも）の A の課題（psql で試しのデータ → JOIN → LEFT JOIN → まとめる → `server.ts`）と、S-0029 の要復習の確かめ直し2問を出したところ。図は `reference/images/` の `tables.svg`（S-0030）、`server-flow.svg`・`api-map.svg`（S-0031）。最終ステップ（品質・公開）の中身は、始めるときに決める（D-0024）。自宅の Mac の DB：c（id 1）、d（id 3）、学習者のアカウント（id 4）。PR に書く理由のメモは 8-7 までに学習者が書く
+- A-4 を直してもらい、通ったら curl（期待する結果つき）→ 学習者がコミット → B
+- 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）、学習者のアカウント（id 4）。c の ToDo 5 牛乳を買う・11 部屋の掃除・12 本を返す、c のタグ 6 work・13 家（d のタグは 9 家）、`todo_tag` は (5, 6)・(5, 13)・(11, 13)
+- PR に書く理由のメモは 8-7 までに学習者が書く。最終ステップの中身は始めるときに決める（D-0024）
+- 会社の PC では `app/` で `git fetch` → `git switch feature/1-tags-search` → `npm install`。DB は `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2・8-1 で表が変わったため）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 
 ## 未解決・要確認
-- 認証（入口の係）と認可（SQL の `AND user_id`）の区別、Cookie に `userId` を入れてはいけない理由、合言葉がソルトなしでよい理由、`SameSite=Lax` が防ぐもの（ステップ7の理解度チェック。S-0024）
-- ステップ8 途中の理解度チェック（S-0029）：中間の表の1行が表すもの、2つの列の外部キーが他人のタグを止める仕組み（偽った `user_id` も）、`ON DELETE` を書かないと `NO ACTION` で消せない。8-4 の始めに確かめ直す
+- ステップ7 の理解度チェック（S-0024）：認証（入口の係）と認可（SQL の `AND user_id`）の区別、Cookie に `userId` を入れてはいけない理由、合言葉がソルトなしでよい理由、`SameSite=Lax` が防ぐもの
+- ステップ8 途中（S-0029）：2つの列の外部キーと `ON DELETE` は 8-4 の始めに確かめ直して通った。中間の表の1行が表すもの（この ToDo にこのタグが付いている1組）は未確認
 - 前からの要復習：`""` と `null`・入力はサーバーで確かめる理由・`tsc` は「検証して変換」（S-0015）、id が要る理由の①（S-0013）、目的の違う変更はコミットを分ける（S-0013、S-0015）、`flex-basis: 100%`（ステップ2）
 - 公開先・DB についての会社の決まり（最終ステップの公開の前に確認）
-- テストコマンド（ステップ9 で決める。D-0025）
