@@ -4,12 +4,12 @@
 
 ## 現在地
 - ステップ8（タグと絞り込み・検索、Issue #1）。`app/` はブランチ `feature/1-tags-search`。8-1〜8-3 は終了（表の設計 D-0026、`db/schema.sql`、タグの API `GET`・`POST /api/tags`・`DELETE /api/tags/:id`）。「決めてほしいこと」①② は 8-1 で決定、③ は 8-5（PR に学習者が書く）
-- 8-4 は A（一覧の ToDo にタグを入れる）→ B（付け外し `POST`・`DELETE /api/todos/:id/tags/:tagId`）→ C（`POST /api/todos` で `tagIds` も受け取る＝トランザクション）。A-4（`GET /api/todos` の SQL と `Todo` の型）の1回目をレビューし、直すところ2つ（`json_build_objet` のつづり、`WHERE user_id` があいまい）を返した。経過は `docs/learning/progress.md`
+- 8-4 は A（一覧の ToDo にタグを入れる）→ B（付け外し `POST`・`DELETE /api/todos/:id/tags/:tagId`）→ C（`POST /api/todos` で `tagIds` も受け取る＝トランザクション）。A-4（`GET /api/todos` の SQL と `Todo` の型）は2回目でレビューが通り、curl の確かめ方を出した。経過は `docs/learning/progress.md`
 - ステップ7（ログイン）までは終了。認証は自分で作る＋セッション（D-0020）、合言葉はハッシュで保存（D-0022）
 - `app/db/schema.sql` に空白だけの未コミットの変更（`UNIQUE (` など）がある。A-4 とは別のコミットにする
 
 ## 次にやること
-- A-4 を直してもらい、通ったら curl（期待する結果つき）→ 学習者がコミット → B
+- 学習者が A-4 の curl を実行 → コミット（`schema.sql` の空白とは別）→ B（付け外しの API）
 - 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）、学習者のアカウント（id 4）。c の ToDo 5 牛乳を買う・11 部屋の掃除・12 本を返す、c のタグ 6 work・13 家（d のタグは 9 家）、`todo_tag` は (5, 6)・(5, 13)・(11, 13)
 - PR に書く理由のメモは 8-7 までに学習者が書く。最終ステップの中身は始めるときに決める（D-0024）
 - 会社の PC では `app/` で `git fetch` → `git switch feature/1-tags-search` → `npm install`。DB は `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（7-2・8-1 で表が変わったため）
