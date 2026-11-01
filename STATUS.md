@@ -9,9 +9,9 @@
 - ステップ7（ログイン）までは終了。認証は自分で作る＋セッション（D-0020）、合言葉はハッシュで保存（D-0022）
 
 ## 次にやること
-- ステップ9（#4 Drizzle）：9-1 説明済み、9-2 終了（ブランチ `feature/4-drizzle`、`src/server/db/schema.ts`・`index.ts`、5aecebc まで push）。次は 9-3（`generate` で `drizzle/` に SQL、`schema.sql` を消す、README、★学習者が空の DB に `migrate`）。DB を空から作り直すので、試しのデータ（c・d・学習者のアカウント）は登録し直す
+- ステップ9（#4 Drizzle）：9-1 説明済み、9-2 終了（ブランチ `feature/4-drizzle`、`src/server/db/schema.ts`・`index.ts`、5aecebc まで push）。9-3 は Claude の分を終えた（`drizzle/0000_init.sql`、`schema.sql` を消した、README。e85f3bf）。★学習者が `todo_app` を作り直して `npm run db:migrate` する → 9-4 クエリの置き換え。試しのデータ（c・d・学習者のアカウント）は登録し直す
 - 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）、学習者のアカウント（id 4）。c の ToDo 5・11・12（ToDo の番号は 18 まで使用）、c のタグ 6 work・13 家（d のタグは 9 家）、`todo_tag` は (5, 6)・(5, 13)・(11, 13)
-- 会社の PC では `app/` で `git fetch` → `git switch feature/1-tags-search` → `npm install`。DB は `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（ステップ9 で Drizzle のマイグレーションに変わる）
+- 会社の PC では `app/` で `git fetch` → `git switch feature/4-drizzle` → `npm install`。ステップ9 のブランチ（`feature/4-drizzle`）では、DB は `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate` で作る
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 
