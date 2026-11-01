@@ -109,7 +109,8 @@
 
 ## ステップ8 以降（新しい機能）
 ステップ7のような実装を終えるたびに、新しい機能のステップを足すかを決める（D-0024）。足すときは、始めに項目を追加する。ステップを終えたら `notes/step<番号>.md` にまとめを作り、見出しの下にリンクを置く。
-ステップ8〜10 はメンターの Issue #1〜#3。ブランチを切って PR を出す（D-0025）。
+ステップ8 はメンターの Issue #1、ステップ9〜12 は Issue #4〜#7（0周目：うえさかと同じ技術スタックに移す）。Issue #2・#3 のステップはやめた（D-0031）。ブランチを切って PR を出す（D-0025）。
+ステップ9 からは、コードの多くを Claude が書いて解説し、大事なところ（★）だけ学習者が書く（D-0030）。時間は、説明を読む・★を書く・確かめる・PR の本文を書く、までの目安（メンターのレビューへの対応は含まない）。
 
 ## ステップ8：タグと、絞り込み・検索（Issue #1）
 課題：[issues/issue-1.md](issues/issue-1.md)
@@ -122,19 +123,64 @@
 | 8-2 テーブルを作る（`tags` と中間の表を `schema.sql` に足す、複合主キー・複数の列の `UNIQUE`、psql で `JOIN` を2回つないでタグつきの ToDo を出す、制約で止まることを確かめる） | 学習中 | 2026-10-28。`schema.sql` は 8-1 のレビューの中で書き終えた。確かめ方（DB の作り直し、c・d の登録、`JOIN` を2回つなぐ SQL を書く、制約の予想と実行 ①〜⑦、コミットと最初の push）を出した。DB を作り直して実行したが、d が id 3 になっていた（登録の INSERT が1回失敗して2番を使った）。Claude の手順が d を 2 と決め打ちしていたため、`('レポートを書く', 2)`・`('仕事', 2)` を含む複数行の INSERT が外部キーで丸ごと止まり、①〜③ も ToDo 1 がないために止まった。④ だけが通った（id 4）。学習者は結果を貼らずに「答え合わせ」→ Claude が DB の中身と番号の進み（users 3、todos 4、tags 5）から起きたことを説明し、予定どおりの答え（Q1 3行で「本を返す」は出ない、① tags 側・② todos 側の2つの列の外部キー、③ 主キー、④ `UNIQUE`、⑤ 通って id 5、⑥ 1行残り ToDo は残る、⑦ 0行）を示した。学んだこと：1つの INSERT は全部か無か、id は決め打ちせず `RETURNING` で確かめる。コミット「tagsテーブルの作成、todo_tagテーブルの作成」をブランチに push 済み（`todos` の変更はメッセージにない）。入れ直して `JOIN` を書くのは、学習者の判断で 8-4 にまわした（8-2 は終了） |
 | 8-3 タグの API（作る・一覧・消す。同じ名前は 409、他人のタグは 404、名前の前後の空白と空文字） | 学習中 | 2026-10-28。おすすめ（D-0010）：`GET /api/tags`（作った順 `ORDER BY id`。漢字は名前順にしても読みの順にならないため）、`POST /api/tags`（`{name}` → 201 `{id, name}`、`trim` と小文字、1〜20文字でなければ 400、`ON CONFLICT (user_id, name) DO NOTHING` で 409）、`DELETE /api/tags/:id`（他人・ないものは 404、204）、`app.use("/api/tags", requireLogin)`、返す形に `user_id` を入れない。名前の変更（PATCH）は Issue にないので作らない。D-0021 の形で課題を出した。書く前に「API の構成だけ教えて」→ ステップ8 が終わったときの API の木（8-4 の付け外しは `POST`・`DELETE /api/todos/:id/tags/:tagId`、追加で `tagIds`、8-5 はクエリ `status`・`tag`・`q`・`sort`）、1つのルートの流れ（係 → 取り出す → 確かめる → SQL → 結果で分ける）、`server.ts` の並びを示した。1回目：`tsc`・`PREPARE` とも通り、形は決めたとおり（`ON CONFLICT (name, user_id)` も順番違いで通る）。直したのはエラーの文だけ（空でも「20文字以下で」、409 が「タグ付けに失敗しました」）と空行。2回目で通った（400 は「適切なタグ名を」で、条件を書くのは任意）。確かめ方 ①〜⑱ は学習者が実行し、結果は貼らずに「答え合わせ」→ DB（tags は 6 work・9 家（d）、番号は 9 まで、ToDo 5 は残り `todo_tag` は空）が予想どおりの流れと合うことを Claude が確かめて答えを示した（③ は id 6、④⑤ の 409 でも番号が進むので d の「家」は 9、d が c のタグを消すと 404、タグを消すと外れるだけ）。コミット「タグ作成・削除・一覧取得のAPIを作成」を push 済み |
 | 8-4 ToDo にタグを付け外しする（API の形、他人のタグ・他人の ToDo を付けられないことを SQL で確かめる＝認可、一覧の ToDo にタグを入れて返す（`JOIN` と `json_agg`）、ToDo とタグを一緒に作るときのトランザクション） | 学習中 | 2026-10-31。始める前に学習者の依頼で図を3枚作った（`tables.svg`・`server-flow.svg`・`api-map.svg`。S-0030・S-0031）。A〜C に分けた（A 一覧の ToDo にタグを入れて返す、B 付け外しの API `POST`・`DELETE /api/todos/:id/tags/:tagId`、C ToDo を作るときに `tagIds` も受け取る＝トランザクション）。始めに S-0029 の要復習（Q2 2つの列の外部キー、Q3 `ON DELETE`）を2問で確かめ直す。A のおすすめ（D-0010）：1つの SQL で `LEFT JOIN` を2回、`GROUP BY todos.id`、`json_agg(json_build_object(...))`、`FILTER`・`COALESCE` でタグなしは `[]`（2回の SELECT を TS でまとめる案と比べ、8-5 の絞り込みを1つの `WHERE` に足せる。pg は JSON を配列にして返す）。psql で A-1 `JOIN` 2回（8-2 の持ち越し）→ A-2 `LEFT JOIN` → A-3 まとめる、を試してから `server.ts` に入れる（SELECT だけなので、psql では先に試してよい）。確かめ直し：R1（② の `tags` で `(9, 1)` が見つからず止まる）は正解、R2 は動きは正解（`ON DELETE CASCADE` の名前は補足）。A の課題（⓪〜④ と Q1〜Q3 を一度に）は学習者に「話が長くてわからなかった」と言われ、A-1 だけを短く出し直した。いつもの出し方（D-0021）は変えない（学習者「今回だけでいい」）。学習者は試しのデータだけ入れ、「答え合わせまで行ってほしい。新しいコマンドの予想より、図解でわかりやすく新規コードの説明→実装の流れにしてほしい。長い文章で知らない知識をあてるクイズは疲れる」→ D-0027 として記録。A-1〜A-3 は Claude が psql で実行した結果を図 `join-steps.svg`（JOIN → LEFT JOIN → GROUP BY・json_agg → FILTER・COALESCE）にして説明し、A-4（`server.ts` の `GET /api/todos` と `Todo` の型）を課題にした。学習者「SVG はチャットの中で見えるように」「この章で最終的に設計したいこと → 必要な要素、という top-down の流れに」→ D-0028。8-4 の完成形（A・B・C の API と表）→ 必要な要素 → 今やること（A-4）の順で出し直した。学習者「応答がかなりわかりやすくなった」。A-4 の1回目：`Todo` の型に `tags: Tag[]`、SQL の形は決めたとおり。`tsc` は通り、`PREPARE` で2つ止まった（`json_build_objet` のつづり → 関数がない、`WHERE user_id` → `todos`・`todo_tag`・`tags` の3つにある列なので「あいまい」。`todos.user_id` にする）。`ON` の左右の順と `COALESCE (` の空白は、どちらでも同じ。2回目で通った（`tsc`・`PREPARE` とも。c は3件で「本を返す」は `[]`、d は0件）。確かめ方 ⓪ 起動し直す → ① c でログイン → ② c の一覧 → ③ d の一覧 `[]` → ④ Cookie なし 401 を期待する結果つきで出した。学習者は外側のフォルダで `git add db/schema.sql` を実行して `pathspec` のエラー → `cd app` と git のよく使うコマンドを示した。コミット「schema.sql の空白を整える」「ToDo の一覧にタグを入れて返す」を push（A 終了）。B を開始：おすすめ（D-0010）は ① 確認の SELECT（`todos JOIN tags ON tags.user_id = todos.user_id` で ToDo とタグの持ち主が同じ組だけをつなぎ、`:id`・`:tagId`・自分で絞る。0行なら 404）→ ② `INSERT … ON CONFLICT (todo_id, tag_id) DO NOTHING` → 204（もう付いていても 204）。外すのは `DELETE … AND user_id` → 0行 404 / 204。外部キーのエラー（23503）を try/catch で 404 にする案は、他人の「もう付いている組」で `ON CONFLICT` が先に効いて外部キーの確認まで行かず 204 になる（d が c の (5, 6) → `INSERT 0 0`。ON CONFLICT なしでも先に 23505）ので採らない。2つの列の外部キーは最後の守りとして残る。完成形（図）→ 必要な要素 → 骨組みの順で課題を出した。B の1回目：流れ（確認 → INSERT → 204、DELETE → rowCount）と `req.params` の取り出しは正解。直すところ：つづり3つ（`usser_id`、`INSERT FROM` → `INTO`、`todo_tags`。`PREPARE` で止まる）、確認の SELECT に「持ち主が自分」がない（d が c の (5, 6) を頼むと1行になり、INSERT は `ON CONFLICT` で何もせず 204＝案2と同じ穴。まだない組なら外部キーで 500）、`res.status(…)` だけで `.end()` がない（返事が送られず curl が待ち続ける）、0行は 400 ではなく 404、`pool.query<number>` は `TS2344`（型は1行の形。使わないなら付けない）。2回目：持ち主の条件（`todos.user_id = $1`）・つづり・404・型（`<{ id: number }>`）・最後の `res.status(204).end()` は直った。`tsc`・`PREPARE` とも通り、確認の SELECT は c の (12, 6) だけ1行、(12, 9)・d の (5, 9)・d の (5, 6)・(999, 6) は0行。残りは0行のときの `res.status(404);` に `.end()` がない2か所。3回目で通った（`tsc`・`PREPARE` とも。取り消せるトランザクションで curl の順に流し、付ける 1行 → 2回目は `INSERT 0 0`、他人の組は確認で0行、外す `DELETE 1` → 2回目 `DELETE 0`、d が c の (5, 6) を外すのも0行を確かめた）。確かめ方 ⓪〜⑭（起動し直す、c・d でログイン、付ける・2回付ける・一覧、他人のタグ・他人の ToDo・他人のもう付いている組・ない ToDo で 404、他人の組を外す 404、外す 204・2回目 404、一覧が戻る、Cookie なし 401）を期待する結果つきで出した。コミット「ToDo にタグを付け外しする API を作成」を push（B 終了）。C を開始：`POST /api/todos` に `tagIds`（なければ `[]`。`??`）。整数だけの配列でなければ 400（`Array.isArray`・`.every`・`Number.isInteger`）。`pool.connect()` で接続を1本借りて `BEGIN` → todos に1行 → `for…of` で各タグを B と同じ形で確認（0行なら `ROLLBACK` して 400。ID が URL ではなく本文にあるので 404 ではなく 400）→ `todo_tag` に `ON CONFLICT DO NOTHING`（足せたときだけ返す `tags` に入れる）→ `COMMIT` → 201 で GET と同じ形 `{…, tags}`。`catch` で `ROLLBACK` して `throw`（500）、`finally` で `release()`。外部キーのエラー（23503）を拾う案は、新しい ToDo なので B の穴はないが、エラーコードと `DatabaseError` が新しく増えるのでおすすめしない（D-0010）。完成形（全部か無かの図）→ 必要な要素 → 骨組みの順で課題を出した。C の1回目（2026-11-01）：`??`・形の確認・`connect`・BEGIN/COMMIT・確認の SELECT・足せたときだけ `tags` に入れる・`catch` で ROLLBACK と `throw`・`finally` で `release()` は正解。`tsc`・`PREPARE` とも通る。直すところは1つ：ループの中の 400 で `return` する前に ROLLBACK がない（BEGIN の途中のまま接続がプールに戻り、次にその接続を使った GET に作りかけの ToDo が見え、次の COMMIT で確定してしまう）。おすすめ：400 を `.json({error: …})` にしてほかの 400 とそろえる、`result.rows[0].id` は `todo.id`、骨組みのコメントと空行の整理。学習者は時間がなく「OK なら push まで」→ OK ではないので push していない。2回目で ROLLBACK が入り、`tsc` も通った。学習者の依頼で、Claude が `app/` をコミット「ToDo を作るときにタグも付けられるようにする（トランザクション）」して push（fdabd1d）。おすすめの3つ（400 の `.json`、`todo.id`、コメントと空行）は未対応。curl の確かめ方はまだ出していない |
-| 8-5 絞り込みと検索（`req.query` と入力の確かめ方、条件をつないで SQL を組み立てる（`$1`・`$2` の番号を数える）、状態（期限切れ＝`CURRENT_DATE`）、タグ（`EXISTS`）、キーワード（`ILIKE`。「決めてほしいこと」の③ `%`・`_` の扱い）、並び順（`NULLS LAST`。列名はプレースホルダーにできないので、決めた候補からだけ選ぶ）） | 未着手 | |
-| 8-6 画面（タグの表示、作るときにタグを選ぶ、あとから付け外し、絞り込みの入力欄、条件をクエリにして GET し直す。デザインの値は design.md） | 未着手 | |
-| 8-7 仕上げと PR（README・`schema.sql`・完了条件の確認、どの組み合わせで確かめたかの表、PR の本文を書く、push と PR、レビューへの対応とマージ、技術の選択肢：`pg_trgm`・全文検索・検索エンジン、クエリビルダー・ORM） | 未着手 | |
+| 8-5 ~~絞り込みと検索~~（飛ばす。学習者の判断、D-0031。`req.query` と入力の確かめ方、条件をつないで SQL を組み立てる（`$1`・`$2` の番号を数える）、状態（期限切れ＝`CURRENT_DATE`）、タグ（`EXISTS`）、キーワード（`ILIKE`。「決めてほしいこと」の③ `%`・`_` の扱い）、並び順（`NULLS LAST`。列名はプレースホルダーにできないので、決めた候補からだけ選ぶ）） | 未着手 | |
+| 8-6 ~~画面~~（要確認。おすすめは飛ばす：画面はステップ12 で React Router に作り直すため。タグの表示、作るときにタグを選ぶ、あとから付け外し、絞り込みの入力欄、条件をクエリにして GET し直す。デザインの値は design.md） | 未着手 | |
+| 8-7 ~~仕上げと PR~~（要確認。おすすめは PR を出さずブランチを残す：#4〜#7 はタグのない `main` を前提に書かれている。README・`schema.sql`・完了条件の確認、どの組み合わせで確かめたかの表、PR の本文を書く、push と PR、レビューへの対応とマージ、技術の選択肢：`pg_trgm`・全文検索・検索エンジン、クエリビルダー・ORM） | 未着手 | |
 
-## ステップ9：リストの共有と、リアルタイムの反映（Issue #2）
-課題：[issues/issue-2.md](issues/issue-2.md)
-ゴール：リストを招待したユーザーと共有し（編集・閲覧の権限）、ほかの人の変更がリロードせずに画面に出る。API のテストを書く
-項目：始めるときに追加する
+## ステップ8 の残り（目安 0.5時間）
+- C の curl で確かめる（15分）、8-4 の理解度チェック（15分）。8-6・8-7 とブランチの扱いは要確認（上の表）
 
-## ステップ10：画像から ToDo の候補を抜き出す（Issue #3）
-課題：[issues/issue-3.md](issues/issue-3.md)
-ゴール：画像をアップロードすると Claude API が ToDo の候補を返し、確かめて直してから登録できる。LLM の出力をサーバーで検証する
-項目：始めるときに追加する
+## ステップ9：DB を Drizzle ORM に置き換える（Issue #4）（目安 5.5〜6時間）
+課題：[issues/issue-4.md](issues/issue-4.md)
+ゴール：テーブルの定義とマイグレーションを Drizzle（drizzle-kit）で管理し、`server.ts` の SQL（`main` で `pool.query` 10か所）をすべて Drizzle のクエリにする。発行される SQL をログで見る
+
+| 項目 | 段階 | メモ |
+|---|---|---|
+| 9-1 前提の説明（ORM と、SQL を文字列で書く今の書き方の違い、マイグレーション、`drizzle-kit` の `pull`・`generate`・`migrate`、プレースホルダと SQL インジェクション、外部キーと `ON DELETE CASCADE`（復習）、`$inferSelect`）。Claude が図と今のコードとの対応で説明し、学習者が自分の言葉で言い直す（1時間） | 未着手 | |
+| 9-2 導入とスキーマ（drizzle-orm・drizzle-kit、`drizzle.config.ts`、`drizzle-kit pull` で今の DB から作って整える）。Claude（1時間） | 未着手 | |
+| 9-3 マイグレーション（`generate` → `migrate`、`db/schema.sql` を消す、README）。Claude が書き、★空の DB で学習者が流して3つの表ができるのを確かめる（0.5時間） | 未着手 | |
+| 9-4 クエリの置き換え（登録・ログイン・セッション・ToDo）。Claude が大半を書いて前後を並べて解説、★ToDo の一覧と完了の更新（`and(eq(…), eq(…))` で自分のものだけ）は学習者（2時間） | 未着手 | |
+| 9-5 ログを有効にして、置き換え前後の SQL を API ごとに並べる（PR 用。Claude が下書き）、通しの確認（2人のユーザー）、PR の本文は学習者（1〜1.5時間） | 未着手 | |
+
+## ステップ10：API を Hono に置き換える（Issue #5）（目安 5〜6時間）
+課題：[issues/issue-5.md](issues/issue-5.md)
+ゴール：Express と cookie-parser を外し、Hono（`@hono/node-server`）で同じパスとメソッドの API を作る。入力を zod で確かめ、不正なら 400
+
+| 項目 | 段階 | メモ |
+|---|---|---|
+| 10-1 前提の説明（Web フレームワークがしていること、メソッドとステータス（今の API のどこで返しているか）、ミドルウェア、Context `c`（`c.req`・`c.json`・`c.set`/`c.get`）、Cookie の属性（復習）、サーバーで確かめる理由（要復習）、zod と `@hono/zod-validator`）（1時間） | 未着手 | |
+| 10-2 Hono に移す（ルートを1つずつ移し、Express と並べて解説）。Claude、★`requireLogin` を Hono のミドルウェアに書き直す（`c.set`/`c.get`）のは学習者（2時間） | 未着手 | |
+| 10-3 `hono/cookie` と serve-static、express・cookie-parser を外す。Claude（0.5時間） | 未着手 | |
+| 10-4 zod で入力を確かめる。Claude、★ToDo の追加と更新のスキーマは学習者（1時間） | 未着手 | |
+| 10-5 確かめる（今の画面のまま全部の操作、400 の3つと 401 を curl で。結果は PR に貼る）、PR の本文は学習者（1時間） | 未着手 | |
+
+## ステップ11：React Router のアプリとログインの画面（Issue #6）（目安 6.5〜7.5時間）
+課題：[issues/issue-6.md](issues/issue-6.md)
+ゴール：`web/` に React Router（framework mode）のアプリを作って API と別のプロセスで動かし、登録・ログイン・ログアウトを `<Form>` と `action` から `hono/client` で API を呼んで行う
+
+| 項目 | 段階 | メモ |
+|---|---|---|
+| 11-1 前提の説明（React の基本：コンポーネント・JSX・props・state、ブラウザで組み立てる今の画面とサーバーサイドレンダリング、`loader`・`action` がどこでいつ動くか、`<Form>` と `<form>`、オリジンと Cookie の行き先、302 と `redirect`、`hono/client` で型が使える仕組み）。React は初めてなので長め（2時間） | 未着手 | |
+| 11-2 `web/` を作って起動する（作られたファイルの役割を解説）。Claude（1時間） | 未着手 | |
+| 11-3 `hono/client` の準備（API の型を `web/` から使えるようにする）。Claude（1時間） | 未着手 | |
+| 11-4 登録・ログインの画面。Claude、★ログインの `action`（届いた `Cookie` を API へ渡す、API の `Set-Cookie` をブラウザへの応答に付ける）は学習者（2時間） | 未着手 | |
+| 11-5 ログアウト、パスワード違いのエラー表示、開発者ツールで HttpOnly の Cookie を確かめる、流れ（`<Form>` → `action` → API → `Set-Cookie` → ブラウザ）を学習者が説明する、PR（1時間） | 未着手 | |
+
+## ステップ12：Todo の画面を React Router に移す（Issue #7）（目安 5.5〜6.5時間）
+課題：[issues/issue-7.md](issues/issue-7.md)
+ゴール：Todo の一覧・追加（期限つき）・完了・削除を React Router の画面に移し、Tailwind CSS で最低限整え、古い画面（`public/`・`src/client/`・serve-static）を消す
+
+| 項目 | 段階 | メモ |
+|---|---|---|
+| 12-1 前提の説明（`loaderData` とその型、`action` のあとの revalidation と今の `loadTodos()`・`render()` の対応、`intent` で操作を受け分ける、`loader` でログインの画面に移す、Tailwind のユーティリティクラスと `style.css` の違い）（1時間） | 未着手 | |
+| 12-2 一覧（`loader`、ログインしていなければログインの画面へ）。Claude（1時間） | 未着手 | |
+| 12-3 追加・完了・削除。Claude、★`action` を `intent` で受け分けるところは学習者（2時間） | 未着手 | |
+| 12-4 Tailwind で見た目（ダークモード。値は design.md から移す）。Claude（1時間） | 未着手 | |
+| 12-5 古い画面と serve-static を消す、README（2つのプロセスの起動）、流れ（`<Form>` → `action` → API → DB → `loader` → 画面）を学習者が説明する、PR（1時間） | 未着手 | |
+
+ステップ9〜12 の合計の目安：22〜26時間（ステップ8 の残りを足すと 22.5〜26.5時間）。
+
+（やめたステップ：Issue #2 リストの共有とリアルタイムの反映、Issue #3 画像から ToDo の候補を抜き出す。写しは `issues/` に残す。D-0031）
 
 ## 最終ステップ：品質・公開（行わない可能性あり）
 番号はつけない（D-0024）。中身と順番は、始めるときに決めて項目を追加する。
