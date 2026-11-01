@@ -1,35 +1,19 @@
 Closes #4
 
 ## 概要
-DB の読み書きを、pg で書いた SQL から Drizzle ORM に置き換えた。表の作成も、`psql -f db/schema.sql` から drizzle-kit のマイグレーションに置き換えた。
+DB の読み書きを pg の SQL から Drizzle ORM に、表の作成を drizzle-kit のマイグレーションに置き換えた。
+#1 のタグの表と API も一緒に移したので、表は3つではなく5つになる。
 
-## 変更内容
-- Drizzle ORM（0.45.4）と drizzle-kit（0.31.11）を入れ、`drizzle.config.ts` を作った
-- 表の定義を `src/server/db/schema.ts` に TypeScript で書いた（`drizzle-kit pull` で作ってから整えた）。型は `$inferSelect` で表の定義から作る
-- `drizzle/` のマイグレーション（`npm run db:generate`・`npm run db:migrate`）で表を作るようにし、`db/schema.sql` を消した。README の手順も直した
-- `server.ts` の `pool.query` をすべて Drizzle のクエリにした。返事の ToDo とタグからは `user_id` を外した
-- `logger: true` で、実行した SQL をターミナルに出すようにした
-- ポートを環境変数 `PORT` で変えられるようにした（ふだんは 3000）
-
-## Issue の範囲を超えたこと
-#1（タグ）で作った `tags`・`todo_tag` の表とタグの API も、Drizzle に移して入れた。そのため、マイグレーションで作られる表は3つではなく5つになる。ToDo を作るときにタグも付ける処理は `db.transaction` で書いた。
-
-## 完了条件
+## 確かめたこと
 - [x] `server.ts` に `pool.query` が残っていない
-- [x] 空の DB に README の手順どおりにマイグレーションを実行すると、表ができる（タグを含めて5つ）
-- [x] ユーザー登録・ログイン・ログアウト・Todo の一覧・追加・完了・削除ができる（curl で確認）
-- [x] 別のユーザーでログインすると、ほかのユーザーの Todo が見えない・変えられない（一覧は `[]`、変更・削除は 404）
-- [x] 置き換える前の SQL と、Drizzle が発行した SQL を API ごとに並べた（下）
+- [x] 空の DB に README どおり migrate すると表ができる
+- [x] 登録〜削除ができ、ほかのユーザーの Todo は見えない・変えられない（curl）
 
-## 気づいたこと
-- drizzle-kit が作った `0001_tags.sql` では、`todo_tag` の外部キーが、指す先の `todos` の `UNIQUE (id, user_id)` より先に並んでいて、流すとエラーになった。SQL ファイルの中で順番を入れ替えた
-- `drizzle-kit migrate` は失敗しても理由を出さないので、psql で流して原因を確かめた
-
-## 前後の SQL
-前は `main` の `pool.query`（タグは #1 のブランチ）、後は Drizzle のログ。`params` は省いた。
+## メモ
+- drizzle-kit が作った `0001_tags.sql` は、外部キーと `UNIQUE` の順番を直した
 
 <details>
-<summary>API ごとの SQL</summary>
+<summary>API ごとの SQL（前：pg の SQL、タグは #1 のブランチ／後：Drizzle のログ。params は省略）</summary>
 
 ### POST /api/users（登録）
 ```sql
