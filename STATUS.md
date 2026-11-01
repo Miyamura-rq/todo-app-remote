@@ -9,7 +9,8 @@
 - ステップ7（ログイン）までは終了。認証は自分で作る＋セッション（D-0020）、合言葉はハッシュで保存（D-0022）
 
 ## 次にやること
-- ステップ9（#4 Drizzle）：実装は終了（`feature/4-drizzle`、ec9e90d まで push）。9-6：README と比較表の下書き（`docs/learning/pr/issue-4.md`）は済み。前提6つの言い直しは済み（`$inferSelect` は要復習）。残りは PR の作成だけ。`gh auth login` は GitHub の本人確認（sudo モード）で失敗したので、学習者が GitHub の画面で作る（本文 `docs/learning/pr/issue-4-body.md` はクリップボードに入れた）。`gh` のログインは、あとで試し直す
+- ステップ9（#4 Drizzle）は終了。PR #8（`feature/4-drizzle` → `main`、https://github.com/Miyamura-rq/todo-app/pull/8）を学習者が作り、メンターのレビュー待ち。`gh auth login` は本人確認で失敗したまま（あとで試し直す）
+- ステップ10（#5 Hono）を開始：10-1 前提の説明を出した。次は 10-2（`feature/4-drizzle` から `feature/5-hono` を切る、Hono に移す、★ `requireLogin` を Hono のミドルウェアに）
 - 自宅の Mac の DB の試しのデータ（9-4 で登録し直した）：c（id 1）、d（id 3）。c の ToDo 1 牛乳を買う（期限 2026-11-05、完了。work・家）・2 本を返す・4 レポートを出す（期限 2026-11-10。work・家）、c のタグ 1 work・2 家・5 shop、d のタグ 4 家。学習者のアカウントは未登録
 - 会社の PC では `app/` で `git fetch` → `git switch feature/4-drizzle` → `npm install`。ステップ9 のブランチ（`feature/4-drizzle`）では、DB は `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate` で作る
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
