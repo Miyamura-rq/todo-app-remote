@@ -9,8 +9,8 @@
 - ステップ7（ログイン）までは終了。認証は自分で作る＋セッション（D-0020）、合言葉はハッシュで保存（D-0022）
 
 ## 次にやること
-- ステップ9（#4 Drizzle）：9-1 説明済み、9-2 終了（ブランチ `feature/4-drizzle`、`src/server/db/schema.ts`・`index.ts`、5aecebc まで push）。9-3 は Claude の分を終えた（`drizzle/0000_init.sql`、`schema.sql` を消した、README。e85f3bf）。★学習者が `todo_app` を作り直して `npm run db:migrate` する → 9-4 クエリの置き換え。タグの表と API も含める（D-0033。schema.ts に2つの表を足して generate、タグの API を取り込んで Drizzle に、+1.5〜2時間）。試しのデータ（c・d・学習者のアカウント）は登録し直す
-- 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）、学習者のアカウント（id 4）。c の ToDo 5・11・12（ToDo の番号は 18 まで使用）、c のタグ 6 work・13 家（d のタグは 9 家）、`todo_tag` は (5, 6)・(5, 13)・(11, 13)
+- ステップ9（#4 Drizzle）：9-1〜9-3 終了（ブランチ `feature/4-drizzle`、`schema.ts`・`db/index.ts`・`drizzle/0000_init.sql`、`schema.sql` を消した）。9-4 は Claude が8か所を Drizzle にした（60f9e66）。★学習者が ToDo の一覧（GET）と完了の更新（PATCH）を Drizzle に書き直し、`pool`・`types` を消す → レビュー → curl。次は 9-5 タグの取り込み（D-0033）→ 9-6 比較表と PR
+- 自宅の Mac の DB の試しのデータ（9-4 で登録し直した）：c（id 1、password-c）、d（id 3、password-d）。c の ToDo 1 牛乳を買う（期限 2026-11-05）・2 本を返す。学習者のアカウントは未登録
 - 会社の PC では `app/` で `git fetch` → `git switch feature/4-drizzle` → `npm install`。ステップ9 のブランチ（`feature/4-drizzle`）では、DB は `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate` で作る
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
 - 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
