@@ -43,3 +43,4 @@ Claude はメンター兼実装の担当。ステップ9 からは、コード�
 - 学習状況（項目ごとの経過）: `docs/learning/progress.md`
 - ステップごとの学習まとめ: `docs/learning/notes/step<番号>.md`（ステップを終えたら作る）
 - 早見表: `docs/learning/reference/`（図は `images/`）。紹介したが使っていない知識も含めてまとめ、notes からリンクする
+- PR の材料（前後の比較・本文の骨組み）: `docs/learning/pr/issue-<番号>.md`

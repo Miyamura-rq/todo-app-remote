@@ -9,7 +9,7 @@
 - ステップ7（ログイン）までは終了。認証は自分で作る＋セッション（D-0020）、合言葉はハッシュで保存（D-0022）
 
 ## 次にやること
-- ステップ9（#4 Drizzle）：9-1〜9-5 終了（`pool.query` なし、タグも Drizzle に移した、作るときの `tagIds` は `db.transaction`。d962f66 まで push）。次は 9-6：前後の SQL の比較表（PR 用、Claude が下書き）、2人のユーザーで通しの確認、前提6つの言い直し、PR の本文（学習者）。PR が Issue #4 の範囲を超えることは学習者がメンターに伝える（D-0033）
+- ステップ9（#4 Drizzle）：実装は終了（`feature/4-drizzle`、ec9e90d まで push）。9-6：README と比較表の下書き（`docs/learning/pr/issue-4.md`）は済み。残りは学習者：前提6つの言い直し、ブラウザで通しの確認（任意）、PR の本文と PR の作成、タグを含めたことをメンターに伝える（D-0033）
 - 自宅の Mac の DB の試しのデータ（9-4 で登録し直した）：c（id 1）、d（id 3）。c の ToDo 1 牛乳を買う（期限 2026-11-05、完了。work・家）・2 本を返す・4 レポートを出す（期限 2026-11-10。work・家）、c のタグ 1 work・2 家・5 shop、d のタグ 4 家。学習者のアカウントは未登録
 - 会社の PC では `app/` で `git fetch` → `git switch feature/4-drizzle` → `npm install`。ステップ9 のブランチ（`feature/4-drizzle`）では、DB は `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate` で作る
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
