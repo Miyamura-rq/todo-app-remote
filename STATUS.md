@@ -3,13 +3,13 @@
 最終更新: 2026-11-01（S-0034、D-0030〜D-0032）
 
 ## 現在地
-- ステップ8（タグ、Issue #1）。`app/` はブランチ `feature/1-tags-search`。8-1〜8-4 は終了（表の設計 D-0026、タグの API、一覧のタグ、付け外し、作るときのタグ＝トランザクション。最後のコミットは fdabd1d）。8-5〜8-7 は飛ばし、PR は出さずブランチを残す（D-0031、D-0032）
+- ステップ8（タグ、Issue #1）。ブランチ `feature/1-tags-search` に残した。8-1〜8-4 は終了（表の設計 D-0026、タグの API、一覧のタグ、付け外し、作るときのタグ＝トランザクション。最後のコミットは fdabd1d）。8-5〜8-7 は飛ばし、PR は出さずブランチを残す（D-0031、D-0032）
 - 進め方を変えた：ステップ9 からは、コードの多くを Claude が書いて解説し、大事なところ（★）だけ学習者が書く。`app/` のコミット・push も Claude（D-0030）
 - ステップ9〜12 はメンターの Issue #4〜#7（0周目：Drizzle → Hono → React Router のログイン → React Router の Todo）。項目・★・時間の目安（合計 22〜26時間）は `docs/learning/progress.md`、写しは `docs/learning/issues/`。以前の #2・#3 のステップはやめた（D-0031）
 - ステップ7（ログイン）までは終了。認証は自分で作る＋セッション（D-0020）、合言葉はハッシュで保存（D-0022）
 
 ## 次にやること
-- ステップ9（#4 Drizzle）：9-1 前提の説明を出した。次は 9-2（`main` から `feature/4-drizzle` を切る、drizzle-orm 0.45.4・drizzle-kit 0.31.11 を入れる、`pull` でスキーマ）。9-3 で DB を空から作り直すので、試しのデータ（c・d・学習者のアカウント）は登録し直す
+- ステップ9（#4 Drizzle）：9-1 説明済み、9-2 終了（ブランチ `feature/4-drizzle`、`src/server/db/schema.ts`・`index.ts`、5aecebc まで push）。次は 9-3（`generate` で `drizzle/` に SQL、`schema.sql` を消す、README、★学習者が空の DB に `migrate`）。DB を空から作り直すので、試しのデータ（c・d・学習者のアカウント）は登録し直す
 - 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）、学習者のアカウント（id 4）。c の ToDo 5・11・12（ToDo の番号は 18 まで使用）、c のタグ 6 work・13 家（d のタグは 9 家）、`todo_tag` は (5, 6)・(5, 13)・(11, 13)
 - 会社の PC では `app/` で `git fetch` → `git switch feature/1-tags-search` → `npm install`。DB は `dropdb todo_app` → `createdb todo_app` → `psql -d todo_app -f db/schema.sql` で作り直す（ステップ9 で Drizzle のマイグレーションに変わる）
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
