@@ -10,7 +10,7 @@
 
 ## 次にやること
 - ステップ9（#4 Drizzle）は終了。PR #8（`feature/4-drizzle` → `main`、https://github.com/Miyamura-rq/todo-app/pull/8）を学習者が作り、メンターのレビュー待ち。`gh auth login` は本人確認で失敗したまま（あとで試し直す）
-- ステップ10（#5 Hono）：ブランチ `feature/5-hono`（`feature/4-drizzle` から）。10-1 説明済み、10-2・10-3 は Claude が Hono に移した（a8a3bc8。express・cookie-parser は外した）。★ `requireLogin` は1回目をレビュー（直すところ2つ：見つからないときの 401、401 の中身）→ 直したら curl → 10-4 zod
+- ステップ10（#5 Hono）：ブランチ `feature/5-hono`（`feature/4-drizzle` から）。10-1 説明済み、10-2・10-3 は Claude が Hono に移した（a8a3bc8。express・cookie-parser は外した）。★ `requireLogin` は2回目でレビューが通り、curl を出した（未コミット）。curl の結果を見たら Claude がコミット → 10-4 zod
 - 自宅の Mac の DB の試しのデータ（9-4 で登録し直した）：c（id 1）、d（id 3）。c の ToDo 1 牛乳を買う（期限 2026-11-05、完了。work・家）・2 本を返す・4 レポートを出す（期限 2026-11-10。work・家）、c のタグ 1 work・2 家・5 shop、d のタグ 4 家。学習者のアカウントは未登録
 - 会社の PC では `app/` で `git fetch` → `git switch feature/4-drizzle` → `npm install`。ステップ9 のブランチ（`feature/4-drizzle`）では、DB は `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate` で作る
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
