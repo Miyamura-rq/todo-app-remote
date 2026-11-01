@@ -128,9 +128,9 @@
 | 8-7 ~~仕上げと PR~~（飛ばす。PR は出さずブランチを残す。D-0032：#4〜#7 はタグのない `main` を前提に書かれている。README・`schema.sql`・完了条件の確認、どの組み合わせで確かめたかの表、PR の本文を書く、push と PR、レビューへの対応とマージ、技術の選択肢：`pg_trgm`・全文検索・検索エンジン、クエリビルダー・ORM） | 未着手 | |
 
 ## ステップ8 の残り（目安 0.5時間）
-- C の curl は Claude が確かめた（8-4 のメモ）。8-4 の理解度チェック（15分）。8-6・8-7 は飛ばし、PR は出さない（D-0032）
+- C の curl は Claude が確かめた（8-4 のメモ）。8-4 の理解度チェック（15分）。8-6・8-7 は飛ばし、#1 の PR は出さない（D-0032）。タグはステップ9 で Drizzle に移して残す（D-0033）
 
-## ステップ9：DB を Drizzle ORM に置き換える（Issue #4）（目安 5.5〜6時間）
+## ステップ9：DB を Drizzle ORM に置き換える（Issue #4）（目安 7〜8時間）
 課題：[issues/issue-4.md](issues/issue-4.md)
 ゴール：テーブルの定義とマイグレーションを Drizzle（drizzle-kit）で管理し、`server.ts` の SQL（`main` で `pool.query` 10か所）をすべて Drizzle のクエリにする。発行される SQL をログで見る
 
@@ -140,7 +140,8 @@
 | 9-2 導入とスキーマ（drizzle-orm・drizzle-kit、`drizzle.config.ts`、`drizzle-kit pull` で今の DB から作って整える）。Claude（1時間） | 終了 | 2026-11-01。`main` から `feature/4-drizzle` を切った。drizzle-orm 0.45.4・drizzle-kit 0.31.11。`drizzle.config.ts`（`process.loadEnvFile()` で `.env` を読む）。今の DB はタグの表があるので、`main` の `schema.sql` で使い捨ての DB `todo_app_pull` を作って `pull`（出力は作業用の場所。終わったら DB は消した）。`src/server/db/schema.ts` に整えた（長い identity の設定を省く、`foreignKey` → `.references(…, { onDelete: "cascade" })`、`.unique()`、時刻は Date で扱う、`deadline` は文字列のまま、`$inferSelect` の型）。`relations.ts` は使わない（関数で書く SELECT だけ使うため）。`src/server/db/index.ts`（Pool と `drizzle({ client, schema, logger: true })`）。`tsc` が drizzle-orm の中の別の DB 用の型で142個のエラー → `skipLibCheck: true`。generate の試し（作業用の場所）で `schema.sql` と同じ3つの表と外部キーになることを確認。ログつきで読み取りを試した（`$1` と params、`' OR '1'='1` は値として扱われ0行）。npm が esbuild・argon2 のインストールスクリプトを止めた警告は、動きに影響なし（許可は学習者の判断）。コミット2つ（0e24fc1、5aecebc）を push |
 | 9-3 マイグレーション（`generate` → `migrate`、`db/schema.sql` を消す、README）。Claude が書き、★空の DB で学習者が流して3つの表ができるのを確かめる（0.5時間） | 学習中 | 2026-11-01。`npm run db:generate`・`db:migrate` を足し、`generate --name init` で `drizzle/0000_init.sql` と `meta/`（スナップショットと記録）を作った。`db/schema.sql` を消し、README の DB 作成を `createdb` → `npm run db:migrate` に直した（古い DB は記録がないので `dropdb` から、表を変えるときの手順も）。Claude は使い捨ての DB `todo_app_migrate_check` で確かめた（3つの表、`drizzle.__drizzle_migrations` に1行、2回流しても何も起きない。`DATABASE_URL` を環境変数で渡すと `.env` より優先される）。学習者の `todo_app` には触れていない。コミット e85f3bf を push。★学習者が `todo_app` を作り直して `migrate` する |
 | 9-4 クエリの置き換え（登録・ログイン・セッション・ToDo）。Claude が大半を書いて前後を並べて解説、★ToDo の一覧と完了の更新（`and(eq(…), eq(…))` で自分のものだけ）は学習者（2時間） | 未着手 | |
-| 9-5 ログを有効にして、置き換え前後の SQL を API ごとに並べる（PR 用。Claude が下書き）、通しの確認（2人のユーザー）、PR の本文は学習者（1〜1.5時間） | 未着手 | |
+| 9-5 タグを取り込む（D-0033）：`schema.ts` に `tags`・`todo_tag`（2つの列の外部キー、組の主キー）と `todos` の `UNIQUE (id, user_id)` を足して `db:generate` → `0001` の差分だけが流れることを確かめる、`feature/1-tags-search` のタグの API・付け外し・一覧の `json_agg` を Drizzle に。Claude、★作るときの `tagIds` を `db.transaction` で書き直す（手で書いた BEGIN・COMMIT・ROLLBACK と比べる）は学習者（1.5〜2時間） | 未着手 | |
+| 9-6 ログを有効にして、置き換え前後の SQL を API ごとに並べる（PR 用。Claude が下書き）、通しの確認（2人のユーザー）、PR の本文は学習者（1〜1.5時間） | 未着手 | |
 
 ## ステップ10：API を Hono に置き換える（Issue #5）（目安 5〜6時間）
 課題：[issues/issue-5.md](issues/issue-5.md)
@@ -178,7 +179,7 @@
 | 12-4 Tailwind で見た目（ダークモード。値は design.md から移す）。Claude（1時間） | 未着手 | |
 | 12-5 古い画面と serve-static を消す、README（2つのプロセスの起動）、流れ（`<Form>` → `action` → API → DB → `loader` → 画面）を学習者が説明する、PR（1時間） | 未着手 | |
 
-ステップ9〜12 の合計の目安：22〜26時間（ステップ8 の残りを足すと 22.5〜26.5時間）。
+ステップ9〜12 の合計の目安：23.5〜28時間（ステップ9 にタグを含めた。D-0033）。
 
 （やめたステップ：Issue #2 リストの共有とリアルタイムの反映、Issue #3 画像から ToDo の候補を抜き出す。写しは `issues/` に残す。D-0031）
 
