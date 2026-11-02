@@ -177,8 +177,8 @@
 
 | 項目 | 段階 | メモ |
 |---|---|---|
-| 12-1 前提の説明（`loaderData` とその型、`action` のあとの revalidation と今の `loadTodos()`・`render()` の対応、`intent` で操作を受け分ける、`loader` でログインの画面に移す、Tailwind のユーティリティクラスと `style.css` の違い）（1時間） | 説明済み | 2026-11-02。学習者「次いこう」。だれが書くかは D-0030 の形（Claude が大半、★ は 12-3 の `intent` の受け分け）。ブランチ `feature/7-todo-react-router`（`feature/6-react-router` から）。図（今の `postTodo()` → `loadTodos()` → `render()` と、`<Form>` → action → 自動の loader の呼び直し → 描き直し）で5つを説明した。`/` を ToDo の一覧にする。学習者が言い直すのを待つ |
-| 12-2 一覧（`loader`、ログインしていなければログインの画面へ）。Claude（1時間） | 未着手 | |
+| 12-1 前提の説明（`loaderData` とその型、`action` のあとの revalidation と今の `loadTodos()`・`render()` の対応、`intent` で操作を受け分ける、`loader` でログインの画面に移す、Tailwind のユーティリティクラスと `style.css` の違い）（1時間） | 説明済み | 2026-11-02。学習者「次いこう」。だれが書くかは D-0030 の形（Claude が大半、★ は 12-3 の `intent` の受け分け）。ブランチ `feature/7-todo-react-router`（`feature/6-react-router` から）。図（今の `postTodo()` → `loadTodos()` → `render()` と、`<Form>` → action → 自動の loader の呼び直し → 描き直し）で5つを説明した。`/` を ToDo の一覧にする。学習者の言い直し：revalidation「action が動いたら loader を再度動かして画面を更新」、intent「操作ごとに別の値を渡し、action でどの入力か見分ける」→ どちらも正解（自動で行われること、どの ToDo かは hidden の id で送ることを補足） |
+| 12-2 一覧（`loader`、ログインしていなければログインの画面へ）。Claude（1時間） | 終了 | 2026-11-02。`home.tsx` を ToDo の一覧に：loader で `/api/me` と `/api/todos`、401 なら `throw redirect("/login")`。画面は `todos.map` と `key`、期限は `formatDeadline`、残りの件数。チェックボックスは表示だけ（12-3 で `<Form>`）。3001・5174 で確かめた（Cookie なしは 302 → /login、e は2件と期限 11/5・残り2、f は空の一覧） |
 | 12-3 追加・完了・削除。Claude、★`action` を `intent` で受け分けるところは学習者（2時間） | 未着手 | |
 | 12-4 Tailwind で見た目（ダークモード。値は design.md から移す）。Claude（1時間） | 未着手 | |
 | 12-5 古い画面と serve-static を消す、README（2つのプロセスの起動）、流れ（`<Form>` → `action` → API → DB → `loader` → 画面）を学習者が説明する、PR（1時間） | 未着手 | |
