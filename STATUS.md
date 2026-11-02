@@ -11,7 +11,7 @@
 ## 次にやること
 - ステップ9（#4 Drizzle）は終了。PR #8（`feature/4-drizzle` → `main`、https://github.com/Miyamura-rq/todo-app/pull/8）を学習者が作り、メンターのレビュー待ち。`gh auth login` は本人確認で失敗したまま（あとで試し直す）
 - ステップ10（#5 Hono）は終了。PR #9（`feature/5-hono` → `feature/4-drizzle`、https://github.com/Miyamura-rq/todo-app/pull/9）、メンターのレビュー待ち。★の確かめ方も Claude が実行する（D-0034）
-- ステップ11（#6 React Router とログインの画面）を開始：11-1 前提の説明（図2枚）を出した。2026-11-02 は学習者が多くを書き、Claude は重要度（高・中・低）を示す（D-0035）。11-2（`feature/6-react-router` を切って `web/` を作る）の課題を出した
+- ステップ11（#6 React Router とログインの画面）を開始：11-1 前提の説明（図2枚）を出した。2026-11-02 は学習者が多くを書き、Claude は重要度（高・中・低）を示す（D-0035）。11-2 は終了（`feature/6-react-router`、`web/` を作った。e29b4d9）。次は 11-3（`server.ts` をつなげて書く形に、`AppType` と `hc`）。開発中は `app/` で API（3000）、`app/web/` で画面（5173）の2つを起動する
 - 自宅の Mac の DB の試しのデータ（9-4 で登録し直した）：c（id 1）、d（id 3）。c の ToDo 1 牛乳を買う（期限 2026-11-05、完了。work・家）・2 本を返す・4 レポートを出す（期限 2026-11-10。work・家）、c のタグ 1 work・2 家・5 shop、d のタグ 4 家。学習者のアカウントは未登録
 - 会社の PC では `app/` で `git fetch` → `git switch feature/4-drizzle` → `npm install`。ステップ9 のブランチ（`feature/4-drizzle`）では、DB は `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate` で作る
 - 会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
