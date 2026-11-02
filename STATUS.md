@@ -1,6 +1,6 @@
 # STATUS
 
-最終更新: 2026-11-02（S-0036）
+最終更新: 2026-11-02（S-0037）
 
 ## 現在地
 - ステップ11（Issue #6 React Router とログインの画面）。`app/` のブランチは `feature/7-todo-react-router`（ステップ12）。11-1〜11-3 は終了（`web/`、`AppType`、`hc`）
@@ -9,7 +9,7 @@
 - 進め方：コードの多くを Claude が書いて解説し、★だけ学習者が書く（D-0030）。時間がある日は学習者が多くを書き、Claude は重要度を示す（D-0035）。★の確かめも Claude が実行する（D-0034）。ステップ12 は #7（React Router の Todo）。ステップ8 はブランチ `feature/1-tags-search` に残した（D-0032）
 
 ## 次にやること
-- ステップ12（#7）も終了し、0周目（Issue #4〜#7）が終わった。PR #11（`feature/7-todo-react-router` → `feature/6-react-router`、https://github.com/Miyamura-rq/todo-app/pull/11）。ステップ12 の理解度チェックは済んだ（1問は3つのうち2つ、3問は半分）。次は学習まとめ（`notes/step12.md`）。そのあとはメンターの次の Issue か、最終ステップ（D-0024）
+- ステップ12（#7）も終了し、0周目（Issue #4〜#7）が終わった。PR #11（`feature/7-todo-react-router` → `feature/6-react-router`、https://github.com/Miyamura-rq/todo-app/pull/11）。ステップ12 の理解度チェックは済んだ（1問は3つのうち2つ、3問は半分）。学習まとめは `notes/step12.md`。そのあとはメンターの次の Issue か、最終ステップ（D-0024）
 - 別の端末で始めるとき：外側で `git pull`。`app/` で `git fetch` → `git switch feature/6-react-router` → `npm install`、`app/web/` でも `npm install`。DB が Drizzle の前のままなら `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate`（試しのアカウントは登録し直す）
 - 開発中は `app/` で API（3000、`npm run dev`）、`app/web/` で画面（5173、`npm run dev`）の2つを起動する
 - 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）。c の ToDo 1・2・4、タグ 1 work・2 家・5 shop、d のタグ 4 家
