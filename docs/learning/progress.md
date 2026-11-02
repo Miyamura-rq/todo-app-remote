@@ -113,6 +113,7 @@
 ステップ9 からは、コードの多くを Claude が書いて解説し、大事なところ（★）だけ学習者が書く（D-0030）。時間は、説明を読む・★を書く・確かめる・PR の本文を書く、までの目安（メンターのレビューへの対応は含まない）。
 
 ## ステップ8：タグと、絞り込み・検索（Issue #1）
+まとめ：[notes/step8.md](notes/step8.md)
 課題：[issues/issue-1.md](issues/issue-1.md)
 ゴール：ToDo に複数のタグを付け、状態・タグ・キーワード・並び順を組み合わせて一覧を絞り込める。PR を出してメンターのレビューを受ける
 進め方：ブランチを切って作り、PR を出す。Issue の「決めてほしいこと」は学習者が決めて PR の本文に書く（①② は 8-1、③ は 8-5）。Claude は選択肢と基準を示してレビューする（D-0025）
@@ -131,6 +132,7 @@
 - C の curl は Claude が確かめた（8-4 のメモ）。8-4 の理解度チェック（15分）。8-6・8-7 は飛ばし、#1 の PR は出さない（D-0032）。タグはステップ9 で Drizzle に移して残す（D-0033）
 
 ## ステップ9：DB を Drizzle ORM に置き換える（Issue #4）（目安 7〜8時間）
+まとめ：[notes/step9.md](notes/step9.md)
 課題：[issues/issue-4.md](issues/issue-4.md)
 ゴール：テーブルの定義とマイグレーションを Drizzle（drizzle-kit）で管理し、`server.ts` の SQL（`main` で `pool.query` 10か所）をすべて Drizzle のクエリにする。発行される SQL をログで見る
 
@@ -144,6 +146,7 @@
 | 9-6 ログを有効にして、置き換え前後の SQL を API ごとに並べる（PR 用。Claude が下書き）、通しの確認（2人のユーザー）、PR の本文は学習者（1〜1.5時間） | 終了 | 2026-11-01。README を直した（5つの表、タグの API 5つ、`tagIds`、SQL のログ、`PORT`）、使わない `pool` の export を外した（46a8327・ec9e90d）。前後の SQL を API ごとに並べた下書き `docs/learning/pr/issue-4.md`（`params` は省く。PR の本文の骨組みつき）。完了条件の確認：`pool.query` は0、空の DB に migrate すると5つの表（タグを含めた。D-0033）、登録〜削除と他人の ToDo は curl で確認済み、比較表は下書き済み。前提6つの言い直しをした（理解度チェックの記録。`$inferSelect` が要復習）。ブラウザでの確認とメンターへの連絡は、学習者の判断で行わない。学習者「PR の作成そっちでできる？」→ 本文は Claude が下書き（`docs/learning/pr/issue-4-body.md`。D-0025 では学習者が書くが、今回は下書きを学習者が確かめる形）。内蔵ブラウザは GitHub にログインしておらず 404 だったので、学習者の選択で `brew install gh`（2.103.3）。`gh auth login` は学習者が行ったが、日本語入力のまま Enter を押していたのと、GitHub の本人確認（sudo モード）で失敗した（学習者「sudo failed」）。学習者の判断で GitHub の画面で作ることにし、本文を学習者のターミナルで `pbcopy` してクリップボードに入れた（Claude の環境の `pbcopy` はクリップボードに届かなかった）。学習者「こんな長く書くもの？」→ ふつうは「何をしたか・どう確かめたか・伝えたいこと」で十分と説明し、見える部分を約15行の短い版にした（前後の SQL は折りたたみのまま）。学習者が PR #8 を作った（https://github.com/Miyamura-rq/todo-app/pull/8）。ステップ9 の作業は終了、メンターのレビュー待ち |
 
 ## ステップ10：API を Hono に置き換える（Issue #5）（目安 5〜6時間）
+まとめ：[notes/step10.md](notes/step10.md)
 課題：[issues/issue-5.md](issues/issue-5.md)
 ゴール：Express と cookie-parser を外し、Hono（`@hono/node-server`）で同じパスとメソッドの API を作る。入力を zod で確かめ、不正なら 400
 
@@ -156,6 +159,7 @@
 | 10-5 確かめる（今の画面のまま全部の操作、400 の3つと 401 を curl で。結果は PR に貼る）、PR の本文は学習者（1時間） | 終了 | 2026-11-02。確かめは 10-4 の curl で済んでいる（Issue の 400 の3つと 401）。README を Hono・zod・`hono/cookie` に合わせた（eca868f）。PR の本文の下書き `docs/learning/pr/issue-5-body.md`（短い版。curl のコマンドと結果は折りたたみ）をクリップボードに入れた。PR の行き先は `feature/4-drizzle`（#8 の上に積む。#8 がマージされたら `main` に変わる）。学習者が PR #9 を作った（https://github.com/Miyamura-rq/todo-app/pull/9）。ステップ10 の作業は終了、メンターのレビュー待ち |
 
 ## ステップ11：React Router のアプリとログインの画面（Issue #6）（目安 6.5〜7.5時間）
+まとめ：[notes/step11.md](notes/step11.md)
 課題：[issues/issue-6.md](issues/issue-6.md)
 ゴール：`web/` に React Router（framework mode）のアプリを作って API と別のプロセスで動かし、登録・ログイン・ログアウトを `<Form>` と `action` から `hono/client` で API を呼んで行う
 
