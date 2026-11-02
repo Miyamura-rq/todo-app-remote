@@ -5,11 +5,11 @@
 ## 現在地
 - ステップ11（Issue #6 React Router とログインの画面）。`app/` のブランチは `feature/6-react-router`。11-1〜11-3 は終了（`web/`、`AppType`、`hc`）
 - 11-4（登録・ログインの画面）は終了。課題と図（①〜⑧、★④ `Set-Cookie` を `redirect` に付ける、★⑥ `Cookie` を API に渡す）は S-0035・`progress.md`。1〜3 は学習者、4・5（`login.tsx`・`home.tsx`）は学習者の依頼で Claude が書いて解説し、curl で確かめた
-- ステップ9（#4 Drizzle）・10（#5 Hono）は終了。PR #8（`feature/4-drizzle` → `main`）・#9（`feature/5-hono` → `feature/4-drizzle`）はメンターのレビュー待ち
+- ステップ9（#4 Drizzle）・10（#5 Hono）・11（#6 React Router のログイン）は終了。PR #8・#9・#10 はメンターのレビュー待ち（#10 → #9 → #8 の順に積んである）
 - 進め方：コードの多くを Claude が書いて解説し、★だけ学習者が書く（D-0030）。時間がある日は学習者が多くを書き、Claude は重要度を示す（D-0035）。★の確かめも Claude が実行する（D-0034）。ステップ12 は #7（React Router の Todo）。ステップ8 はブランチ `feature/1-tags-search` に残した（D-0032）
 
 ## 次にやること
-- 11-5：ログアウトは終了（★ action は学習者）。ログインの流れの説明は1回目を出し、Claude が補った（メンター向けの短い版は `progress.md`）。残りは PR（`feature/6-react-router` → `feature/5-hono`）。本文の下書きは `docs/learning/pr/issue-6-body.md`、学習者が見て GitHub の画面で作る。パスワード違いのエラーと HttpOnly の確認は 11-4 で済んだ
+- ステップ11（#6）は終了。PR #10（`feature/6-react-router` → `feature/5-hono`、https://github.com/Miyamura-rq/todo-app/pull/10）はメンターのレビュー待ち。次は今日の理解度チェック → ステップ12（#7 React Router の Todo）
 - 別の端末で始めるとき：外側で `git pull`。`app/` で `git fetch` → `git switch feature/6-react-router` → `npm install`、`app/web/` でも `npm install`。DB が Drizzle の前のままなら `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate`（試しのアカウントは登録し直す）
 - 開発中は `app/` で API（3000、`npm run dev`）、`app/web/` で画面（5173、`npm run dev`）の2つを起動する
 - 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）。c の ToDo 1・2・4、タグ 1 work・2 家・5 shop、d のタグ 4 家
