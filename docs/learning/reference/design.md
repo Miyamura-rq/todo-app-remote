@@ -44,3 +44,23 @@
 | メールアドレス | 薄い文字 `#8FA59F`、`0.875rem` | 補足の情報 |
 | ログアウトボタン | 背景 `transparent`、文字 `#E2EBE8`、枠 `#3A4744`、角 `6px`、余白 `4px 12px`、`0.875rem`。マウスを乗せたら文字と枠をアクセント | 目立たせすぎない（危険の色にしない。ログアウトは消える操作ではない） |
 | `[hidden]` | `display: none !important` | `hidden` 属性は、CSS で `display` を指定した要素には効かなくなる。その場合も確実に隠すため |
+
+## Tailwind での名前（ステップ12、12-4）
+`web/app/app.css` の `@theme` に、上の色を `--color-〇〇` で登録した。`bg-〇〇`・`text-〇〇`・`border-〇〇`・`accent-〇〇` などのクラスで使う。
+
+| 役割 | 名前 | 例 |
+|---|---|---|
+| 背景 | `bg` | `bg-bg` |
+| 面 | `surface` | `bg-surface` |
+| 枠線 | `line` | `border-line` |
+| 文字 | `fg` | `text-fg` |
+| 薄い文字 | `muted` | `text-muted` |
+| アクセント | `accent` | `text-accent`、`bg-accent`、`accent-accent`（チェックボックス） |
+| アクセントの上の文字 | `on-accent` | `text-on-accent` |
+| 危険 | `danger` | `text-danger`、`border-danger`、`hover:bg-danger` |
+
+- 文字は `--font-sans` を `"Noto Sans JP", "Hiragino Sans", sans-serif` にした（雛形の Inter は使わない）
+- ページ全体（幅 560px、余白 32px 16px、背景と文字の色）は `app.css` の `body` に `@apply` で書いた
+- 何か所でも使う形（入力欄、主・二番目のボタン、ラベル、エラー文）は `web/app/lib/styles.ts` に名前を付けてまとめた
+- 大きさの対応：`text-sm` = 0.875rem、`text-xl` = 1.25rem、`text-[1.75rem]`（表にない値は `[ ]` で直接書く）、`rounded-md` = 6px、`rounded-lg` = 8px、`px-3 py-2` = 12px 8px、`gap-2` = 8px
+- スマホ：Tailwind は「小さい画面が先」。何も付けないクラスがスマホ用で、`sm:`（幅 640px 以上）を付けたクラスが広い画面で上書きする（前の `style.css` の `@media (max-width: 480px)` と逆の向き）

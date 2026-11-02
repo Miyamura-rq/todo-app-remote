@@ -9,7 +9,7 @@
 - 進め方：コードの多くを Claude が書いて解説し、★だけ学習者が書く（D-0030）。時間がある日は学習者が多くを書き、Claude は重要度を示す（D-0035）。★の確かめも Claude が実行する（D-0034）。ステップ12 は #7（React Router の Todo）。ステップ8 はブランチ `feature/1-tags-search` に残した（D-0032）
 
 ## 次にやること
-- ステップ11（#6）は終了。PR #10（`feature/6-react-router` → `feature/5-hono`、https://github.com/Miyamura-rq/todo-app/pull/10）はメンターのレビュー待ち。理解度チェックも済んだ（S-0036）。ステップ12（#7 React Router の Todo）：ブランチ `feature/7-todo-react-router`。12-1〜12-3 は終了（一覧の loader、追加・完了・削除の `<Form>` と ★ action は学習者。API の PATCH・DELETE の 404 を `{ error }` に、PATCH の成功を 200 に直した）。次は 12-4（Tailwind、Claude）。ステップ8〜11 の学習まとめは `docs/learning/notes/step8.md`〜`step11.md`
+- ステップ11（#6）は終了。PR #10（`feature/6-react-router` → `feature/5-hono`、https://github.com/Miyamura-rq/todo-app/pull/10）はメンターのレビュー待ち。理解度チェックも済んだ（S-0036）。ステップ12（#7 React Router の Todo）：ブランチ `feature/7-todo-react-router`。12-1〜12-3 は終了（一覧の loader、追加・完了・削除の `<Form>` と ★ action は学習者。API の PATCH・DELETE の 404 を `{ error }` に、PATCH の成功を 200 に直した）。12-4（Tailwind）も終了。次は 12-5（古い画面と serve-static を消す、README、ToDo を追加したときの流れを学習者が説明、PR）。ステップ8〜11 の学習まとめは `docs/learning/notes/step8.md`〜`step11.md`
 - 別の端末で始めるとき：外側で `git pull`。`app/` で `git fetch` → `git switch feature/6-react-router` → `npm install`、`app/web/` でも `npm install`。DB が Drizzle の前のままなら `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate`（試しのアカウントは登録し直す）
 - 開発中は `app/` で API（3000、`npm run dev`）、`app/web/` で画面（5173、`npm run dev`）の2つを起動する
 - 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）。c の ToDo 1・2・4、タグ 1 work・2 家・5 shop、d のタグ 4 家
