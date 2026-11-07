@@ -1,23 +1,22 @@
 # STATUS
 
-最終更新: 2026-11-02（S-0037）
+最終更新: 2026-11-07（S-0038）
 
 ## 現在地
-- ステップ11（Issue #6 React Router とログインの画面）。`app/` のブランチは `feature/7-todo-react-router`（ステップ12）。11-1〜11-3 は終了（`web/`、`AppType`、`hc`）
-- 11-4（登録・ログインの画面）は終了。課題と図（①〜⑧、★④ `Set-Cookie` を `redirect` に付ける、★⑥ `Cookie` を API に渡す）は S-0035・`progress.md`。1〜3 は学習者、4・5（`login.tsx`・`home.tsx`）は学習者の依頼で Claude が書いて解説し、curl で確かめた
-- ステップ9（#4 Drizzle）・10（#5 Hono）・11（#6 React Router のログイン）・12（#7 React Router の Todo）は終了。PR #8・#9・#10・#11 はメンターのレビュー待ち（#11 → #10 → #9 → #8 の順に積んである）
-- 進め方：コードの多くを Claude が書いて解説し、★だけ学習者が書く（D-0030）。時間がある日は学習者が多くを書き、Claude は重要度を示す（D-0035）。★の確かめも Claude が実行する（D-0034）。ステップ12 は #7（React Router の Todo）。ステップ8 はブランチ `feature/1-tags-search` に残した（D-0032）
+- 0周目（Issue #4〜#7、ステップ9〜12）は終了。PR #8・#9・#10・#11 はメンターのレビュー待ち（#11 → #10 → #9 → #8 の順に積んである）。`app/` のブランチは `feature/7-todo-react-router`。ステップ8 はブランチ `feature/1-tags-search` に残した（D-0032）
+- メンターの次の課題（1周目、`Miyamura-rq/Uesaka-practice` の Issue #4〜#9）は、別のフォルダ `~/RECERQA/uesaka-practice/` で進める（D-0036）。準備は済んだ（S-0038）
+- このフォルダは、PR のレビュー対応と、1周目のお手本（コード、学習の記録、早見表）のために残す
 
 ## 次にやること
-- ステップ12（#7）も終了し、0周目（Issue #4〜#7）が終わった。PR #11（`feature/7-todo-react-router` → `feature/6-react-router`、https://github.com/Miyamura-rq/todo-app/pull/11）。ステップ12 の理解度チェックは済んだ（1問は3つのうち2つ、3問は半分）。学習まとめは `notes/step12.md`。そのあとはメンターの次の Issue か、最終ステップ（D-0024）
-- 別の端末で始めるとき：外側で `git pull`。`app/` で `git fetch` → `git switch feature/6-react-router` → `npm install`、`app/web/` でも `npm install`。DB が Drizzle の前のままなら `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate`（試しのアカウントは登録し直す）
-- 開発中は `app/` で API（3000、`npm run dev`）、`app/web/` で画面（5173、`npm run dev`）の2つを起動する
+- 1周目は `~/RECERQA/uesaka-practice/` を Claude Code で開いて進める
+- PR #8〜#11 のレビューの指摘が来たら、ここで直す
+- 別の端末で始めるとき：外側で `git pull`。`app/` で `git fetch` → `git switch feature/7-todo-react-router` → `npm install`、`app/web/` でも `npm install`。DB が Drizzle の前のままなら `dropdb todo_app` → `createdb todo_app` → `npm run db:migrate`（試しのアカウントは登録し直す）
+- 開発中は `app/` で API（3000、`npm run dev`）、`app/web/` で画面（5173、`npm run dev`）の2つを起動する。uesaka-practice とはポートがぶつかるので、片方ずつ動かす
 - 自宅の Mac の DB の試しのデータ：c（id 1）、d（id 3）。c の ToDo 1・2・4、タグ 1 work・2 家・5 shop、d のタグ 4 家
-- `gh auth login` を試し直す。会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
-- 自宅の Mac の残り：`~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 
 ## 未解決・要確認
-- 理解度チェックの要復習：ステップ10・11（S-0036）の `requireLogin` の期限・401・`c.set`、loader・action が動くのは web のサーバー、ルートをつなげて書くと型が積み重なる。ステップ12：hidden の `done`、loader が `/api/me` の 401 で `throw redirect`、`useEffect` は `adding` が false に変わったときに `reset()`、`@theme` の `--color-accent`。8-4（ROLLBACK と id の番号、`pool.connect()`、`ON CONFLICT` が先に効く）、ステップ7（S-0024：認証と認可、Cookie に `userId` を入れない理由、ソルトなしでよい理由、`SameSite=Lax`）、中間の表の1行（S-0029）が要復習
-- 前からの要復習：`""` と `null`・`tsc` は「検証して変換」（S-0015）、id が要る理由の①（S-0013）、目的の違う変更はコミットを分ける（S-0013、S-0015）、`flex-basis: 100%`（ステップ2）
+- 要復習は uesaka-practice の `docs/learning/progress.md` に写し、1周目の Issue に結びつけた
+- `gh auth login` を試し直す。会社の Claude アカウントを自宅の Mac や個人の PC で使ってよいか、会社の決まりを確認する
+- `~/.claude/CLAUDE.md` と `~/.claude/skills/` の配置（今は `RECERQA/` の下）
 - `RECERQA/rq-applications`（うえさか）は Claude に見せてよい。`~/RECERQA/rq-applications` に置いてもらう
-- 公開先・DB についての会社の決まり（最終ステップの公開の前に確認）
+- 公開先・DB についての会社の決まり
